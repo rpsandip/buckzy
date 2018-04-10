@@ -1,0 +1,4 @@
+Bundle-Name: buckzy-registration-module
+Bundle-SymbolicName: com.buckzy.registration.module.portlet
+Bundle-Version: 1.0.0
+Export-Package: com.buckzy.registration.module.portlet.constants

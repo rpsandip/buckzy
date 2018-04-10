@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+.left-hover a {
+	text-decoration: none;
+	color: #4A4A4A;
+}
+
+.navigation li{
+	padding-bottom : 20px !important;
+}
+
+.portlet-title-default, .portlet-title-text {
+			display: none !important;
+		}
+		
+.portlet-decorate .portlet-content {
+    border-style : none !important;
+}
+
+.portlet-login .btn-default{
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#DB2222),to(#DB2222)) !important;
+}

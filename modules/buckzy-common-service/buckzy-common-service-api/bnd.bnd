@@ -1,0 +1,11 @@
+Bundle-Name: buckzy-common-service-api
+Bundle-SymbolicName: com.buckzy.common.service.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.buckzy.common.service.exception,\
+	com.buckzy.common.service.model,\
+	com.buckzy.common.service.service,\
+	com.buckzy.common.util,\
+	com.buckzy.common.beans,\
+	com.buckzy.common.service.service.persistence
+-includeresource: META-INF/service.xml=../buckzy-common-service-service/service.xml

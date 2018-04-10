@@ -1,0 +1,4 @@
+Bundle-Name: buckzy-profile-module
+Bundle-SymbolicName: com.buckzy.profile.portlet
+Bundle-Version: 1.0.0
+Export-Package: com.buckzy.profile.portlet.constants

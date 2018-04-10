@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean class="com.buckzy.common.service.service.impl.BuckzyCommonLocalServiceImpl" id="com.buckzy.common.service.service.BuckzyCommonLocalService" />
+	<bean class="com.buckzy.common.service.service.impl.CustomUserLocalServiceImpl" id="com.buckzy.common.service.service.CustomUserLocalService" />
+	<bean class="com.buckzy.common.service.service.persistence.impl.CustomUserPersistenceImpl" id="com.buckzy.common.service.service.persistence.CustomUserPersistence" parent="basePersistence" />
+</beans>

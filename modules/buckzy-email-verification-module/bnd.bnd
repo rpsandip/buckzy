@@ -1,0 +1,4 @@
+Bundle-Name: buckzy-email-verification-module
+Bundle-SymbolicName: com.buckzy.email.verification
+Bundle-Version: 1.0.0
+Export-Package: com.buckzy.email.verification.constants

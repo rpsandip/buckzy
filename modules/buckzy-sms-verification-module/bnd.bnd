@@ -1,0 +1,4 @@
+Bundle-Name: buckzy-sms-verification-module
+Bundle-SymbolicName: com.buckzy.sms.verification.portlet
+Bundle-Version: 1.0.0
+Export-Package: com.buckzy.sms.verification.portlet.constants

@@ -1,0 +1,4 @@
+Bundle-Name: buckzy-dashboard-module
+Bundle-SymbolicName: com.buckzy.dashboard.portlet
+Bundle-Version: 1.0.0
+Export-Package: com.buckzy.dashboard.portlet.constants

@@ -1,0 +1,4 @@
+Bundle-Name: buckzy-send-money-module
+Bundle-SymbolicName: com.buckzy.send.money.portlet
+Bundle-Version: 1.0.0
+Export-Package: com.buckzy.send.money.portlet.constants

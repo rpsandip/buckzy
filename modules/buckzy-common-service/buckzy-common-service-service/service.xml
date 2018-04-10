@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder package-path="com.buckzy.common.service">
+	<author>Sandip.Patel</author>
+	<namespace>BUCKZY</namespace>
+	<entity name="BuckzyCommon" local-service="true"  remote-service="false"/>
+	
+	<entity name="CustomUser" local-service="true"  remote-service="false">
+		<column name="customUserId" primary="true" type="long" />
+		<column name="userId"  type="long" />
+		<column name="partyId"  type="long" />
+		<column name="partyUserId"  type="long" />
+		<column name="mobileNo" type="String" />
+		<column name="mobCountryCode" type="String" />
+		<column name="deviceInfo" type="String"></column>
+		<column name="documentVerified" type="boolean"></column>
+		<column name="accountCompleted" type="boolean"></column>
+		<column name="profileComplete" type="boolean"></column>
+		<column name="socialLogin" type="boolean"></column>
+		<column name="restPass" type="String"></column>
+		
+		
+		<column name="createDate" type="Date"></column>
+		<column name="createdBy" type="long"></column>
+		<column name="modifiedDate" type="Date"></column>
+		<column name="modifiedBy" type="long"></column>
+		
+		<finder return-type="CustomUser" name="UserId">
+			<finder-column name="userId"></finder-column>
+		</finder>
+		
+		<finder return-type="CustomUser" name="MobileNumber">
+			<finder-column name="mobileNo"></finder-column>
+			<finder-column name="mobCountryCode"></finder-column>
+		</finder>
+		
+	</entity>
+	
+</service-builder>

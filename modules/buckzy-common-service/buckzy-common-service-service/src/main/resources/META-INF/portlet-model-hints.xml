@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.buckzy.common.service.model.CustomUser">
+		<field name="customUserId" type="long" />
+		<field name="userId" type="long" />
+		<field name="partyId" type="long" />
+		<field name="partyUserId" type="long" />
+		<field name="mobileNo" type="String" />
+		<field name="mobCountryCode" type="String" />
+		<field name="deviceInfo" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="documentVerified" type="boolean" />
+		<field name="accountCompleted" type="boolean" />
+		<field name="profileComplete" type="boolean" />
+		<field name="socialLogin" type="boolean" />
+		<field name="restPass" type="String">
+			<hint name="max-length">100</hint>
+		</field>
+		<field name="createDate" type="Date" />
+		<field name="createdBy" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="modifiedBy" type="long" />
+	</model>
+</model-hints>
