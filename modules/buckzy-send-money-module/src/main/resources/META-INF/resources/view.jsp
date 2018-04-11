@@ -71,7 +71,9 @@
 				<div class="col-sm-12  padding-0 margin-0 padding-5">
 					<aui:select name="fromCur" label="">
 						<c:forEach items="${currenyJSONList }" var="currency">
-							<aui:option value="${currency.get('currcd') }">${currency.get('currnm') }</aui:option>
+							<c:if test="${currency.get('currcd') eq loginUserCurrencyCd}">
+								<aui:option value="${currency.get('currcd') }">${currency.get('currnm') }</aui:option>
+							</c:if>
 						</c:forEach>
 					</aui:select>
 				</div>

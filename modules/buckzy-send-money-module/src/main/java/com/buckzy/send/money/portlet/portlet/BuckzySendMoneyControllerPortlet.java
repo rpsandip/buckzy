@@ -2,6 +2,7 @@ package com.buckzy.send.money.portlet.portlet;
 
 import com.buckzy.common.beans.UserBean;
 import com.buckzy.common.service.service.BuckzyCommonLocalServiceUtil;
+import com.buckzy.common.service.service.CustomUserLocalServiceUtil;
 import com.buckzy.send.money.portlet.constants.BuckzySendMoneyControllerPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -13,6 +14,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
@@ -58,6 +60,12 @@ public class BuckzySendMoneyControllerPortlet extends MVCPortlet {
 			UserBean userBean = new UserBean(user);
 			
 			String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(renderRequest)).getSession().getAttribute("token");
+			
+			// Login user detail
+			JSONObject loginUserPartyDetail = CustomUserLocalServiceUtil.getPartyDetail(userBean.getCustomUserBean().getPartyId(),token);
+			if(Validator.isNotNull(loginUserPartyDetail)){
+				renderRequest.setAttribute("loginUserCurrencyCd", loginUserPartyDetail.get("basecurrcd"));
+			}
 			
 			// Get Currency List
 			JSONArray currencyArray = BuckzyCommonLocalServiceUtil.getCurrencyList(token);

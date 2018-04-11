@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -51,9 +52,15 @@ public class BuckzyLoginPostEventActivator  implements LifecycleAction{
 			// Create Security token for logIn users.
 			String token = BuckzyCommonLocalServiceUtil.getToken(user.getEmailAddress(),password);
 			
-			if(Validator.isNull(token)){
-				//lifecycleEvent.getRequest().getSession().invalidate();
-				//lifecycleEvent.getResponse().sendRedirect("/web/guest/sign-in?login=invalid");
+			String skippEmailForRestAuth = PropsUtil.get("email.skip.rest.auth");
+			
+			if(Validator.isNull(token) && skippEmailForRestAuth.indexOf(user.getEmailAddress())<0){
+				lifecycleEvent.getRequest().getSession().invalidate();
+				try {
+					lifecycleEvent.getResponse().sendRedirect("/web/guest/sign-in?login=invalid");
+				} catch (IOException e) {
+					_log.error(e);
+				}
 			}else{
 				lifecycleEvent.getRequest().getSession().setAttribute("token", token);
 			}
