@@ -69,12 +69,6 @@ public class BuckzyProfileModulePortlet extends MVCPortlet {
 			
 			String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(renderRequest)).getSession().getAttribute("token");
 			
-			PortalCache portalCache =   MultiVMPoolUtil.getCache(User.class.getName());
-			
-			String password = (String)portalCache.get("user_token");
-			
-			_log.info("token-> " + token);
-			
 			if(userBean.getCustomUserBean().getPartyId()>0){
 				try {
 					JSONObject partyDetail = CustomUserLocalServiceUtil.getPartyDetail(userBean.getCustomUserBean().getPartyId(),
@@ -107,6 +101,7 @@ public class BuckzyProfileModulePortlet extends MVCPortlet {
 						if(Validator.isNotNull(partyAddressDetail)){
 							addrressBean.setPostaddr(partyAddressDetail.getString("postaddr"));
 							addrressBean.setTownnm(partyAddressDetail.getString("townnm"));
+							addrressBean.setState(partyAddressDetail.getString("state"));
 							addrressBean.setZipcd(partyAddressDetail.getString("zipcd"));
 							addrressBean.setCntrycd(partyAddressDetail.getString("cntrycd"));
 						}
@@ -125,7 +120,7 @@ public class BuckzyProfileModulePortlet extends MVCPortlet {
 	 						partyAccountBean.setStateonacct(partyAccountDetail.getString("stateOnAcct"));
 	 						partyAccountBean.setCityonacct(partyAccountDetail.getString("cityOnAcct"));
 	 						partyAccountBean.setBranchId(partyAccountDetail.getInt("bankBranchId"));
-	 						String nameonacct = partyAccountDetail.getString("nameonacct");
+	 						String nameonacct = partyAccountDetail.getString("nameOnAcct");
 	 						
 	 						String[] nameonacctArray = nameonacct.split(StringPool.SPACE);
 	 						partyAccountBean.setNameonacct(nameonacct);
@@ -156,11 +151,6 @@ public class BuckzyProfileModulePortlet extends MVCPortlet {
 	 						}
  						}
  						
- 						
- 						
- 						
- 						
- 						
  						userBean.setPartyBean(partyBean);
 						
 					}
@@ -175,7 +165,10 @@ public class BuckzyProfileModulePortlet extends MVCPortlet {
 			JSONArray countriesArray = BuckzyCommonLocalServiceUtil.getCountryList(token);
 			List<JSONObject> countryJsonList = new ArrayList<JSONObject>();
 			for(int i=0;i<countriesArray.length();i++){
-				countryJsonList.add(countriesArray.getJSONObject(i));
+				JSONObject countryObj = countriesArray.getJSONObject(i);
+				JSONObject currencyObj = countryObj.getJSONObject("currency");
+				countryObj.put("threedigitcd", currencyObj.get("currcd"));
+				countryJsonList.add(countryObj);
 			}
 			renderRequest.setAttribute("countryJsonList", countryJsonList);
 			

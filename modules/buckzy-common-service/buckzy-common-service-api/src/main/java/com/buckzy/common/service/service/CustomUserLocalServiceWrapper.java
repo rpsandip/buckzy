@@ -33,24 +33,10 @@ public class CustomUserLocalServiceWrapper implements CustomUserLocalService,
 		_customUserLocalService = customUserLocalService;
 	}
 
-	/**
-	* Add Custom user detail from registration
-	*
-	* @throws PortalException
-	*/
 	@Override
-	public com.buckzy.common.service.model.CustomUser addBuckzyCustomUser(
-		java.lang.String token, com.liferay.portal.kernel.model.User user,
-		java.lang.String emailAddress, java.lang.String password,
-		java.lang.String address, java.lang.String zipcode,
-		java.lang.String city, java.lang.String state,
-		java.lang.String countryCode, java.lang.String mobileNo,
-		java.lang.String mobileCountryCode, java.lang.String deviceInfo,
-		boolean socialLogin, long creatorUserId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _customUserLocalService.addBuckzyCustomUser(token, user,
-			emailAddress, password, address, zipcode, city, state, countryCode,
-			mobileNo, mobileCountryCode, deviceInfo, socialLogin, creatorUserId);
+	public com.buckzy.common.beans.UserBean getPartyUserBean(
+		java.lang.String token, long userId) {
+		return _customUserLocalService.getPartyUserBean(token, userId);
 	}
 
 	/**
@@ -174,6 +160,27 @@ public class CustomUserLocalServiceWrapper implements CustomUserLocalService,
 		return _customUserLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	/**
+	* Add Custom user detail from registration
+	*
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject addBuckzyCustomUser(
+		java.lang.String token, com.liferay.portal.kernel.model.User user,
+		java.lang.String emailAddress, java.lang.String password,
+		java.lang.String address, java.lang.String zipcode,
+		java.lang.String city, java.lang.String state,
+		java.lang.String countryCode, java.lang.String currencyCode,
+		java.lang.String mobileNo, java.lang.String mobileCountryCode,
+		java.lang.String deviceInfo, boolean socialLogin, long creatorUserId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _customUserLocalService.addBuckzyCustomUser(token, user,
+			emailAddress, password, address, zipcode, city, state, countryCode,
+			currencyCode, mobileNo, mobileCountryCode, deviceInfo, socialLogin,
+			creatorUserId);
+	}
+
 	@Override
 	public com.liferay.portal.kernel.json.JSONObject createParty(
 		java.lang.String token, long userId, java.lang.String fName,
@@ -181,11 +188,11 @@ public class CustomUserLocalServiceWrapper implements CustomUserLocalService,
 		java.lang.String password, java.lang.String mobileContryCode,
 		java.lang.String mobileNo, java.lang.String address,
 		java.lang.String city, java.lang.String zipcode,
-		java.lang.String countryCode)
+		java.lang.String countryCode, java.lang.String currencyCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _customUserLocalService.createParty(token, userId, fName,
 			lastName, email, password, mobileContryCode, mobileNo, address,
-			city, zipcode, countryCode);
+			city, zipcode, countryCode, currencyCode);
 	}
 
 	@Override
@@ -218,27 +225,45 @@ public class CustomUserLocalServiceWrapper implements CustomUserLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.json.JSONObject updateParty(
-		java.lang.String token, long partyId, long userId,
-		java.lang.String fName, java.lang.String lastName,
-		java.lang.String email, java.lang.String mobileCountryCode,
-		java.lang.String countryCode, java.lang.String mobileNo,
-		java.lang.String address, java.lang.String city,
-		java.lang.String state, java.lang.String zipcode,
-		java.lang.String documentType, java.io.File file,
-		java.lang.String verificationDocName, java.lang.String accountType,
+	public com.liferay.portal.kernel.json.JSONObject updateAccountDetail(
+		java.lang.String token, long userId, java.lang.String accountType,
 		java.lang.String cardNumber, java.lang.String cardFirstName,
 		java.lang.String cardLastName, java.lang.String expireOnMonth,
 		java.lang.String expireOnYear, java.lang.String accountNumber,
 		java.lang.String acctInstnNm, int bankId, int branchId,
 		java.lang.String routingNumber, java.lang.String searchBranchType)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.json.JSONException {
+		return _customUserLocalService.updateAccountDetail(token, userId,
+			accountType, cardNumber, cardFirstName, cardLastName,
+			expireOnMonth, expireOnYear, accountNumber, acctInstnNm, bankId,
+			branchId, routingNumber, searchBranchType);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject updateParty(
+		java.lang.String token, long partyId, long userId,
+		java.lang.String fName, java.lang.String lastName,
+		java.lang.String email, java.lang.String mobileCountryCode,
+		java.lang.String countryCode, java.lang.String currencyCode,
+		java.lang.String mobileNo, java.lang.String address,
+		java.lang.String city, java.lang.String state,
+		java.lang.String zipcode, java.lang.String documentType,
+		java.io.File file, java.lang.String verificationDocName,
+		java.lang.String accountType, java.lang.String cardNumber,
+		java.lang.String cardFirstName, java.lang.String cardLastName,
+		java.lang.String expireOnMonth, java.lang.String expireOnYear,
+		java.lang.String accountNumber, java.lang.String acctInstnNm,
+		int bankId, int branchId, java.lang.String routingNumber,
+		java.lang.String searchBranchType)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _customUserLocalService.updateParty(token, partyId, userId,
-			fName, lastName, email, mobileCountryCode, countryCode, mobileNo,
-			address, city, state, zipcode, documentType, file,
-			verificationDocName, accountType, cardNumber, cardFirstName,
-			cardLastName, expireOnMonth, expireOnYear, accountNumber,
-			acctInstnNm, bankId, branchId, routingNumber, searchBranchType);
+			fName, lastName, email, mobileCountryCode, countryCode,
+			currencyCode, mobileNo, address, city, state, zipcode,
+			documentType, file, verificationDocName, accountType, cardNumber,
+			cardFirstName, cardLastName, expireOnMonth, expireOnYear,
+			accountNumber, acctInstnNm, bankId, branchId, routingNumber,
+			searchBranchType);
 	}
 
 	/**

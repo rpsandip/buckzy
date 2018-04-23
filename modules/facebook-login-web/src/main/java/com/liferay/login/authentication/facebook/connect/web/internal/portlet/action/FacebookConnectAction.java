@@ -240,9 +240,9 @@ public class FacebookConnectAction extends BaseStrutsAction {
 			
 			if(Validator.isNull(customUser)){
 				// Add Custom User Detail
-			  customUser = CustomUserLocalServiceUtil.addBuckzyCustomUser(token, user, StringPool.BLANK,StringPool.BLANK, StringPool.BLANK,
-					StringPool.BLANK, StringPool.BLANK,
-					StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, true,user.getUserId());
+//			  customUser = CustomUserLocalServiceUtil.addBuckzyCustomUser(token, user, StringPool.BLANK,StringPool.BLANK, StringPool.BLANK,
+//					StringPool.BLANK, StringPool.BLANK,
+//					StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, true,user.getUserId());
 			  
 			}
 			

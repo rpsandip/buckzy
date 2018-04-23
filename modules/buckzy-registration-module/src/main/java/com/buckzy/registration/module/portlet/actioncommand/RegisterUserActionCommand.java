@@ -11,6 +11,7 @@ import com.buckzy.common.service.service.CustomUserLocalServiceUtil;
 import com.buckzy.common.util.BuckzyConstants;
 import com.buckzy.registration.module.portlet.constants.BuckzyRegistrationModulePortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -62,6 +63,7 @@ public class RegisterUserActionCommand extends BaseMVCActionCommand{
 			String reminderAns2 = ParamUtil.getString(actionRequest, "reminderAns2");
 			String deviceInfo = ParamUtil.getString(actionRequest, "deviceInfo");
 			String countryCode = StringPool.BLANK;
+			String currencyCode = StringPool.BLANK;
 			
 			String[]countryarray = countryDetail.split(StringPool.COMMA);
 			
@@ -73,13 +75,22 @@ public class RegisterUserActionCommand extends BaseMVCActionCommand{
 			
 			if(countryarray.length>0){
 				countryCode = countryarray[0];
+				currencyCode = countryarray[3].trim();
+			}
+			
+			if(Validator.isNotNull(mobile)){
+				mobile= mobile.replaceAll("-", "");
+				mobile= mobile.replaceAll("\\(", "");
+				mobile = mobile.replaceAll("\\)", "");
 			}
 			
 			if(!isUserExist){
 				try {
-					User user = BuckzyCommonLocalServiceUtil.registerUser(token, firstName, middleName, lastName, emailAddress,
-							password, address, city, zipcode, state, countryCode,dob, mobile, mobileCountryCode,reminderQuestion1, reminderAns1,
+					JSONObject responseObject = BuckzyCommonLocalServiceUtil.registerUser(token, firstName, middleName, lastName, emailAddress,
+							password, address, city, zipcode, state, countryCode, currencyCode,dob, mobile, mobileCountryCode,reminderQuestion1, reminderAns1,
 							deviceInfo, false,themeDisplay.getUserId(), themeDisplay.getScopeGroupId(), ServiceContextFactory.getInstance(actionRequest));
+					
+					User user = (User)responseObject.get("user");
 					
 					if(Validator.isNotNull(user)){
 						// User created with Mobile verification now its time to display email verification.

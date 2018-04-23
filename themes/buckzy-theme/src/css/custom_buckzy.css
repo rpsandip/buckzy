@@ -20,3 +20,27 @@
 .portlet-login .btn-default{
 	background-image: -webkit-gradient(linear,left top,left bottom,from(#DB2222),to(#DB2222)) !important;
 }
+
+.city-auto ul{
+	width: 100px;
+    text-align: left;
+}
+
+
+.city-auto li{
+	background-color: #d6ced1;
+    color: #785b8a;
+}
+
+.lexicon-icon{
+	height: 7px !important;
+	width: 7px !important;
+}
+
+.text-warning {
+    color: #e8140b !important;
+}
+
+.form-validator-stack {
+	color: #a94442 !important;
+}

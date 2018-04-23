@@ -122,9 +122,9 @@ public class GoogleLoginAction extends BaseStrutsAction {
 					
 					if(Validator.isNull(customUser)){
 						// Add Custom User Detail
-						CustomUserLocalServiceUtil.addBuckzyCustomUser(token,user, StringPool.BLANK,StringPool.BLANK, StringPool.BLANK,
-							StringPool.BLANK, StringPool.BLANK,
-							StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, true,themeDisplay.getUserId());
+//						CustomUserLocalServiceUtil.addBuckzyCustomUser(token,user, StringPool.BLANK,StringPool.BLANK, StringPool.BLANK,
+//							StringPool.BLANK, StringPool.BLANK,
+//							StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, true,themeDisplay.getUserId());
 					
 					}
 					

@@ -35,7 +35,7 @@ public class GetStatebyCountryResourceCommand implements MVCResourceCommand{
 	public boolean serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 			throws PortletException {
 
-		String countryCode = ParamUtil.getString(resourceRequest, "countryCode");
+		String countryCode = ParamUtil.getString(resourceRequest, "cntryCode");
 		JSONArray stateArray = JSONFactoryUtil.createJSONArray();
 		
 		if(Validator.isNotNull(countryCode)){

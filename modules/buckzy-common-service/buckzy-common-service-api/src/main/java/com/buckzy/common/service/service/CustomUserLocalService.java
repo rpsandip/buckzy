@@ -16,6 +16,7 @@ package com.buckzy.common.service.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.buckzy.common.beans.UserBean;
 import com.buckzy.common.service.exception.NoSuchCustomUserException;
 import com.buckzy.common.service.model.CustomUser;
 
@@ -25,6 +26,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.User;
@@ -64,19 +66,8 @@ public interface CustomUserLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CustomUserLocalServiceUtil} to access the custom user local service. Add custom service methods to {@link com.buckzy.common.service.service.impl.CustomUserLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-
-	/**
-	* Add Custom user detail from registration
-	*
-	* @throws PortalException
-	*/
-	public CustomUser addBuckzyCustomUser(java.lang.String token, User user,
-		java.lang.String emailAddress, java.lang.String password,
-		java.lang.String address, java.lang.String zipcode,
-		java.lang.String city, java.lang.String state,
-		java.lang.String countryCode, java.lang.String mobileNo,
-		java.lang.String mobileCountryCode, java.lang.String deviceInfo,
-		boolean socialLogin, long creatorUserId) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public UserBean getPartyUserBean(java.lang.String token, long userId);
 
 	/**
 	* Adds the custom user to the database. Also notifies the appropriate model listeners.
@@ -158,13 +149,27 @@ public interface CustomUserLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
+	/**
+	* Add Custom user detail from registration
+	*
+	* @throws PortalException
+	*/
+	public JSONObject addBuckzyCustomUser(java.lang.String token, User user,
+		java.lang.String emailAddress, java.lang.String password,
+		java.lang.String address, java.lang.String zipcode,
+		java.lang.String city, java.lang.String state,
+		java.lang.String countryCode, java.lang.String currencyCode,
+		java.lang.String mobileNo, java.lang.String mobileCountryCode,
+		java.lang.String deviceInfo, boolean socialLogin, long creatorUserId)
+		throws PortalException;
+
 	public JSONObject createParty(java.lang.String token, long userId,
 		java.lang.String fName, java.lang.String lastName,
 		java.lang.String email, java.lang.String password,
 		java.lang.String mobileContryCode, java.lang.String mobileNo,
 		java.lang.String address, java.lang.String city,
-		java.lang.String zipcode, java.lang.String countryCode)
-		throws PortalException;
+		java.lang.String zipcode, java.lang.String countryCode,
+		java.lang.String currencyCode) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getBranchDetail(int bankId, int branchId,
@@ -182,13 +187,22 @@ public interface CustomUserLocalService extends BaseLocalService,
 	public JSONObject getReceiverAccountDetail(java.lang.String token,
 		long senderPartyId, long receiverPartyId) throws PortalException;
 
+	public JSONObject updateAccountDetail(java.lang.String token, long userId,
+		java.lang.String accountType, java.lang.String cardNumber,
+		java.lang.String cardFirstName, java.lang.String cardLastName,
+		java.lang.String expireOnMonth, java.lang.String expireOnYear,
+		java.lang.String accountNumber, java.lang.String acctInstnNm,
+		int bankId, int branchId, java.lang.String routingNumber,
+		java.lang.String searchBranchType)
+		throws PortalException, JSONException;
+
 	public JSONObject updateParty(java.lang.String token, long partyId,
 		long userId, java.lang.String fName, java.lang.String lastName,
 		java.lang.String email, java.lang.String mobileCountryCode,
-		java.lang.String countryCode, java.lang.String mobileNo,
-		java.lang.String address, java.lang.String city,
-		java.lang.String state, java.lang.String zipcode,
-		java.lang.String documentType, File file,
+		java.lang.String countryCode, java.lang.String currencyCode,
+		java.lang.String mobileNo, java.lang.String address,
+		java.lang.String city, java.lang.String state,
+		java.lang.String zipcode, java.lang.String documentType, File file,
 		java.lang.String verificationDocName, java.lang.String accountType,
 		java.lang.String cardNumber, java.lang.String cardFirstName,
 		java.lang.String cardLastName, java.lang.String expireOnMonth,

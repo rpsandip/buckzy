@@ -50,12 +50,16 @@ public class BuckzySMSVerificationFilter extends BaseFilter{
 		 
 		 // Check SMS is verified or not
 		 Object smsVerified = request.getSession().getAttribute("smsVerified");
-		 
+
+		 /*
 		 if(Validator.isNotNull(smsVerified) && (Boolean)smsVerified){
 			 super.processFilter(request, response, filterChain);
 		 }else{
 			 response.sendRedirect("/web/guest/sms-verification");
-		 }
+		 }*/
+		 
+		 super.processFilter(request, response, filterChain);
+		 
 	 }else{
 		 super.processFilter(request, response, filterChain);
 	 }

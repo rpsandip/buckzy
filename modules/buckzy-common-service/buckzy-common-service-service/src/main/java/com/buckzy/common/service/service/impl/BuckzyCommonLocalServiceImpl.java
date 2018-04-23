@@ -23,8 +23,10 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -50,6 +52,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.buckzy.common.beans.PaymentBean;
 import com.buckzy.common.service.service.BuckzyCommonLocalServiceUtil;
 import com.buckzy.common.service.service.CustomUserLocalServiceUtil;
 import com.buckzy.common.service.service.base.BuckzyCommonLocalServiceBaseImpl;
@@ -79,7 +82,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
+import com.buckzy.common.beans.PaymentBean;
 /**
  * The implementation of the buckzy common local service.
  *
@@ -115,18 +118,18 @@ public class BuckzyCommonLocalServiceImpl
 	 * @return
 	 * @throws PortalException 
 	 */
-	public User registerUser(String token,String firstName, String middleName, String lastName, String emailAddress, String password1,
-			String address, String city, String zipcode, String state, String countryCode,String dob, String mobileNum, String mobileCountryCode,
+	public JSONObject registerUser(String token,String firstName, String middleName, String lastName, String emailAddress, String password1,
+			String address, String city, String zipcode, String state, String countryCode, String currencyCode,String dob, String mobileNum, String mobileCountryCode,
 			String reminderQuestion, String reminderAnswer, String deviceInfo, boolean isSocialLogin ,long creatorUserId, long groupId, ServiceContext serviceContext) throws PortalException{
 		
 		User user = null;
-		
+		JSONObject responseObj = JSONFactoryUtil.createJSONObject();
 		// Validate User Input
 		
-		boolean isValidUserInput = validateUser(firstName, lastName, emailAddress, password1, 
+		String userValidationErrMsg = validateUser(firstName, lastName, emailAddress, password1, 
 				address, city, zipcode, state, dob, mobileNum);
 		
-		if(isValidUserInput){
+		if(userValidationErrMsg.length()==0){
 			
 			serviceContext.setUuid(UUID.randomUUID().toString());
 			serviceContext.setCreateDate(new Date());
@@ -164,8 +167,9 @@ public class BuckzyCommonLocalServiceImpl
 					UserLocalServiceUtil.updateUser(user);
 					
 					// Add custom user detail
-					CustomUserLocalServiceUtil.addBuckzyCustomUser(token, user, emailAddress,password1,address, zipcode, city, state, countryCode, mobileNum, mobileCountryCode, deviceInfo, isSocialLogin,creatorUserId);
+					responseObj =  CustomUserLocalServiceUtil.addBuckzyCustomUser(token, user, emailAddress,password1,address, zipcode, city, state, countryCode, currencyCode, mobileNum, mobileCountryCode, deviceInfo, isSocialLogin,creatorUserId);
 				
+					responseObj.put("user", user);
 					
 					try {
 						createEmailVerificationTicketAndSendMail(user, serviceContext);
@@ -178,9 +182,11 @@ public class BuckzyCommonLocalServiceImpl
 				}
 			}
 			
+		}else{
+			responseObj.put("userErrMsg", userValidationErrMsg);
 		}
 		
-		return user;
+		return responseObj;
 		
 	}
 	
@@ -239,33 +245,33 @@ public class BuckzyCommonLocalServiceImpl
 		_log.info("Email Address verification mail send to ->" + user.getEmailAddress());
 	}
 	
-	private boolean validateUser(String firstName, String lastName, String emailAddress, String password1,
+	private String validateUser(String firstName, String lastName, String emailAddress, String password1,
 			String address, String city, String zipcode, String state, String dob, String mobileNumber) {
-		boolean isValidUserInput=true;
+		String errMsg=StringPool.BLANK;
 		
 		if(Validator.isNull(firstName) || firstName.length()>70){
-			isValidUserInput = false;
+			errMsg = "First Name can not be blank or more than 70 Chars";
 		}else if(Validator.isNull(lastName) || lastName.length()>70){
-			isValidUserInput = false;
+			errMsg = "Last Name can not be blank or more than 70 Chars";
 		}else if(Validator.isNull(emailAddress) || emailAddress.length()>70 ||  !Validator.isEmailAddress(emailAddress)){
-			isValidUserInput = false;
+			errMsg = "Email Address can not be blank or more than 70 Chars";
 		}else if(Validator.isNull(password1) || password1.length()<12){
-			isValidUserInput = false;
+			errMsg = "Password must be at least 12 Chars";
 		}else if(Validator.isNull(address) || address.length()>200){
-			isValidUserInput = false;
+			errMsg = "Address can not blank or more than 200 Chars";
 		}else if(Validator.isNull(city) || city.length()>50){
-			isValidUserInput = false;
+			errMsg = "City can not be blank or more than 50 Chars";
 		}else if(Validator.isNull(state) || state.length()>50){
-			isValidUserInput = false;
-		}else if(Validator.isNull(zipcode) || zipcode.length()>6){
-			isValidUserInput = false;
+			errMsg = "State can not be blank or more than 50 Chars";
+		}else if(Validator.isNull(zipcode) || zipcode.length()>20){
+			errMsg = "Zipcode can not be blank or more than 20 Chars";
 		}else if(Validator.isNull(dob)){
-			isValidUserInput = false;
-		}else if(Validator.isNull(mobileNumber) || mobileNumber.length()>14){
-			isValidUserInput = false;
+			errMsg = "Date of Birth can not be blank";
+		}else if(Validator.isNull(mobileNumber) || mobileNumber.length()>16){
+			errMsg = "Invalid mobile number";
 		}
 		
-		return isValidUserInput;
+		return errMsg;
 	}
 	
 	private String[] validateBirthDay(String birthDay){
@@ -364,11 +370,11 @@ public class BuckzyCommonLocalServiceImpl
 	}
 	
 	
-	public String getMultiPartResponse(String URL, long partyId ,String token, File file, String docTypeCode){
+	public JSONObject getMultiPartResponse(String URL, long partyId ,String token, File file, String docTypeCode){
 		DefaultHttpClient httpClient = new DefaultHttpClient();
+		 JSONObject responseObj = JSONFactoryUtil.createJSONObject();
 		try{
 			HttpPost postRequest = new HttpPost(BuckzyConstants.BASE_URL+URL);
-			postRequest.setHeader("Content-type", "multipart/form-data; boundary=c2d7073062e24d86ad739647574e14b9");
 			postRequest.setHeader("Authorization", token);
 			
 			MultipartEntity entity = new MultipartEntity();
@@ -393,8 +399,13 @@ public class BuckzyCommonLocalServiceImpl
 	        HttpEntity httpEntity = response.getEntity();
 		    String apiOutput = EntityUtils.toString(httpEntity);
 		        
+		    int status = response.getStatusLine().getStatusCode();
+		   
+		    responseObj.put("status", status);
+		    responseObj.put("data", apiOutput);
+		        
 		    httpClient.getConnectionManager().shutdown();
-		    return apiOutput;
+		    return responseObj;
 				
 			
 		}catch(Exception e){
@@ -404,7 +415,7 @@ public class BuckzyCommonLocalServiceImpl
 			httpClient.getConnectionManager().shutdown();
 		}
 		
-		return StringPool.BLANK;
+		return responseObj;
 	} 
 	
 	
@@ -562,6 +573,90 @@ public JSONArray getCityList(String token, String keyWord){
     	return receiverArray;
     }
     
+    public List<PaymentBean> getPaymentTransactionList(String token, int pageNo, int pageSize){
+    	JSONArray paymentTransactionArray = JSONFactoryUtil.createJSONArray();
+    	String url = BuckzyConstants.GET_ALL_PAYMENTS.replace("pageNo", String.valueOf(pageNo));
+    	url = url.replace("pageSize", String.valueOf(pageSize));
+    	JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(url, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
+    	List<PaymentBean> paymentBeanList = new ArrayList<PaymentBean>();
+    	try {
+			if(response.getInt("status")==200){
+				JSONObject responseObj = JSONFactoryUtil.createJSONObject(response.getString("data"));
+				paymentTransactionArray = JSONFactoryUtil.createJSONArray(responseObj.getString("content"));
+				paymentBeanList = getPaymentBeanList(paymentTransactionArray);
+			}
+		} catch (JSONException e) {
+			_log.error(e.getMessage());
+		}
+    	
+    	return paymentBeanList;
+    }
+    
+    private List<PaymentBean> getPaymentBeanList(JSONArray paymentJsonArray){
+    	List<PaymentBean> paymentBeanList = new ArrayList<PaymentBean>();
+    	if(Validator.isNotNull(paymentJsonArray)){
+    		for(int i=0;i<paymentJsonArray.length();i++){
+    			JSONObject paymentObj = paymentJsonArray.getJSONObject(i);
+    			paymentBeanList.add(converPaymentObjectToBean(paymentObj));
+    		}
+    	}
+    	return paymentBeanList;
+    }
+    
+    public JSONObject getPaymentDetail(String token, long paymentId){
+    	JSONObject responseObj = JSONFactoryUtil.createJSONObject();
+    	JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(BuckzyConstants.GET_PAYMENT_DETAIL_URL+paymentId, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
+		try {
+			if(response.getInt("status")==200){
+				responseObj = JSONFactoryUtil.createJSONObject(response.getString("data"));
+			}
+		} catch (JSONException e) {
+			_log.error(e.getMessage());
+		}
+    	return responseObj;
+    }
+    
+    public PaymentBean converPaymentObjectToBean(JSONObject paymentObj){
+    	
+    	PaymentBean paymentBean = new PaymentBean();
+    	
+    	String receiverCountryCode = paymentObj.getString("rcvrcntrycd");
+		if(Validator.isNotNull(receiverCountryCode)){
+			receiverCountryCode = receiverCountryCode.toLowerCase();
+		}
+    	
+		paymentBean.setLineitemid(paymentObj.getLong("lineitemid"));
+		paymentBean.setPartyId(paymentObj.getLong("partyId"));
+		paymentBean.setPymtmthdcd(paymentObj.getString("pymtmthdcd"));
+		paymentBean.setRqstexecdt(paymentObj.getString("rqstexecdt"));
+		paymentBean.setSndracctid(paymentObj.getLong("sndracctid"));
+		paymentBean.setSndrrefid(paymentObj.getString("sndrrefid"));
+		paymentBean.setSndrcntrycd(paymentObj.getString("sndrcntrycd"));
+		paymentBean.setSndracctnr(paymentObj.getString("sndracctnr"));
+		paymentBean.setSndrdbtrnm(paymentObj.getString("sndrdbtrnm"));
+		paymentBean.setSndrbankid(paymentObj.getInt("sndrbankid"));
+		paymentBean.setSndrcurrcd(paymentObj.getString("sndrcurrcd"));
+		paymentBean.setSndrbankbic(paymentObj.getString("sndrbankbic"));
+		paymentBean.setSndrinstramt(paymentObj.getDouble("sndrinstramt"));
+		paymentBean.setAmtfxrate(paymentObj.getDouble("amtfxrate"));
+		paymentBean.setRcvrcurrcd(paymentObj.getString("rcvrcurrcd"));
+		paymentBean.setRcvramt(paymentObj.getDouble("rcvramt"));
+		paymentBean.setRcvrbankid(paymentObj.getInt("rcvrbankid"));
+		paymentBean.setRcvrbankbic(paymentObj.getString("rcvrbankbic"));
+		paymentBean.setRcvrid(paymentObj.getLong("rcvrid"));
+		paymentBean.setRcvremail(paymentObj.getString("rcvremail"));
+		paymentBean.setRcvrmobilenr(paymentObj.getString("rcvrmobilenr"));
+		paymentBean.setRcvrnm(paymentObj.getString("rcvrnm"));
+		paymentBean.setRcvracctnr(paymentObj.getString("rcvracctnr"));
+		paymentBean.setRcvrcntrycd(receiverCountryCode);    			
+		paymentBean.setRcvracctid(paymentObj.getLong("rcvracctid"));
+		paymentBean.setPurpofpymt(paymentObj.getString("purpofpymt"));
+		paymentBean.setPurpcd(paymentObj.getString("purpcd"));
+		paymentBean.setCreatedDate(new Date(paymentObj.getLong("createdDate")));
+		return paymentBean;
+    }
+    
+    
     public JSONObject getExchangeRate(String token, String fromCurCode, String toCurCode){
     	JSONObject responseObj = JSONFactoryUtil.createJSONObject();
     	String url = BuckzyConstants.GET_EXCHANGE_URL.replace("FromCurCd", fromCurCode);
@@ -574,9 +669,33 @@ public JSONArray getCityList(String token, String keyWord){
 		} catch (JSONException e) {
 			_log.error(e.getMessage());
 		}
+		/*
+		if(fromCurCode.equals("CAD") && toCurCode.equals("SGD")){
+			JSONObject dummJson = JSONFactoryUtil.createJSONObject();
+			dummJson.put("toCurrencyCode", "SGD");
+			dummJson.put("convertionRate", 1);
+			dummJson.put("fromCurrencyCode", "CAD");
+			return dummJson;
+		}*/
     	
     	return responseObj;
     }
+    
+    public JSONObject getBankDetail(String token, int bankId){
+    	JSONObject responseObj = JSONFactoryUtil.createJSONObject();
+    	String url = BuckzyConstants.GET_BANK_DETAIL + bankId;
+    	JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(url, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
+		try {
+			if(response.getInt("status")==200){
+				responseObj = JSONFactoryUtil.createJSONObject(response.getString("data"));
+			}
+		} catch (JSONException e) {
+			_log.error(e.getMessage());
+		}
+    	
+    	return responseObj;
+    }
+    
     
     public JSONObject makePayment(String token, long senderPartyId, long senderAcntId, long receiverPartyId,
     		long receiverAcntId, String sendingCurCode, String receivingCurCode, float exchangeRate, double amount,
@@ -602,6 +721,10 @@ public JSONArray getCityList(String token, String keyWord){
     	JSONObject dataObj = JSONFactoryUtil.createJSONObject(response.getString("data"));
     	
     	int status = response.getInt("status");
+    	
+    	_log.info("payment pamars ->" + paramsJsonObj.toJSONString());
+    	
+    	_log.info("payment response ->" + response.toJSONString());
     	
 	    if(status==200){
 	    	dataObj.put("responseStatus", "success");
@@ -702,6 +825,49 @@ public JSONArray getCityList(String token, String keyWord){
 		
     }
 	
+    
+    public String getRegistrationOTP(long userId){
+    	
+		String url = BuckzyConstants.GET_OTP_DETAIL.replace("userId", String.valueOf(userId));
+		JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(url, BuckzyConstants.HTTP_GET, StringPool.BLANK, "");
+		String otp = StringPool.BLANK;
+			if(response.getInt("status")==200){
+				otp = response.getString("data");
+			}
+		
+		return otp;
+    }
+    
+    
+    public void sendOTPMail(String emailAddress, String userName, String otp, String mobileNumber){
+		
+		String subject = "Buckzy Portal Email Verification OTP";
+		String fromMail = "no-reply@buckzy.com";
+		
+		try {
+			
+			InternetAddress from = new InternetAddress(fromMail);
+			InternetAddress[] to =new InternetAddress[1];
+			to[0] = new InternetAddress(emailAddress);
+			
+			String body = "Hi " + userName + ", <br/><br/>";
+			body+= " You have just registered in Buckzy Portal. We need verified your mobile number so we have sent you OTP verification code to your registered mobile : <b>" + mobileNumber + "</b> </br><br/>";
+			body+="  In case if you will not get otp you can use this otp for mobile verification : <b>" + otp + "</b> </br><br/>";
+			body+=" Thank you, <br/>";
+			body+=" Team Buckzy";
+			
+			MailMessage mailMessage = new MailMessage(from, subject, body, true);
+			
+			mailMessage.setTo(to);
+			MailServiceUtil.sendEmail(mailMessage);
+		} catch (AddressException e) {
+			_log.error(e);
+		}
+		
+    	
+    }
+    
+    
 	public long getDefaultSiteGroupId(){
 		long guestGroupId = 0l;
 		final long companyId = PortalUtil.getDefaultCompanyId();

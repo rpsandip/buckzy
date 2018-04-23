@@ -10,272 +10,237 @@
 <portlet:resourceURL id="/getcity_detail" var="getCityDetailURL"></portlet:resourceURL>
 <portlet:resourceURL id="/getbank_detail" var="getBankDetailURL"></portlet:resourceURL>
 <portlet:resourceURL id="/getcard_detail" var="getCardDetailURL"></portlet:resourceURL>
-
-
-<h1>Profile</h1>
- <div class="row padding-0 margin-0">
    
-   <h3>Your Profile Information</h3>
    <aui:form name="profileFm" action="${profileUpdateURL}" cssClass="form-horizontal form-label-left" enctype="multipart/form-data">
-       <div class="col-sm-12 padding-0 profile-detail" style=" color:#9B9A9B;">
-           <div class="col-sm-6">
-           	   <aui:input name="firstName" label="First Name" value="${userBean.partyBean.frstnm }" placeholder="First Name" cssClass="form-control col-md-7 col-xs-6">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">70</aui:validator>
-			   </aui:input>
-           </div>
-           <div class="col-sm-6">
-               <aui:input name="middleName" label="Middle Name" value="${userBean.partyBean.midlnm }" placeholder="Middle Name(Optional)" cssClass="form-control col-md-7 col-xs-6">
-			     <aui:validator name="maxLength">70</aui:validator>
-			   </aui:input>
-           </div>
-           <div class="col-sm-12">
-              <aui:input name="lastName" label="Last Name" value="${userBean.partyBean.lastnm }" placeholder="Last Name" cssClass="form-control col-md-7 col-xs-6">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">70</aui:validator>
-			   </aui:input>
-           </div>
-          
-           
-           <hr/>
-           
-           <div class="col-sm-6">
-           	   <aui:input name="emailAdddress" label="Email Address"  value="${userBean.partyBean.email }" placeholder="Email Address" cssClass="form-control col-md-7 col-xs-6" readyonly="true">
-			     <aui:validator name="required" />
-			     <aui:validator name="email" />
-			     <aui:validator name="maxLength">70</aui:validator>
-			   </aui:input>
-           </div>
-           
-            <hr/>
-            
-           <div class="col-sm-12">
-              <aui:input name="address" label="Address" value="${userBean.partyBean.partyAddressBean.postaddr }" placeholder="Enter your address" cssClass="form-control col-md-7 col-xs-6">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">200</aui:validator>
-			   </aui:input>
-           </div>
-           
-           <div class="col-sm-3">
-              <aui:input name="zipcode" label="Zipcode" value="${userBean.partyBean.partyAddressBean.zipcd }" placeholder="Zipcode" cssClass="form-control col-md-7 col-xs-6">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">6</aui:validator>
-			   </aui:input>
-           </div>
-           
-           <div class="col-sm-3">
-              <aui:input name="city" label="City" value="${userBean.partyBean.partyAddressBean.townnm }" placeholder="City" cssClass="form-control col-md-7 col-xs-6">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">50</aui:validator>
-			   </aui:input>
-           </div>
-           
-           <div class="col-sm-3">
-              <aui:input name="state" label="State" placeholder="State" cssClass="form-control col-md-7 col-xs-6">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">50</aui:validator>
-			   </aui:input>
-           </div>
-           
-            <div class="col-sm-3">
-              <aui:select name="country" label="Country" cssClass="form-control col-md-7 col-xs-6">
-              	 <c:forEach items="${countryJsonList }" var="country">
-              	 	<aui:option value="${country.get('cntrycd') },${country.get('intldialprfx') } , ${country.get('cntrydesc') }" 
-              	 	selected="${country.get('cntrycd') eq userBean.partyBean.partyAddressBean.cntrycd ? true : false }">${country.get('cntrydesc') }</aui:option>
-              	 </c:forEach>
-              </aui:select>
-           </div>
-           
-           <div class="col-sm-3">
-              <aui:input name="countryCode" label="Country Code" value="${userBean.partyBean.moblnrcntrycd }"   placeholder="Country Code" cssClass="form-control col-md-7 col-xs-6" readonly="true">
-			   	<aui:validator name="number" />
-			   </aui:input>
-           </div>
-           
-            <div class="col-sm-9">
-              <aui:input name="mobile" label="Mobile" placeholder="Mobile" value="${userBean.partyBean.moblnr }"   cssClass="form-control col-md-7 col-xs-6" readonly="true">
-			     <aui:validator name="required" />
-			     <aui:validator name="number" />
-			     <aui:validator name="maxLength">10</aui:validator>
-			   </aui:input>
-           </div>
-		</div>
-		<div class="col-sm-12 padding-0 profile-detail" style=" color:#9B9A9B;">
-			<h3>Submit your document for ID verification</h3> <br/>
-				<h5>Submit your government ID ( A valid passport copy or drivers licenses is accepted)</h5>
-           		<div class="col-sm-12">
-	           	   <aui:input id="drive_license"  type="radio" name="documentVerificationType" value="true" label=""/>
-                    <label for="<portlet:namespace/>drive_license">Drivers License</label>
-                     		
-                   <aui:input id="password"  type="radio" name="documentVerificationType" value="false" label="" />
-                   <label for="<portlet:namespace/>no">Passport</label>
-           		</div>
-           		<div class="col-md-12 col-sm-6 col-xs-12">
-	                  <input type="file" id="verificationDoc" name="verificationDoc" required="required" class="form-control col-md-7 col-xs-12">
-	            </div>
-           <hr/>
-           
-		</div>
-		<div class="col-sm-12 padding-0 profile-detail" style=" color:#9B9A9B;">
+      <div style="display: table; width: 100%;">
+       		<div style="display: table-row;">
+            	<div style="display: table-cell; padding-bottom: 50px; ">
+                    <div class="main-container" style="max-width: 700px;">
+                        <div class="row padding-0 margin-0">
+                        	<div class="col-sm-12" style="color: #000000; font-weight: bold; margin-bottom: 7px; font-size: 18px;">Profile</div>
+      						<div class="col-xs-12 padding-0 border-1" style="padding: 20px; color:#9B9A9B; font-size: 12px; background-color: #FFFFFF;">
+      							<span style="font-size: 14px;     margin-left: 13px; font-weight: bold; color: black;">Personal Information</span><br/>
+      							<div class="col-sm-12">
+	      							<div class="col-sm-6 form-group  has-feedback">
+							         	   <aui:input name="firstName" label="First Name" value="${userBean.partyBean.frstnm }" placeholder="First Name" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 0px;">
+				     							<aui:validator name="required" />
+				     							<aui:validator name="maxLength">70</aui:validator>
+				  						   </aui:input>
+							         </div>
+							         <div class="col-sm-6 form-group  has-feedback">
+							              	<aui:input name="middleName" label="Middle Name" value="${userBean.partyBean.midlnm }" placeholder="Middle Name(Optional)" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 35px;">
+				    							<aui:validator name="maxLength">70</aui:validator>
+				   							</aui:input>
+	           						 </div>
+           						 </div>
+           						 <div class="col-sm-12">
+	           						 <div class="col-sm-6 form-group  has-feedback">
+										   <aui:input name="lastName" label="Last Name" value="${userBean.partyBean.lastnm }" placeholder="Last Name" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 0px;">
+										     <aui:validator name="required" />
+										     <aui:validator name="maxLength">70</aui:validator>
+										   </aui:input>
+							          </div>
+							          <div class="col-sm-6 form-group  has-feedback">
+							         	   <aui:input name="emailAdddress" label="Email Address"  value="${userBean.partyBean.email }" placeholder="Email Address" cssClass="form-control col-md-7 col-xs-6" readyonly="true" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 35px;    ">
+										     <aui:validator name="required" />
+										     <aui:validator name="email" />
+										     <aui:validator name="maxLength">70</aui:validator>
+										   </aui:input>
+							         </div>
+						         </div>
+						         <div class="col-sm-12 form-group  has-feedback">
+						         	<aui:input name="address" label="Address" value="${userBean.partyBean.partyAddressBean.postaddr }" placeholder="Enter your address" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 13px;">
+								     	<aui:validator name="required" />
+								    	 <aui:validator name="maxLength">200</aui:validator>
+								   </aui:input>
+						         </div>
+						         <div class="col-sm-12 form-group  has-feedback">
+							         <div class="col-sm-4 form-group  has-feedback">
+							         	<aui:select name="country" label="Country" cssClass="form-control col-md-7 col-xs-6" style="    margin-left: 13px;">
+						              	 <c:forEach items="${countryJsonList }" var="country">
+						              	 	<aui:option value="${country.get('cntrycd') },${country.get('intldialprfx') } , ${country.get('cntrydesc')},  ${country.get('threedigitcd') }" 
+						              	 	selected="${country.get('cntrycd') eq userBean.partyBean.partyAddressBean.cntrycd ? true : false }">${country.get('cntrydesc') }</aui:option>
+						              	 </c:forEach>
+						              </aui:select>
+							         </div>
+							         <div class="col-sm-4 form-group  has-feedback">
+							         	 <aui:select name="state" label="State" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; margin-left: 47px;"></aui:select>
+							         </div>
+							         <div class="col-sm-4 form-group  has-feedback">
+							         	<aui:input name="city" label="City" value="${userBean.partyBean.partyAddressBean.townnm }" placeholder="City" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px; margin-left: 84px;">
+									     <aui:validator name="required" />
+									     <aui:validator name="maxLength">50</aui:validator>
+									   </aui:input>
+							         </div>
+						         </div>
+						         <div class="col-sm-12 form-group  has-feedback">
+							         <div class="col-sm-4 form-group  has-feedback">
+							         	 <aui:input name="zipcode" label="Zipcode" value="${userBean.partyBean.partyAddressBean.zipcd }" placeholder="Zipcode" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 13px;">
+										     <aui:validator name="required" />
+										  </aui:input>
+							         </div>
+							         <div class="col-sm-4 form-group  has-feedback">
+							         	<aui:input name="countryCode" label="Country Code" value="${userBean.partyBean.moblnrcntrycd }"   placeholder="Country Code" cssClass="form-control col-md-7 col-xs-6" readonly="true" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 48px;">
+									   	<aui:validator name="number" />
+									   </aui:input>
+							         </div>
+							         <div class="col-sm-4 form-group  has-feedback">
+							         	<aui:input name="mobile" label="Mobile" placeholder="Mobile" value="${userBean.partyBean.moblnr }"   cssClass="form-control col-md-7 col-xs-6" readonly="true" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 84px;">
+										     <aui:validator name="required" />
+										     <aui:validator name="number" />
+										     <aui:validator name="maxLength">10</aui:validator>
+										 </aui:input>
+							         </div>
+						         </div>
+      						</div>
+      						<div class="col-xs-12 padding-0 border-1" style="padding: 20px; color:#9B9A9B; font-size: 12px; background-color: #FFFFFF; margin-top: 20px;">
+      							<div class="col-sm-12 padding-0 profile-detail" style=" color:#9B9A9B;     margin-top: 15px;">
+									<span style="font-size: 14px; font-weight: bold;     color: black;" >Upload a government issued photo ID (Drivers licence or passport prefered)</span><br/><br/>
+							           	   <aui:input id="drive_license"  type="radio" name="documentVerificationType" value="drive_license" label=""/>
+						                    <label for="<portlet:namespace/>drive_license" style="    color: black;">Drivers License</label>
+						                     		
+						                   <aui:input id="password"  type="radio" name="documentVerificationType" value="passport" label="" />
+						                   <label for="<portlet:namespace/>no" style="    color: black;">Passport</label>
+						           		<div class="col-md-12 col-sm-6 col-xs-12">
+							                  <input type="file" id="verificationDoc" name="verificationDoc" required="required" class="form-control col-md-7 col-xs-12 border-1 padding-5">
+							            </div>
+						           <hr/>
+								</div>
+      						</div>
+      						<div class="col-xs-12 padding-0 border-1" style="padding: 20px; color:#9B9A9B; font-size: 12px; background-color: #FFFFFF; margin-top: 20px;">
+      							<div class="col-sm-12 padding-0 profile-detail" style=" color:#9B9A9B;">
 		
-			 <h3>Setup a funding account</h3>
-			 <div class="col-sm-12">
-			 	 <div class="col-sm-3">
-				 	 <aui:input id="debit_card"  type="radio" name="accountType" value="debit_card" label=""/>
-	                    <label for="<portlet:namespace/>debit_card" checked="true">Debit Card</label>
-                 </div>
-                 <div class="col-sm-9">
-				 	 <div id="cardType">
-				 	 	<span id="mastercard"><img src='<%= themeDisplay.getPathThemeImages() + "/mastercard_PNG6.png"%>' width="35px" height="20px;"></span>
-				 	 	<span id="visa"><img src='<%= themeDisplay.getPathThemeImages() + "/visa-icon.png"%>' width="35px" height="20px;"></span>
-				 	 </div>
-                 </div>
-                 <div id="carderrMsg" style="color:red;">
-                 </div>
-                 <div class="debit_card_detail">  
-	                 <div class="col-sm-12">
-	                 	<aui:input name="cardNumber" label="Card Number" placeholder="Card Number"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.acctnr}" >
-				     		<aui:validator name="number" />
-				    		 <aui:validator name="maxLength">20</aui:validator>
-				   		</aui:input>
-	                 </div> 
-	                 <div class="col-sm-6">
-	                 	<aui:input name="cardFirstName" label="First Name on Account" placeholder="First Name"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.fName}">
-				     		
-				    		 <aui:validator name="maxLength">50</aui:validator>
-				   		</aui:input>
-	                 </div> 
-	                 <div class="col-sm-6">
-	                 	<aui:input name="cardLastNumber" label="Last Name on Account" placeholder="Last Name"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.lName}">
-				     		
-				    		 <aui:validator name="maxLength">50</aui:validator>
-				   		</aui:input>
-	                 </div> 
-	                 <div class="col-sm-6">
-	                 	<aui:select name="expireOnMonth" label="Expire On">
-	                 		<aui:option value="">MM</aui:option>
-	                 		<aui:option value="00" selected="${userBean.partyBean.accountBean.exprymnth eq '00' ? true : false }">00</aui:option>
-	                 		<aui:option value="01" selected="${userBean.partyBean.accountBean.exprymnth eq '01' ? true : false }">01</aui:option>
-	                 		<aui:option value="02" selected="${userBean.partyBean.accountBean.exprymnth eq '02' ? true : false }">02</aui:option>
-	                 		<aui:option value="03" selected="${userBean.partyBean.accountBean.exprymnth eq '03' ? true : false }">03</aui:option>
-	                 		<aui:option value="04" selected="${userBean.partyBean.accountBean.exprymnth eq '04' ? true : false }">04</aui:option>
-	                 		<aui:option value="05" selected="${userBean.partyBean.accountBean.exprymnth eq '05' ? true : false }" >05</aui:option>
-	                 		<aui:option value="06" selected="${userBean.partyBean.accountBean.exprymnth eq '06' ? true : false }">06</aui:option>
-	                 		<aui:option value="07" selected="${userBean.partyBean.accountBean.exprymnth eq '07' ? true : false }">07</aui:option>
-	                 		<aui:option value="08" selected="${userBean.partyBean.accountBean.exprymnth eq '08' ? true : false }">08</aui:option>
-	                 		<aui:option value="09" selected="${userBean.partyBean.accountBean.exprymnth eq '09' ? true : false }">09</aui:option>
-	                 		<aui:option value="10" selected="${userBean.partyBean.accountBean.exprymnth eq '10' ? true : false }">10</aui:option>
-	                 		<aui:option value="11" selected="${userBean.partyBean.accountBean.exprymnth eq '11' ? true : false }">11</aui:option>
-	                 	</aui:select>
-	                 </div> 
-	                 
-	                 <div class="col-sm-6">
-	                 	<aui:select name="expireOnYear" label="">
-	                 		<aui:option value="">YYYY</aui:option>
-	                 		<aui:option value="18" selected="${userBean.partyBean.accountBean.expryyear eq '18' ? true : false }">2018</aui:option>
-	                 		<aui:option value="19" selected="${userBean.partyBean.accountBean.expryyear eq '19' ? true : false }">2019</aui:option>
-	                 		<aui:option value="20" selected="${userBean.partyBean.accountBean.expryyear eq '20' ? true : false }">2020</aui:option>
-	                 		<aui:option value="21" selected="${userBean.partyBean.accountBean.expryyear eq '21' ? true : false }">2021</aui:option>
-	                 		<aui:option value="22" selected="${userBean.partyBean.accountBean.expryyear eq '22' ? true : false }">2022</aui:option>
-	                 		<aui:option value="23" selected="${userBean.partyBean.accountBean.expryyear eq '23' ? true : false }">2023</aui:option>
-	                 		<aui:option value="24" selected="${userBean.partyBean.accountBean.expryyear eq '24' ? true : false }">2024</aui:option>
-	                 		<aui:option value="25" selected="${userBean.partyBean.accountBean.expryyear eq '25' ? true : false }">2025</aui:option>
-	                 		<aui:option value="26" selected="${userBean.partyBean.accountBean.expryyear eq '26' ? true : false }">2026</aui:option>
-	                 		<aui:option value="27" selected="${userBean.partyBean.accountBean.expryyear eq '27' ? true : false }">2027</aui:option>
-	                 		<aui:option value="28" selected="${userBean.partyBean.accountBean.expryyear eq '28' ? true : false }">2028</aui:option>
-	                 	</aui:select>
-	                 </div> 
-                 </div>
-			 </div>
-			 <div class="col-sm-12">
-			 	<div class="col-sm-12">
-				 	 <aui:input id="bank_account"  type="radio" name="accountType" value="bank" label=""/>
-	                    <label for="<portlet:namespace/>bank_account">Bank Account</label>
-                </div>
-                
-                <!--  
-                <div class="bank_detail">  
-                <div class="col-sm-6">
-                	<aui:select name="bankName" label="Bank Name">
-                		<aui:option value=''>Select Bank</aui:option>
-                		<c:forEach items="${bankJsonList }" var="bank">
-              	 			<aui:option value="${bank.get('bankId') },${bank.get('cntryCd') } , ${bank.get('swiftBic') }" 
-              	 					selected="${bank.get('bankId') eq userBean.partyBean.accountBean.bankId ? true : false }">${bank.get('bankNm') }</aui:option>
-              				 </c:forEach>
-                	</aui:select>
-                </div>
-                <div class="col-sm-6">
-                	<aui:select name="branchName" label="Branch">
-                		
-                	</aui:select>
-                </div>
-                <div class="col-sm-6">
-                 	<aui:input name="accountNumber" label="Account Number" placeholder="Account Number"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.acctnr}" >
-			     		<aui:validator name="number" />
-			   		</aui:input>
-                 </div> 
-                 <div class="col-sm-6">
-                 	<aui:input name="accountNumber2" label="Re-enter Account Number" placeholder="Re-enter Account Number"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.acctnr}" >
-			     		<aui:validator name="number" />
-			     		<aui:validator name="equalTo">'#<portlet:namespace />accountNumber'</aui:validator>
-			     	
-			   		</aui:input>
-                 </div>
-                 </div>  -->
-                 
-                 <div class="bank_detail">  
-	                 <div class="col-sm-6">
-	                 	<aui:input name="accountNumber" label="Account Number" placeholder="Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 9px; color:#9B9A9B; " value="${ userBean.partyBean.accountBean.acctnr}">
-				     		<aui:validator name="required" />
-				   		</aui:input>
-	                 </div> 
-	                 <div class="col-sm-6">
-	                 	<aui:input name="accountNumber2" label="Re-enter Account Number" placeholder="Re-enter Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 9px; color:#9B9A9B; " value="${ userBean.partyBean.accountBean.acctnr}">
-				     		<aui:validator name="equalTo">'#<portlet:namespace />accountNumber'</aui:validator>
-				   		</aui:input>
-	                 </div>
-	                 
-	                 <div class="col-sm-12">
-					 	 <div class="col-sm-3">
-						 	 <aui:input id="known_branch"  type="radio" name="searchBranchType" value="known_branch" label=""/>
-			                    <label for="<portlet:namespace/>known_branch"><span id="unique_branch_code_label">Routing No.</span></label>
-		                 </div>
-		                 <div class="col-sm-9">
-						 	 <aui:input id="search"  type="radio" name="searchBranchType" value="search" label=""/>
-			                    <label for="<portlet:namespace/>search" >Search</label>
-		                 </div>
-                 	</div>
-                 	<div class="col-sm-12">
-                 		<div class="col-sm-3" id="known_branch_detail">
-						 	 <aui:input type="text" name="unique_branch_code" label="Branch Code" ></aui:input>
-		                </div>
-		                <div class="col-sm-9" id="search_branch_detail">
-		                	<div class="col-sm-4">
-			                	<!-- <aui:select name="countryState" label="State" style="font-size: 9px; color:#9B9A9B; ">
-			                	</aui:select> -->
-		                	</div>
-		                	<div class="col-sm-4">
-		                		<aui:input name="countryCity" label="City" style="font-size: 9px; color:#9B9A9B; " value="${userBean.partyBean.accountBean.branchBean.cityName}"/>
-		                		
-		                	</div>
-		                	<div class="col-sm-4">
-			                	<aui:select name="bankName" label="Bank Name" style="font-size: 9px; color:#9B9A9B; ">
-			                	</aui:select>
-			                </div>
-	               			<div class="col-sm-4">
-	                			<aui:select name="branchName" label="Branch" style="font-size: 9px; color:#9B9A9B; ">
-			                	</aui:select>
-	    		            </div>
-		                </div>
-	                </div> 
-                 </div>
-                 
-                 
-			 </div>
-			 <div class="col-sm-12 margin-top-15 profileBtn" style="font-size: 12px;">
-               <div class="new-transfer">Submit</div>
-           </div>
-		</div>
+								 <span style="font-size: 14px; font-weight: bold; color: black;">Set up a funding account to send money (Debit card or bank account accepted)</span><br/>
+								 <div id="carderrMsg" style="color:red; margin-left: 30px; marker-top: 10px;">
+					                 </div>
+								 <div class="col-sm-12">
+								 	 <div class="col-sm-6" style="    margin-top: 15px;">
+									 	 <aui:input id="debit_card"  type="radio" name="accountType" value="debit_card" label=""/>
+						                    <label for="<portlet:namespace/>debit_card" checked="true" style="    color: black;">Debit Card</label>
+					                	<aui:input id="bank_account"  type="radio" name="accountType" value="bank" label=""/>
+						                    <label for="<portlet:namespace/>bank_account"  style="    color: black;">Bank Account</label>
+					                 </div>
+					                 
+					                 <div class="debit_card_detail">  
+						                 <div class="col-sm-12">	
+						                 	 <div class="col-sm-9">
+						                 	<aui:input name="cardNumber" label="Card Number" placeholder="Card Number"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.acctnr}" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 0px;">
+									     		<aui:validator name="number" />
+									    		 <aui:validator name="maxLength">20</aui:validator>
+									   		</aui:input>
+									   		</div>
+									   		 <div class="col-sm-3" style="    padding-top: 27px;">
+										   		<div id="cardType">
+										 	 		<span id="mastercard"><img src='<%= themeDisplay.getPathThemeImages() + "/mastercard_PNG6.png"%>' width="35px" height="20px;"></span>
+										 	 		<span id="visa"><img src='<%= themeDisplay.getPathThemeImages() + "/visa-icon.png"%>' width="35px" height="20px;"></span>
+										 	 	</div>
+									 	 	</div>
+						                 </div> 
+						                 <div class="col-sm-6">
+						                 	<aui:input name="cardFirstName" label="" placeholder="First Name on Account"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.fName}" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 15px;">
+									    		 <aui:validator name="maxLength">50</aui:validator>
+									   		</aui:input>
+						                 </div> 
+						                 <div class="col-sm-6">
+						                 	<aui:input name="cardLastNumber" label="" placeholder="Last Name on Account"  cssClass="form-control col-md-7 col-xs-6" value="${ userBean.partyBean.accountBean.lName}" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 20px;">
+									    		 <aui:validator name="maxLength">50</aui:validator>
+									   		</aui:input>
+						                 </div> 
+						                 <div class="col-sm-12">
+						                 <div class="col-sm-2">
+						                 	<aui:select name="expireOnMonth" label="" >
+						                 		<aui:option value="">MM</aui:option>
+						                 		<aui:option value="00" selected="${userBean.partyBean.accountBean.exprymnth eq '00' ? true : false }">00</aui:option>
+						                 		<aui:option value="01" selected="${userBean.partyBean.accountBean.exprymnth eq '01' ? true : false }">01</aui:option>
+						                 		<aui:option value="02" selected="${userBean.partyBean.accountBean.exprymnth eq '02' ? true : false }">02</aui:option>
+						                 		<aui:option value="03" selected="${userBean.partyBean.accountBean.exprymnth eq '03' ? true : false }">03</aui:option>
+						                 		<aui:option value="04" selected="${userBean.partyBean.accountBean.exprymnth eq '04' ? true : false }">04</aui:option>
+						                 		<aui:option value="05" selected="${userBean.partyBean.accountBean.exprymnth eq '05' ? true : false }" >05</aui:option>
+						                 		<aui:option value="06" selected="${userBean.partyBean.accountBean.exprymnth eq '06' ? true : false }">06</aui:option>
+						                 		<aui:option value="07" selected="${userBean.partyBean.accountBean.exprymnth eq '07' ? true : false }">07</aui:option>
+						                 		<aui:option value="08" selected="${userBean.partyBean.accountBean.exprymnth eq '08' ? true : false }">08</aui:option>
+						                 		<aui:option value="09" selected="${userBean.partyBean.accountBean.exprymnth eq '09' ? true : false }">09</aui:option>
+						                 		<aui:option value="10" selected="${userBean.partyBean.accountBean.exprymnth eq '10' ? true : false }">10</aui:option>
+						                 		<aui:option value="11" selected="${userBean.partyBean.accountBean.exprymnth eq '11' ? true : false }">11</aui:option>
+						                 	</aui:select>
+						                 </div> 
+						                 
+						                 <div class="col-sm-2">
+						                 	<aui:select name="expireOnYear" label="" style="margin-left: 10px;">
+						                 		<aui:option value="">YYYY</aui:option>
+						                 		<aui:option value="18" selected="${userBean.partyBean.accountBean.expryyear eq '18' ? true : false }">2018</aui:option>
+						                 		<aui:option value="19" selected="${userBean.partyBean.accountBean.expryyear eq '19' ? true : false }">2019</aui:option>
+						                 		<aui:option value="20" selected="${userBean.partyBean.accountBean.expryyear eq '20' ? true : false }">2020</aui:option>
+						                 		<aui:option value="21" selected="${userBean.partyBean.accountBean.expryyear eq '21' ? true : false }">2021</aui:option>
+						                 		<aui:option value="22" selected="${userBean.partyBean.accountBean.expryyear eq '22' ? true : false }">2022</aui:option>
+						                 		<aui:option value="23" selected="${userBean.partyBean.accountBean.expryyear eq '23' ? true : false }">2023</aui:option>
+						                 		<aui:option value="24" selected="${userBean.partyBean.accountBean.expryyear eq '24' ? true : false }">2024</aui:option>
+						                 		<aui:option value="25" selected="${userBean.partyBean.accountBean.expryyear eq '25' ? true : false }">2025</aui:option>
+						                 		<aui:option value="26" selected="${userBean.partyBean.accountBean.expryyear eq '26' ? true : false }">2026</aui:option>
+						                 		<aui:option value="27" selected="${userBean.partyBean.accountBean.expryyear eq '27' ? true : false }">2027</aui:option>
+						                 		<aui:option value="28" selected="${userBean.partyBean.accountBean.expryyear eq '28' ? true : false }">2028</aui:option>
+						                 	</aui:select>
+						                 </div> 
+						                 </div>
+					                 </div>
+								 </div>
+								 <div class="col-sm-12">
+					                 <div class="bank_detail">  
+						                 <div class="col-sm-12">
+							                 <div class="col-sm-6">
+							                 	<aui:input name="accountNumber" label="Account Number" placeholder="Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 0px;" value="${ userBean.partyBean.accountBean.acctnr}">
+										     		<aui:validator name="required" />
+										   		</aui:input>
+							                 </div> 
+							                 <div class="col-sm-6">
+							                 	<aui:input name="accountNumber2" label="Re-enter Account Number" placeholder="Re-enter Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 7px;" value="${ userBean.partyBean.accountBean.acctnr}">
+										     		<aui:validator name="equalTo">'#<portlet:namespace />accountNumber'</aui:validator>
+										   		</aui:input>
+							                 </div>
+						                 </div>
+						                 <div class="col-sm-12">
+										 	 <div class="col-sm-3">
+											 	 <aui:input id="known_branch"  type="radio" name="searchBranchType" value="known_branch" label=""/>
+								                    <label for="<portlet:namespace/>known_branch"><span id="unique_branch_code_label">Routing No.</span></label>
+							                 </div>
+							                 <div class="col-sm-9">
+											 	 <aui:input id="search"  type="radio" name="searchBranchType" value="search" label=""/>
+								                    <label for="<portlet:namespace/>search" >Search</label>
+							                 </div>
+					                 	</div>
+					                 	<div class="col-sm-12">
+					                 		<div class="col-sm-3" id="known_branch_detail">
+											 	 <aui:input type="text" name="unique_branch_code" label="Branch Code" ></aui:input>
+							                </div>
+							                <div class="col-sm-9 city-auto" id="search_branch_detail">
+							                	<div class="col-sm-4">
+							                		<aui:input name="countryCity" label="City" style="font-size: 12px; color:#9B9A9B;" value="${userBean.partyBean.accountBean.branchBean.cityName}"/>
+							                		
+							                	</div>
+							                	<div class="col-sm-4">
+								                	<aui:select name="bankName" label="Bank Name" style="font-size: 12px; color:#9B9A9B; margin-left:10px; ">
+								                	</aui:select>
+								                </div>
+						               			<div class="col-sm-4">
+						                			<aui:select name="branchName" label="Branch" style="font-size: 12px; color:#9B9A9B; margin-left:20px;">
+								                	</aui:select>
+						    		            </div>
+							                </div>
+						                </div> 
+					                 </div>
+					                 
+					                 
+								 </div>
+								 <div class="col-sm-12 margin-top-15 profileBtn" style="font-size: 12px;">
+					               <div class="new-transfer">Submit</div>
+					           </div>
+								</div>
+      						</div>
+      					</div>
+      				</div>
+      			</div>
+      		</div>
+      </div>				
 		<aui:input type="hidden" name="userId" value="${customUserBean.userId}"/>
    </aui:form>
   
@@ -291,9 +256,14 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	profileBtn.on('click', function(e) {
 		var formValidator = Liferay.Form.get('<portlet:namespace />profileFm').formValidator;
 		formValidator.validate();
-		if(!formValidator.hasErrors()){
+		dropDownValidator.validate();
+		if(!formValidator.hasErrors() && !dropDownValidator.hasErrors()){
 			if(A.one("#<portlet:namespace />debit_card")._node.checked){
 				debitCardValidator.validate();
+				if(!isValidCard){
+					$("#carderrMsg").text("Only debit cards are accepted");
+					return;
+				}
 				if(!debitCardValidator.hasErrors()){
 					document.<portlet:namespace />profileFm.submit();		
 				}
@@ -324,6 +294,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	var searchBranchTypeBtns = A.all("input[name=<portlet:namespace />searchBranchType]");
 	var knownBranchBtn = A.one("#<portlet:namespace />known_branch");
 	var searchBtn = A.one("#<portlet:namespace />search");
+	var isValidCard = false;
 	A.one("#<portlet:namespace />known_branch")._node.checked=true;
 	A.one("#<portlet:namespace />search")._node.checked=true;
 	A.one("#known_branch_detail").hide();
@@ -338,6 +309,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	var citySelected = '${userBean.partyBean.accountBean.branchBean.cityId}';
 	var selectedBranchId = '${userBean.partyBean.accountBean.branchBean.branchId}';
 	var selectedBankId = '${userBean.partyBean.accountBean.branchBean.bankId}';
+	var selectedStateCode = '${userBean.partyBean.partyAddressBean.state}';
 	
 	
 	console.log("citySelected->" + citySelected + 
@@ -379,6 +351,34 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			}else{
 				A.one("#unique_branch_code_label").text("IFSC Code");
 			}
+			
+			var  getStateDetailURL = '${getStateDetailURL}';
+			A.io.request(getStateDetailURL.toString(),{
+				dataType: 'json',
+				method: 'GET',
+				data :{
+					'<portlet:namespace/>countryCode' : countryCode
+				},
+				on: {
+				success: function() {
+					A.one('#<portlet:namespace/>state').all('option').remove();
+					var stateList=this.get('responseData');
+					
+					A.one('#<portlet:namespace/>state').append("<option  value='' >Select State</option>");
+					var selectedState='';
+					for(var i in stateList){
+						A.one('#<portlet:namespace/>state').append('<option value="'+ stateList[i].statecd  +'">'+ stateList[i].statedesc +'</option>');
+						if(stateList[i].statecd==selectedStateCode){
+							selectedState = stateList[i];
+						}
+					}
+					
+					if(selectedState){
+						A.one('#<portlet:namespace/>state').val(selectedState.statecd);
+					}
+				}
+			  }
+			});
 		}
 		
 		$("#<portlet:namespace/>mobileCountryCode").val("+"+countryInitialPrefix);
@@ -387,7 +387,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	
 	var cityData;
 	var cityAutoComplete = new A.AutoCompleteList({
-		allowBrowserAutocomplete: 'true',
+		allowBrowserAutocomplete: false,
 		activateFirstItem: 'true',
 		inputNode: '#<portlet:namespace />countryCity',
 		resultTextLocator:'cityDesc',
@@ -397,7 +397,6 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 		source:function(){
 			
 			var inputValue=A.one("#<portlet:namespace />countryCity").get('value');
-			if(inputValue.length>=3){
 				var getCityDetailURL = '${getCityDetailURL}';
 				var finalData;
 				var cityAutoCompelteRequest=A.io.request(getCityDetailURL.toString(),{
@@ -418,7 +417,6 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 									});
 				cityAutoCompelteRequest.start();
 				return cityData;
-		   }
 		}
 	});
 	
@@ -518,18 +516,21 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 				on: {
 				success: function() {
 					var cardDetail=this.get('responseData');
-					console.log("cardDetail->" + cardDetail);
+					console.log("cardDetail->" + cardDetail.type);
 					if(cardDetail.type && cardDetail.type!="" && cardDetail.type!="DEBIT"){
 						$("#carderrMsg").text("Only debit cards are accepted");
 						$("#mastercard").hide();
 						$("#visa").hide();
+						isValidCard=false;
 					}
 					if(cardDetail && cardDetail.scheme=="VISA"){
 						$("#mastercard").hide();
 						$("#visa").show();
+						isValidCard=true;
 					}else if(cardDetail && cardDetail.scheme=="MASTERCARD"){
 						$("#mastercard").show();
 						$("#visa").hide();
+						isValidCard=true;
 					}
 					
 				}
@@ -555,6 +556,12 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			}
     	};
 	}
+	
+	new Formatter(document.getElementById('<portlet:namespace/>'+'mobile'), {
+		'pattern': '({{999}})-{{999}}-{{9999}}',
+		'persistent': false
+	});
+	
 	
 	var searchBranchCodeValidator = new A.FormValidator({
 		boundingBox: document.<portlet:namespace/>profileFm,
@@ -584,14 +591,14 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	});
 	
 	if(selectedBranchId!=""){
-		console.log("going to simulate bank");
-		countrySelect.simulate('change');
 		var country = countrySelect.val();
-		console.log("country123->" + country);
-		var countryCode = country.split(",")[0];
-		console.log("countryCode-> " + countryCode);
-		simulateBanksOnCityChange(citySelected,country.split(",")[0]);
+		if(parseInt(citySelected)>0){
+			var countryCode = '${userBean.partyBean.accountBean.branchBean.cntryCd}';			
+			simulateBanksOnCityChange(citySelected,countryCode);
+		}
 	}
+	
+	countrySelect.simulate('change');
 	
 /* 	cardBankNameSelect.on('change', function(e) {
 		var  getBranchDetailURL = '${getBranchDetailURL}';
@@ -633,6 +640,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			<portlet:namespace/>expireOnYear: {
 				required: true
 			}
+			
 		}
 	});
 	
@@ -649,6 +657,15 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 				required: true
 			},
 			<portlet:namespace/>accountNumber2: {
+				required: true
+			}
+		}
+	});
+	
+	var dropDownValidator = new A.FormValidator({
+		boundingBox: document.<portlet:namespace/>profileFm,
+		rules: {
+			<portlet:namespace/>state: {
 				required: true
 			}
 		}

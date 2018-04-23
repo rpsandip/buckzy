@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="${css_folder}/bootstrap-social.css">
 	<link rel="stylesheet" href="${css_folder}/styles.css">
 	<link rel="stylesheet" href="${css_folder}/dd.css">
+	<link rel="stylesheet" href="${css_folder}/toastem.css">
 	<link rel="stylesheet" href="${css_folder}/custom_buckzy.css">
 	
 	
@@ -31,6 +32,8 @@
 	<script src="${javascript_folder}/jquery.ddslick.min.js"></script>
 	<script src="${javascript_folder}/moment.min.js"></script>
 	<script src="${javascript_folder}/bootstrap-datetimepicker.min.js"></script>
+	<script src="${javascript_folder}/jquery.formatter.js"></script>
+	<script src="${javascript_folder}/toastem.js"></script>
 	
 	<script>
 		define.amd = define._amd;
@@ -38,7 +41,10 @@
 	
 </head>
 
-<body>
+<body style="background-color: #FBFBFB;">
+    <!-- Toast message div -->
+	<div id="toastem"></div>
+	<div>
 	<#if layout.isPublicLayout()>
 		<@liferay_ui["quick-access"] contentId="#main-content" />
 		<@liferay_util["include"] page=body_top_include />
@@ -104,7 +110,7 @@
 			<div class="mobile-submenu">
 	            <ul>
 	                <li><img src="${images_folder}/icon1.png" />Send Money</li>
-	                <li><img src="${images_folder}/icon2.png" />Track Transfer</li>
+	                <li><img src="${images_folder}/icon2.png" />Request Money</li>
 	                <li><img src="${images_folder}/icon3.png" />Support</li>
 	                <li><img src="${images_folder}/icon4.png" />My Profile
 	                    <ul>
@@ -131,12 +137,12 @@
 	                            <a href="/group/guest/send-money"><span class="pointer"><img src="${images_folder}/icon1.png" />Send Money</span></a>
 	                        </div>
 	                        <div class="col-xs-3 padding-top-20">
-	                            <a href="/group/guest/track-transfer"><span class="pointer"><img src="${images_folder}/icon2.png" />Track Transfer</span></a>
+	                            <a href="/group/guest/track-transfer"><span class="pointer"><img src="${images_folder}/icon2.png" />Request Money</span></a>
 	                        </div>
 	                        <div class="col-xs-3 padding-top-20">
 	                            <div class="float-left pointer">
 	                                <img src="${images_folder}/icon3.png" />
-	                                Suppurt
+	                                Support
 	                            </div>
 	                            <div class="support-message">1</div>
 	                        </div>
@@ -177,7 +183,7 @@
 	                        <a href="/group/guest/home"><img src="${images_folder}/icon-8.png" /> Dashboard </a><br/>
 	                        <img src="${images_folder}/icon-9.png" /> Payee Accounts <br/>
 	                        <a href="/group/guest/send-money"><img src="${images_folder}/icon-10.png" /> New Transfer <br/></a>
-	                        <a href="/group/guest/track-transfer"><img src="${images_folder}/icon-11.png" /> Track Transfer <br/></a>
+	                        <a href="/group/guest/track-transfer"><img src="${images_folder}/icon-11.png" /> Request Money <br/></a>
 	                        <img src="${images_folder}/icon-12.png" /> Download Mobile App <br/>
 	                        <img src="${images_folder}/icon-13.png" /> Help & Support <br/>
 	                    </div>
@@ -279,5 +285,6 @@
 		</script>
 
 	</#if>
+	</div>
 </body>
 </html>

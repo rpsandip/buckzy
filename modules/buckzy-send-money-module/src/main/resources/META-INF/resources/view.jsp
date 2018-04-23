@@ -57,7 +57,9 @@
 				<aui:select name="receiver" label=""
 					style="height: 37px; width: 100%;">
 					<c:forEach items="${receiverList }" var="receiver">
-						<aui:option value="${receiver.get('prtyid') }">${receiver.get('frstnm') } ${receiver.get('lastnm') }</aui:option>
+						<aui:option value="${receiver.get('prtyid')}, ${receiver.get('basecurrcd')}" 
+						selected="${receiver.get('prtyid') eq paymentBean.rcvrid ? true : false }"
+						>${receiver.get('frstnm') } ${receiver.get('lastnm') }</aui:option>
 					</c:forEach>
 				</aui:select>
 			</div>
@@ -85,8 +87,11 @@
 				<span>Receiving Currency</span>
 				<div class="col-sm-12  padding-0 margin-0 padding-5">
 					<aui:select name="toCur" label="">
+						<aui:option value="">Select Receiver Currency</aui:option>
 						<c:forEach items="${currenyJSONList }" var="currency">
-							<aui:option value="${currency.get('currcd') }">${currency.get('currnm') }</aui:option>
+							<aui:option value="${currency.get('currcd') }"
+							selected="${currency.get('currcd') eq paymentBean.rcvrcurrcd ? true : false }"
+							>${currency.get('currnm') }</aui:option>
 						</c:forEach>
 					</aui:select>
 				</div>
@@ -97,10 +102,22 @@
 			</div>
 
 			<div class="col-xs-12">
-				<aui:input name="amount" label="amount">
+				<aui:input name="amount" label="amount" value="${paymentBean.sndrinstramt }">
 					<aui:validator name="required" />
 					<aui:validator name="number" />
 				</aui:input>
+			</div>
+			
+			<div class="col-xs-12">
+				<%-- <aui:input name="purTrans" label="Purpose Of Transfer" value="${paymentBean.purpofpymt }">
+					<aui:validator name="required" />
+					 <aui:validator name="maxLength">45</aui:validator>
+				</aui:input> --%>
+				<aui:select name="purTrans" label="Purpose Of Transfer">
+					<aui:option value="Family Support">Family Support</aui:option>
+					<aui:option value="Bill pay">Bill pay</aui:option>
+					<aui:option value="Vendor payment">Vendor payment</aui:option>
+				</aui:select>
 			</div>
 
 			<div class="col-sm-12 margin-top-40 margin-bottom-10">
@@ -118,14 +135,14 @@
 				</div>
 			</div>
 
-			<div class="col-sm-4">
+			<!-- <div class="col-sm-4">
 				<div class="outer">
 					<div class="inner text-center">
 						<img src="/o/buckzy-theme/images/test-icon4.png"
 							style="margin-top: 3px;" />
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="col-sm-4">
 				<div class="outer">
@@ -214,6 +231,27 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	var fromCurSelect = A.one("#<portlet:namespace />fromCur");
 	var toCurSelect = A.one("#<portlet:namespace />toCur");
 	var amountSelect = A.one("#<portlet:namespace />amount");
+	var receiverSelect = A.one("#<portlet:namespace />receiver");
+	var currenctOptions = A.one("#<portlet:namespace />toCur").all('option')._nodes;
+	
+	receiverSelect.on('change', function(e) {
+		var receiverDetail = this.get('value');
+		var receiverCur='';
+		if(receiverDetail.indexOf(",")>0){
+			receiverCur = receiverDetail.split(",")[1];
+		}
+		A.one('#<portlet:namespace/>toCur').all('option').remove();
+		for(var i=0;i<currenctOptions.length;i++){
+			if(currenctOptions[i].value.trim()==receiverCur.trim()){
+				console.log("got receiverCur ->" + receiverCur);
+				A.one('#<portlet:namespace/>toCur').append(currenctOptions[i]);
+				//A.one('#<portlet:namespace/>toCur').append('<option selected value=""> Select Receiver Currency</option>');
+				getExchangeRate(fromCurSelect.val(),toCurSelect.val());
+			}
+		}
+		fromCurSelect.simulate('change');
+	});
+	
 	fromCurSelect.on('change', function(e) {
 		A.one("#exchangeDetail").text('');
 		A.one("#exchange_total_detail").text('');
@@ -302,6 +340,17 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			}
 		}
 	});
+	
+	var paymentId = '${paymentBean.lineitemid}';
+	var purposeOfTras = '${paymentBean.purpofpymt}';
+	if(parseInt(paymentId)>0){
+		getExchangeRate(fromCurSelect.val(),toCurSelect.val());
+		 A.one("#<portlet:namespace />amount").setAttribute("readonly", true);
+		 A.one("#<portlet:namespace />purTrans").val(purposeOfTras);
+	}
+	
+	fromCurSelect.simulate('change');
+	receiverSelect.simulate('change');
 			
 });
 </aui:script>

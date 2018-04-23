@@ -34,7 +34,10 @@ public class CreateAccoungRenderCommand implements MVCRenderCommand{
 		JSONArray countriesArray = BuckzyCommonLocalServiceUtil.getCountryList(token);
 		List<JSONObject> countryJsonList = new ArrayList<JSONObject>();
 		for(int i=0;i<countriesArray.length();i++){
-			countryJsonList.add(countriesArray.getJSONObject(i));
+			JSONObject countryObj = countriesArray.getJSONObject(i);
+			JSONObject currencyObj = countryObj.getJSONObject("currency");
+			countryObj.put("threedigitcd", currencyObj.get("currcd"));
+			countryJsonList.add(countryObj);
 		}
 		renderRequest.setAttribute("countryJsonList", countryJsonList);
 		

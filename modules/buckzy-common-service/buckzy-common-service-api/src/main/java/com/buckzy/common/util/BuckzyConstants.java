@@ -18,6 +18,7 @@ public class BuckzyConstants {
 	public static final String IND_ACCOUNT_TYPE="INDV";
 	public static final String SINGAPORE_CURRENCY_CODE="SGD";
 	public static final String SINGAPORE_COUNTRY_CODE="SG";
+	public static final int PAYMENT_PAGE_SIZE=10;
 	
 	
 	public static final String LOGIN_POST_URL="/partyaccount/login";
@@ -28,7 +29,7 @@ public class BuckzyConstants {
 	public static final String GET_BANK__LIST_URL ="/partyaccount/V1/banks?cntryCd=";
 	public static final String GET_STATE_LIST_URL = "/partyaccount/V1/countries/countryCode/states";
 	public static final String GET_CITY_LIST_URL = "/partyaccount/V1/cities?cityNm=cityName";
-	public static final String GET_BRANCH__LIST_URL ="/partyaccount/V1/banks/bankId/branches";
+	public static final String GET_BRANCH__LIST_URL ="/partyaccount/V1/banks/bankId/branches/all";
 	public static final String GET_PARTY_URL ="/partyaccount/V1/party/";
 	public static final String KYC_DOC_URL ="/partyaccount/V1/documents?documentTypeCode=PARTY";
 	public static final String GET_PARTY_ACCOUNTS="/partyaccount/V1/parties/partyId/accounts";
@@ -41,6 +42,9 @@ public class BuckzyConstants {
 	public static final String GET_RECEIVER_ACCOUNT_URL="/partyaccount/V1/party/senderPartyId/receiver/receiverPartyId/accounts";
 	public static final String GET_CARD_DETAIL="/partyaccount/V1/cardVerification/";
 	public static final String POST_RESEND_OTP="/partyaccount/V1/users/resendOTP";
-	
+	public static final String GET_BANK_DETAIL="/partyaccount/V1/banks/";
+	public static final String GET_ALL_PAYMENTS="/partyaccount/V1/payments/all?page=pageNo&size=pageSize";
+	public static final String GET_PAYMENT_DETAIL_URL="/partyaccount/V1/payments/";
+	public static final String GET_OTP_DETAIL="/partyaccount/V1/users/userId/otp";
 	
 }

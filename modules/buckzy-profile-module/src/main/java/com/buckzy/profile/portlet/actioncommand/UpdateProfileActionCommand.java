@@ -52,7 +52,8 @@ public class UpdateProfileActionCommand extends BaseMVCActionCommand{
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		UploadPortletRequest uploadPortletRequest = PortalUtil.getUploadPortletRequest(actionRequest);
-	
+		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest)).getSession().getAttribute("token");
+		
 		long userId = themeDisplay.getUserId();
 		
 		String firstName = ParamUtil.getString(actionRequest, "firstName");
@@ -76,6 +77,7 @@ public class UpdateProfileActionCommand extends BaseMVCActionCommand{
 		String acctInstnNm = StringPool.BLANK;
 		String searchBranchType = ParamUtil.getString(actionRequest, "searchBranchType");
 		String routingNo = StringPool.BLANK;
+		String currencyCode = StringPool.BLANK;
 		int bankId=0;
 		int branchId=0;
 		
@@ -104,9 +106,15 @@ public class UpdateProfileActionCommand extends BaseMVCActionCommand{
 			
 		}
 		
+		if(Validator.isNotNull(mobileNo)){
+			mobileNo= mobileNo.replaceAll("-", "");
+			mobileNo= mobileNo.replaceAll("\\(", "");
+			mobileNo = mobileNo.replaceAll("\\)", "");
+		}
 		
 		File verificationDoc = null;
 		String verificationDocName = StringPool.BLANK;
+		/*
 		Map<String, FileItem[]> files= uploadPortletRequest.getMultipartParameterMap();
 		for (Entry<String, FileItem[]> file2 : files.entrySet()) {
 			FileItem item[] =file2.getValue();
@@ -117,18 +125,20 @@ public class UpdateProfileActionCommand extends BaseMVCActionCommand{
 					verificationDoc = fileItem.getStoreLocation();
 				}
 			}
-		}
+		}*/
+		verificationDoc = uploadPortletRequest.getFile("verificationDoc");
+		verificationDocName = uploadPortletRequest.getFileName("verificationDoc");
 		
 		if(Validator.isNotNull(documentVerificationType)){
 			if(documentVerificationType.equals("drive_license")){
-				documentVerificationType = "KYC_DRIVER_LICENSE";
+				documentVerificationType = "KYCD";
 			}else{
-				documentVerificationType = "KYC_PASSPORT";
+				documentVerificationType = "KYCP";
 			}
 		}
 		
 		
-		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest)).getSession().getAttribute("token");
+		
 		if(countryarray.length>0){
 			try {
 				CustomUser customUser = CustomUserLocalServiceUtil.getCustomUserByLRUserId(userId);
@@ -137,7 +147,7 @@ public class UpdateProfileActionCommand extends BaseMVCActionCommand{
 					User user =  UserLocalServiceUtil.getUser(userId);
 					JSONObject responseObj = CustomUserLocalServiceUtil.updateParty(token, customUserBean.getPartyId(), userId, 
 							firstName, lastName, user.getEmailAddress(), 
-							countryarray[1], countryarray[0], mobileNo, address, city, state,zipcode,  documentVerificationType,verificationDoc, verificationDocName,
+							countryarray[1], countryarray[0], countryarray[3].trim() ,mobileNo, address, city, state,zipcode,  documentVerificationType,verificationDoc, verificationDocName,
 							accountType, cardNumber, cardFirstName, cardLastNumber, expireOnMonth, expireOnYear,
 						    accountNumber, acctInstnNm,bankId, branchId,routingNo,searchBranchType);
 			

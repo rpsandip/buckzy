@@ -51,6 +51,11 @@ public class BuckzyCommonLocalServiceUtil {
 		return getService().verifyOTP(email, password, verificationCode);
 	}
 
+	public static com.buckzy.common.beans.PaymentBean converPaymentObjectToBean(
+		com.liferay.portal.kernel.json.JSONObject paymentObj) {
+		return getService().converPaymentObjectToBean(paymentObj);
+	}
+
 	public static com.liferay.portal.kernel.json.JSONArray getBankList(
 		java.lang.String token, java.lang.String countryCode) {
 		return getService().getBankList(token, countryCode);
@@ -92,6 +97,11 @@ public class BuckzyCommonLocalServiceUtil {
 		return getService().getAPIResponse(URL, type, params, token);
 	}
 
+	public static com.liferay.portal.kernel.json.JSONObject getBankDetail(
+		java.lang.String token, int bankId) {
+		return getService().getBankDetail(token, bankId);
+	}
+
 	public static com.liferay.portal.kernel.json.JSONObject getCreditCardDetail(
 		java.lang.String token, java.lang.String cardNumber) {
 		return getService().getCreditCardDetail(token, cardNumber);
@@ -101,6 +111,18 @@ public class BuckzyCommonLocalServiceUtil {
 		java.lang.String token, java.lang.String fromCurCode,
 		java.lang.String toCurCode) {
 		return getService().getExchangeRate(token, fromCurCode, toCurCode);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject getMultiPartResponse(
+		java.lang.String URL, long partyId, java.lang.String token,
+		java.io.File file, java.lang.String docTypeCode) {
+		return getService()
+				   .getMultiPartResponse(URL, partyId, token, file, docTypeCode);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject getPaymentDetail(
+		java.lang.String token, long paymentId) {
+		return getService().getPaymentDetail(token, paymentId);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject makePayment(
@@ -134,25 +156,25 @@ public class BuckzyCommonLocalServiceUtil {
 	* @return
 	* @throws PortalException
 	*/
-	public static com.liferay.portal.kernel.model.User registerUser(
+	public static com.liferay.portal.kernel.json.JSONObject registerUser(
 		java.lang.String token, java.lang.String firstName,
 		java.lang.String middleName, java.lang.String lastName,
 		java.lang.String emailAddress, java.lang.String password1,
 		java.lang.String address, java.lang.String city,
 		java.lang.String zipcode, java.lang.String state,
-		java.lang.String countryCode, java.lang.String dob,
-		java.lang.String mobileNum, java.lang.String mobileCountryCode,
-		java.lang.String reminderQuestion, java.lang.String reminderAnswer,
-		java.lang.String deviceInfo, boolean isSocialLogin, long creatorUserId,
-		long groupId,
+		java.lang.String countryCode, java.lang.String currencyCode,
+		java.lang.String dob, java.lang.String mobileNum,
+		java.lang.String mobileCountryCode, java.lang.String reminderQuestion,
+		java.lang.String reminderAnswer, java.lang.String deviceInfo,
+		boolean isSocialLogin, long creatorUserId, long groupId,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .registerUser(token, firstName, middleName, lastName,
 			emailAddress, password1, address, city, zipcode, state,
-			countryCode, dob, mobileNum, mobileCountryCode, reminderQuestion,
-			reminderAnswer, deviceInfo, isSocialLogin, creatorUserId, groupId,
-			serviceContext);
+			countryCode, currencyCode, dob, mobileNum, mobileCountryCode,
+			reminderQuestion, reminderAnswer, deviceInfo, isSocialLogin,
+			creatorUserId, groupId, serviceContext);
 	}
 
 	public static java.lang.String dedcryptPassword(
@@ -164,13 +186,6 @@ public class BuckzyCommonLocalServiceUtil {
 		return getService().encryptPassword(password);
 	}
 
-	public static java.lang.String getMultiPartResponse(java.lang.String URL,
-		long partyId, java.lang.String token, java.io.File file,
-		java.lang.String docTypeCode) {
-		return getService()
-				   .getMultiPartResponse(URL, partyId, token, file, docTypeCode);
-	}
-
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -180,13 +195,28 @@ public class BuckzyCommonLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static java.lang.String getRegistrationOTP(long userId) {
+		return getService().getRegistrationOTP(userId);
+	}
+
 	public static java.lang.String getToken(java.lang.String email,
 		java.lang.String password) {
 		return getService().getToken(email, password);
 	}
 
+	public static java.util.List<com.buckzy.common.beans.PaymentBean> getPaymentTransactionList(
+		java.lang.String token, int pageNo, int pageSize) {
+		return getService().getPaymentTransactionList(token, pageNo, pageSize);
+	}
+
 	public static long getDefaultSiteGroupId() {
 		return getService().getDefaultSiteGroupId();
+	}
+
+	public static void sendOTPMail(java.lang.String emailAddress,
+		java.lang.String userName, java.lang.String otp,
+		java.lang.String mobileNumber) {
+		getService().sendOTPMail(emailAddress, userName, otp, mobileNumber);
 	}
 
 	public static BuckzyCommonLocalService getService() {

@@ -15,4 +15,8 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
    		.portlet-title-default, .portlet-title-text {
 			display: none;
 		}
+		
+		.input-group .form-control{
+		    border-radius: unset;
+		}
 </style>

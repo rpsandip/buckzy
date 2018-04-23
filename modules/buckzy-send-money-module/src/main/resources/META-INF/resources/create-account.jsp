@@ -10,150 +10,146 @@
 <liferay-ui:error key="account-created-success" message="account-created-success"/>
 
 <div class="row padding-0 margin-0">
-<div class="col-sm-6 margin-bottom-20" style="color: #000000; font-weight: bold;  font-size: 18px; margin-bottom: 10px;">Receiver Personal Information</div>
-
 <aui:form name="newAccountFm" action="${createAccountURL}" cssClass="form-horizontal form-label-left">
-<div class="" style="color:#9B9A9B; font-size: 10px;">    
-<div class="col-sm-6 margin-bottom-20">
-	<aui:select name="country" label="Country" style="height: 37px; width: 100%;">
-		<c:forEach items="${countryJsonList }" var="country">
-              	 	<aui:option value="${country.get('cntrycd') },${country.get('intldialprfx') } , ${country.get('cntrydesc') }">${country.get('cntrydesc') }</aui:option>
-        </c:forEach>
-	</aui:select>
-</div>
-
-<div class="col-sm-6 ">
-		<aui:input name="firstName" label="First Name" placeholder="Receiver's First Name" style="font-size: 9px; color:#9B9A9B; ">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">50</aui:validator>
-	    </aui:input>
-</div>
-<div class="col-sm-6 ">
-		 <aui:input name="lastName" label="Last Name" placeholder="Receiver's last name" style="font-size: 9px; color:#9B9A9B; ">
-			     <aui:validator name="required" />
-			     <aui:validator name="maxLength">50</aui:validator>
-		</aui:input>
-</div>
-<div class="col-sm-12 ">
-		<aui:input name="email" label="Email address" placeholder="Receiver's Email Address" style="font-size: 9px; color:#9B9A9B; ">
-			     <aui:validator name="required" />
-			     <aui:validator name="email" />
-			     <aui:validator name="maxLength">100</aui:validator>
-	    </aui:input>
-</div>
-<div class="col-sm-12 ">
-	<aui:input name="address" label="Address" placeholder="Street address" style="font-size: 9px; color:#9B9A9B; ">
-		      <aui:validator name="required" />
-		     <aui:validator name="maxLength">100</aui:validator>
-	</aui:input>
-</div>
-	
-<div class="col-sm-6 ">
-	<aui:input name="city" label="City" placeholder="city" style="font-size: 9px; color:#9B9A9B; ">
-		      <aui:validator name="required" />
-		     <aui:validator name="maxLength">50</aui:validator>
-	</aui:input>
-</div>
-
-<div class="col-sm-6 ">
-	<aui:input name="state" label="State" placeholder="state" style="font-size: 9px; color:#9B9A9B; ">
-		     <aui:validator name="maxLength">50</aui:validator>
-	</aui:input>
-</div>
-
-<div class="col-sm-6 margin-top-15">
-	<aui:input name="pincode" label="PIN Code" placeholder="PIN Code" style="font-size: 9px; color:#9B9A9B; ">
-	      <aui:validator name="required" />
-	     <aui:validator name="maxLength">6</aui:validator>
-	</aui:input>
-</div>
-
-<div class="col-sm-3 form-group margin-top-15">
-	<aui:input name="mobileCountryCode" label="Country Code" placeholder="Country Code" style="font-size: 9px; color:#9B9A9B;">
-   		<aui:validator name="required" />
-    </aui:input>
-</div>
-
-<div class="col-sm-6 margin-top-15">
-   	<aui:input name="phoneNumber" label="Phone Number" placeholder="Phone number" style="font-size: 9px; color:#9B9A9B; ">
-	     <aui:validator name="maxLength">10</aui:validator>
-	     <aui:validator name="required" />
-	</aui:input>
-</div>
-
-</div>
-
-<div class="col-sm-12 " style="color: #000000; font-weight: bold; margin-bottom: 7px; margin-top: 30px; font-size: 18px; margin-bottom: 10px;">
-	Receiver Bank Account Information
-</div>
-
-<div class="col-sm-12 " style="font-size:10px; ">
-	Money sent to your receiver&#39;s bank account must be in local currency. Also, you can&#39;t send money to a business or charity account.
-</div>
-<br/><br/>
-<div class="" style="color:#9B9A9B; font-size: 10px;">
-	<div class="col-sm-12">
-			 <div class="col-sm-12">
-                <div class="bank_detail">  
-	                 <div class="col-sm-6">
-	                 	<aui:input name="accountNumber" label="Account Number" placeholder="Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 9px; color:#9B9A9B; ">
-				     		<aui:validator name="required" />
-				   		</aui:input>
-	                 </div> 
-	                 <div class="col-sm-6">
-	                 	<aui:input name="accountNumber2" label="Re-enter Account Number" placeholder="Re-enter Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 9px; color:#9B9A9B; ">
-				     		<aui:validator name="equalTo">'#<portlet:namespace />accountNumber'</aui:validator>
-				     	
-				   		</aui:input>
-	                 </div>
-	                 
-	                 <div class="col-sm-12">
-					 	 <div class="col-sm-3">
-						 	 <aui:input id="known_branch"  type="radio" name="searchBranchType" value="known_branch" label=""/>
-			                    <label for="<portlet:namespace/>known_branch"><span id="unique_branch_code_label">Routing No.</span></label>
-		                 </div>
-		                 <div class="col-sm-9">
-						 	 <aui:input id="search"  type="radio" name="searchBranchType" value="search" label=""/>
-			                    <label for="<portlet:namespace/>search" >Search</label>
-		                 </div>
-                 	</div>
-                 	<div class="col-sm-12">
-                 		<div class="col-sm-3" id="known_branch_detail">
-						 	 <aui:input type="text" name="unique_branch_code" label="Branch Code" ></aui:input>
-		                </div>
-		                <div class="col-sm-9" id="search_branch_detail">
-		                	<div class="col-sm-4">
-			                	<!-- <aui:select name="countryState" label="State" style="font-size: 9px; color:#9B9A9B; ">
-			                	</aui:select> -->
-		                	</div>
-		                	<div class="col-sm-4">
-		                		<aui:input name="countryCity" label="City" style="font-size: 9px; color:#9B9A9B; "/>
-		                	</div>
-		                	<div class="col-sm-4">
-			                	<aui:select name="bankName" label="Bank Name" style="font-size: 9px; color:#9B9A9B; ">
-			                	</aui:select>
-			                </div>
-	               			<div class="col-sm-4">
-	                			<aui:select name="branchName" label="Branch" style="font-size: 9px; color:#9B9A9B; ">
-			                	</aui:select>
-	    		            </div>
-		                </div>
-	                </div> 
-                 </div>
-			 </div>
-		</div>	
-		
-		<div class="col-sm-12 " style="color: #000000; font-weight: bold; margin-top:30px;  font-size: 18px; margin-bottom: 10px;">Purpose of Transfer</div>
-		
-		<div class="col-sm-12  padding-0" style="color:#9B9A9B; font-size: 10px;">
-			<div class="col-sm-12">
-				 <aui:input type="text" name="purTrans" label="" ></aui:input>
-			</div>
-		</div>
-		
-		<div class="col-sm-12" style="padding-top: 15px;">
-			<div class="new-transfer createAccountBtn" style="max-width: 700px;">Complete Registration</div>
-		</div>
+	<div style="display: table; width: 100%;">
+       		<div style="display: table-row;">
+            	<div style="display: table-cell; padding-bottom: 50px; ">
+                    <div class="main-container" style="max-width: 700px;">
+                        <div class="row padding-0 margin-0">
+							<div class="col-sm-12" style="color: #000000; font-weight: bold; margin-bottom: 7px; font-size: 18px;">Receiver Personal Information</div>
+							<div class="col-sm-12">
+								<div class="col-sm-6"></div>
+								<div class="col-sm-6 margin-bottom-20">
+									<aui:select name="country" label="Country" style="height: 37px; width: 100%;">
+										<c:forEach items="${countryJsonList }" var="country">
+								              	 	<aui:option value="${country.get('cntrycd') },${country.get('intldialprfx') } , ${country.get('cntrydesc') } , ${country.get('threedigitcd') }">${country.get('cntrydesc') }</aui:option>
+								        </c:forEach>
+									</aui:select>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="col-sm-6 ">
+										<aui:input name="firstName" label="First Name" placeholder="Receiver's First Name" style="font-size: 12px; color:#9B9A9B; ">
+											     <aui:validator name="required" />
+											     <aui:validator name="maxLength">50</aui:validator>
+									    </aui:input>
+								</div>
+								<div class="col-sm-6 ">
+										 <aui:input name="lastName" label="Last Name" placeholder="Receiver's last name" style="font-size: 12px; color:#9B9A9B; margin-left: 7px;">
+											     <aui:validator name="required" />
+											     <aui:validator name="maxLength">50</aui:validator>
+										</aui:input>
+								</div>
+							</div>
+							<div class="col-sm-12 ">
+									<aui:input name="email" label="Email address" placeholder="Receiver's Email Address" style="font-size: 12px; color:#9B9A9B; ">
+										     <aui:validator name="required" />
+										     <aui:validator name="email" />
+										     <aui:validator name="maxLength">100</aui:validator>
+								    </aui:input>
+							</div>
+							<div class="col-sm-12 ">
+								<aui:input name="address" label="Address" placeholder="Street address" style="font-size: 12px; color:#9B9A9B; ">
+									     <aui:validator name="maxLength">100</aui:validator>
+								</aui:input>
+							</div>
+							<div class="col-sm-12">
+								<div class="col-sm-6">
+									<aui:select name="state" label="State" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B;"></aui:select>
+								</div>	
+									
+								<div class="col-sm-6 ">
+									<aui:input name="city" label="City" placeholder="city" style="font-size: 12px; color:#9B9A9B; margin-left: 8px;">
+										     <aui:validator name="maxLength">50</aui:validator>
+									</aui:input>
+								</div>
+							</div>
+							<div class="col-sm-12">
+							<div class="col-sm-6 margin-top-15">
+								<aui:input name="pincode" label="PIN Code" placeholder="PIN Code" style="font-size: 12px; color:#9B9A9B; ">
+								     <aui:validator name="maxLength">6</aui:validator>
+								</aui:input>
+							</div>
+							
+							<div class="col-sm-3 form-group margin-top-15" style="margin-left:10px;">
+								<aui:input name="mobileCountryCode" label="Country Code" placeholder="Country Code" style="font-size: 12px; color:#9B9A9B;">
+							   		<aui:validator name="required" />
+							    </aui:input>
+							</div>
+							</div>
+							<div class="col-sm-12">
+							<div class="col-sm-6 margin-top-15">
+							   	<aui:input name="phoneNumber" label="Phone Number" placeholder="Phone number" style="font-size: 12px; color:#9B9A9B; ">
+								     <aui:validator name="maxLength">16</aui:validator>
+								     <aui:validator name="required" />
+								</aui:input>
+							</div>
+							<div class="col-sm-6"></div>
+							</div>
+							<div class="col-sm-12 " style="color: #000000; font-weight: bold; margin-bottom: 7px; margin-top: 30px; font-size: 18px; margin-bottom: 10px;">
+								Receiver Bank Account Information
+							</div>
+							
+							<div class="col-sm-12 " style="font-size:14px; ">
+								Money sent to your receiver&#39;s bank account must be in local currency. Also, you can&#39;t send money to a business or charity account.
+							</div>
+							<br/><br/>
+							<div class="" style="color:#9B9A9B;">
+								<div class="col-sm-12">
+										 <div>
+							                <div class="bank_detail">  
+								                 <div class="col-sm-6">
+								                 	<aui:input name="accountNumber" label="Account Number" placeholder="Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; ">
+											     		<aui:validator name="required" />
+											   		</aui:input>
+								                 </div> 
+								                 <div class="col-sm-6">
+								                 	<aui:input name="accountNumber2" label="Re Enter Account Number" placeholder="Re-enter Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#9B9A9B; margin-left:7px;">
+											     		<aui:validator name="equalTo">'#<portlet:namespace />accountNumber'</aui:validator>
+											     	
+											   		</aui:input>
+								                 </div>
+								                 
+								                 <div class="col-sm-12">
+												 	 <div class="col-sm-3">
+													 	 <aui:input id="known_branch"  type="radio" name="searchBranchType" value="known_branch" label=""/>
+										                    <label for="<portlet:namespace/>known_branch"><span id="unique_branch_code_label">Routing No.</span></label>
+									                 </div>
+									                 <div class="col-sm-9">
+													 	 <aui:input id="search"  type="radio" name="searchBranchType" value="search" label=""/>
+										                    <label for="<portlet:namespace/>search" >Search</label>
+									                 </div>
+							                 	</div>
+							                 	<div class="col-sm-12">
+							                 		<div class="col-sm-3" id="known_branch_detail">
+													 	 <aui:input type="text" name="unique_branch_code" label="Branch Code" ></aui:input>
+									                </div>
+									                <div class="col-sm-12" id="search_branch_detail">
+									                	<div class="col-sm-4 city-auto">
+									                		<aui:input name="countryCity" label="City"  style="font-size: 12px; color:#9B9A9B;     color: #9B9A9B;"/>
+									                	</div>
+									                	<div class="col-sm-4">
+										                	<aui:select name="bankName" label="Bank Name" style="font-size: 12px; color:#9B9A9B; margin-left: 10px; ">
+										                	</aui:select>
+										                </div>
+								               			<div class="col-sm-4">
+								                			<aui:select name="branchName" label="Branch" style="font-size: 12px; color:#9B9A9B; margin-left: 20px;">
+										                	</aui:select>
+								    		            </div>
+									                </div>
+								                </div> 
+							                 </div>
+										 </div>
+									</div>	
+									<div class="col-sm-12" style="padding-top: 15px;">
+										<div class="new-transfer createAccountBtn" style="max-width: 700px;">Create New Receiver</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>				
 		</aui:form>
 		</div>
 
@@ -207,6 +203,25 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request' ,'node-event-simulat
 			}else{
 				A.one("#unique_branch_code_label").text("IFSC Code");
 			}
+			
+			var  getStateDetailURL = '${getStateDetailURL}';
+			A.io.request(getStateDetailURL.toString(),{
+				dataType: 'json',
+				method: 'GET',
+				data :{
+					'<portlet:namespace/>countryCode' : countryCode
+				},
+				on: {
+				success: function() {
+					A.one('#<portlet:namespace/>state').all('option').remove();
+					var stateList=this.get('responseData');
+					A.one('#<portlet:namespace/>state').append("<option  value='' >Select State</option>");
+					for(var i in stateList){
+						A.one('#<portlet:namespace/>state').append('<option value="'+ stateList[i].statecd  +'">'+ stateList[i].statedesc +'</option>');
+					}
+				}
+			  }
+			});
 		}
 		$("#<portlet:namespace/>mobileCountryCode").val("+"+countryInitialPrefix);
 	});
@@ -214,7 +229,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request' ,'node-event-simulat
 	
 	var cityData;
 	var cityAutoComplete = new A.AutoCompleteList({
-		allowBrowserAutocomplete: 'true',
+		allowBrowserAutocomplete: false,
 		activateFirstItem: 'true',
 		inputNode: '#<portlet:namespace />countryCity',
 		resultTextLocator:'cityDesc',
@@ -335,6 +350,11 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request' ,'node-event-simulat
 		}
 	});
 	
+	new Formatter(document.getElementById('<portlet:namespace/>'+'phoneNumber'), {
+		'pattern': '({{999}})-{{999}}-{{9999}}',
+		'persistent': false
+	});
+	
 	var knownBranhcValidator = new A.FormValidator({
 		boundingBox: document.<portlet:namespace/>newAccountFm,
 		rules: {
@@ -353,7 +373,7 @@ jQuery.noConflict();
 (function($) {
     $(function() {
     	
-    	$('#<portlet:namespace />phoneNumber, #<portlet:namespace/>accountNumber,  #<portlet:namespace/>accountNumber2').bind('keyup paste', function(){
+    	$('#<portlet:namespace/>accountNumber,  #<portlet:namespace/>accountNumber2').bind('keyup paste', function(){
     		this.value = this.value.replace(/[^0-9]/g, '');
         });
     	

@@ -18,9 +18,9 @@ public class CustomUserBean {
 	private String mobNo;
 	private long partyId;
 	private long partyUserId;
-	private boolean isKYCCompleted;
-	private boolean isAccountCompleted;
+	private boolean accountCompleted;
 	private boolean isProfileComplete;
+	private boolean documentVerified;
 	
 	public CustomUserBean(CustomUser customUser){
 		if(Validator.isNotNull(customUser)){
@@ -31,6 +31,8 @@ public class CustomUserBean {
 			this.partyId = customUser.getPartyId();
 			this.partyUserId = customUser.getPartyUserId();
 			this.isProfileComplete = customUser.isProfileComplete();
+			this.accountCompleted = customUser.getAccountCompleted();
+			this.documentVerified  = customUser.getDocumentVerified();
 		}
 	}
 
@@ -75,22 +77,6 @@ public class CustomUserBean {
 		this.mobileCountryCode = mobileCountryCode;
 	}
 
-	public boolean isKYCCompleted() {
-		return isKYCCompleted;
-	}
-
-	public void setKYCCompleted(boolean isKYCCompleted) {
-		this.isKYCCompleted = isKYCCompleted;
-	}
-
-	public boolean isAccountCompleted() {
-		return isAccountCompleted;
-	}
-
-	public void setAccountCompleted(boolean isAccountCompleted) {
-		this.isAccountCompleted = isAccountCompleted;
-	}
-
 	public boolean isProfileComplete() {
 		return isProfileComplete;
 	}
@@ -106,6 +92,23 @@ public class CustomUserBean {
 	public void setPartyUserId(long partyUserId) {
 		this.partyUserId = partyUserId;
 	}
+
+	public boolean isDocumentVerified() {
+		return documentVerified;
+	}
+
+	public void setDocumentVerified(boolean documentVerified) {
+		this.documentVerified = documentVerified;
+	}
+
+	public boolean isAccountCompleted() {
+		return accountCompleted;
+	}
+
+	public void setAccountCompleted(boolean accountCompleted) {
+		this.accountCompleted = accountCompleted;
+	}
+	
 	
 	
 }

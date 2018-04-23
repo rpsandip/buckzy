@@ -8,56 +8,56 @@
 <liferay-ui:success key="verified" message="verified"/>
 
 
-<h3>Registration</h3>
+<h3>Registration - Mobile Verification</h3>
 <aui:form name="otpVerificationFm" action="${otpVerificationURL}" cssClass="form-horizontal form-label-left">
    
 <c:if test="${success }">
 	<h4>Registration done successfully and you have verified your registered mobile number.
-	Please check your inbox to get email verification link</h4> 
+	Please check your inbox to get email verification link <a href="/web/guest"><b>Click here</b></a> to Login.</h4> 
 </c:if>   
    
 <div class="pin-detail" style="border: 1px solid #DB2222; outline: #E8E8E8 solid 3px; padding: 75px 35px 55px 35px;">
 	<div class="row padding-0 margin-0 padding-10">
-               <div class="col-sm-12 padding-0 margin-0" style="margin-bottom: 7px; font-size: 18px;">Enter your PIN</div>
-               <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+               <div class="col-sm-12 padding-0 margin-0" style="margin-bottom: 7px; font-size: 18px;">OTP - Enter your PIN</div>
+               <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                    A pin number has been sent to you on your mobile number <span id="mobile-num"></span>. Once you have verified, your digital profile will be activated.
                </div>
-               <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+               <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                    Enter the 6-digit code from the Mobile:
                </div>
                <div class="col-sm-12 margin-top-10" style="background-color: #FFFFFF; padding:45px 20px 20px 20px; ">
                    <div class="col-xs-2">
-                   	   <aui:input type="text" name="verificationCode1"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 30px;">
+                   	   <aui:input type="text" name="verificationCode1"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
                    	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
-                        <aui:input type="text" name="verificationCode2"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 30px;">
+                        <aui:input type="text" name="verificationCode2"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
                    	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
-                        <aui:input type="text" name="verificationCode3"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 30px;">
+                        <aui:input type="text" name="verificationCode3"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
                    	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
-                        <aui:input type="text" name="verificationCode4"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 30px;">
+                        <aui:input type="text" name="verificationCode4"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
                    	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
-                        <aui:input type="text" name="verificationCode5"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 30px;">
+                        <aui:input type="text" name="verificationCode5"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
                    	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
-                        <aui:input type="text" name="verificationCode6"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 30px;">
+                        <aui:input type="text" name="verificationCode6"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
                    	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
@@ -67,9 +67,9 @@
                    <aui:button type="button" value="Submit Registration" style="width: 700px;" cssClass="submitRegistrationBtn new-transfer btn btn-red"/>
                </div> -->
                <div class="col-sm-12 margin-top-15 submitRegistrationBtn" style="font-size: 12px; width: 700px;">
-            		 <div class="new-transfer" style="margin-left:25px !important;">Submit</div>
+            		 <div class="new-transfer">Submit</div>
          		</div>
-               <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+               <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                    If you haven't received the message within a few minutes we can <a id="resend-pin"> Resend the PIN</a> or please check your spam folder.
                </div>
            </div>
@@ -90,7 +90,9 @@ jQuery.noConflict();
     		
     		var submitRegistrationBtn = A.one('.submitRegistrationBtn');
     		var resendPinBtn = A.one('#resend-pin');
-    		
+    		var otp = '${otp}';
+    		var smsAPIKey = '${smsAPIkey}';
+    		var mobileNo= '${mobileNo}';
     		
     		submitRegistrationBtn.on('click', function(e) {
     			var formValidator = Liferay.Form.get('<portlet:namespace />otpVerificationFm').formValidator;
@@ -133,6 +135,23 @@ jQuery.noConflict();
 	    	$('#<portlet:namespace />mobile').bind('keyup paste', function(){
 	    		this.value = this.value.replace(/[^0-9]/g, '');
 	        });
+	    	
+	    	if(otp != ''){
+	    		console.log("Sending Mobile Verification Code :" + otp + " To Mobile ->" + mobileNo);
+	    		var xhr = new XMLHttpRequest();
+			    body = JSON.stringify({"content": "Buckzy Portal Registration Verification Code: "+otp, "to": [mobileNo]});
+				xhr.open("POST",'https://platform.clickatell.com/messages',true);
+				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.setRequestHeader("Authorization", smsAPIKey);
+				xhr.onreadystatechange = function(){
+				    if (xhr.status == 202) {
+						A.one("#mobile-num").text(mobileNo);
+				    }else if(xhr.readyState == 4  && xhr.status != 202){
+				    	//alert("Error: Failed to send mobile verificatin code. Please contact Administrator");
+				    }
+			    };
+				xhr.send(body);
+	    	}
     	 
     	});
     	

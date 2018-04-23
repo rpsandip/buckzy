@@ -5,7 +5,7 @@
 </portlet:actionURL>
 
 <div style="max-width: 540px; margin: 0 auto; margin-top: 45px;">
-	<div class="pin-detail" style="border: 1px solid #DB2222; outline: #E8E8E8 solid 3px; padding: 75px 35px 55px 35px;">
+	<div class="pin-detail" style="border: 1px solid #DB2222; outline: #E8E8E8 solid 3px; padding: 28px 35px 55px 35px;">
 			<div style="color:red;" class="err-msg1"></div>
 			<div id="newMobRegistration">
 				<div class="col-sm-12 padding-0 margin-0 margin-top-10">
@@ -18,17 +18,17 @@
 	                 <div class="col-xs-6">
 	                         <input type="text" name="newMobNo"  id ="newMobNo"  style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 200px;" placeholder="Mobile No" maxlength="10"/>
 	                 </div>
-	                  <div class="col-sm-3  registerNewMobileBtn" style="font-size: 10px; width: 100px;">
+	                  <div class="col-sm-3  registerNewMobileBtn" style="font-size: 12px; width: 100px;">
 	              		 <div class="new-transfer">Send</div>
 	           		  </div>
 	             </div>
              </div>
 			<div class="row padding-0 margin-0 padding-10">
-                 <div class="col-sm-12 padding-0 margin-0" style="margin-bottom: 7px; font-size: 18px;">Enter your PIN</div>
-                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+                 <div class="col-sm-12 padding-0 margin-0" style="margin-bottom: 7px; font-size: 18px;">OTP Verification - Enter your PIN</div>
+                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                      A pin number has been sent to you on your mobile number <span id="mobile-num"></span>. Once you have verified, your digital profile will be activated.
                  </div>
-                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                      Enter the 4-digit code from the Mobile:
                  </div>
                                  
@@ -53,7 +53,7 @@
                  <div class="col-sm-12 margin-top-15 submitLogInBtn" style="font-size: 12px; width: 700px;">
               		 <div class="new-transfer" style="margin-left:25px !important;">Submit</div>
            		</div>
-                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                      If you haven't received the message within a few minutes we can <a id="resend-pin">Resend the PIN</a> or please check your spam folder.
                  </div>
              </div>
@@ -64,10 +64,10 @@
 			<div class="row padding-0 margin-0 padding-10">
 				  <h3>New Device PIN Verification</h3>
                  <div class="col-sm-12 padding-0 margin-0" style="margin-bottom: 7px; font-size: 18px;">Enter your PIN</div>
-                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                      A pin number has been sent to you on your mobile number <span id="mobile-num"></span>. Once you have verified, your digital profile will be activated.
                  </div>
-                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                      Enter the 4-digit code from the Mobile:
                  </div>
                  <div class="col-sm-12 margin-top-10" style="background-color: #FFFFFF; padding:45px 20px 20px 20px; ">
@@ -90,7 +90,7 @@
                  <div class="col-sm-12 margin-top-15 newDeviceSubmitLogInBtn" style="font-size: 12px; width: 700px;">
               		 <div class="new-transfer" style="margin-left:25px !important;">Submit</div>
            		</div>
-                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 10px;">
+                 <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
                      If you haven't received the message within a few minutes we can <a id="new-device-resend-pin">Resend the PIN</a> or please check your spam folder.
                  </div>
              </div>
@@ -304,7 +304,7 @@ AUI().use('aui-io-request','liferay-portlet-url' ,'aui-base','aui-form-validator
 			 hasValidMobileNo = true;
 		     // Send Initial SMS Verification Code
 			firstVerificationCode =  Math.floor(1000 + Math.random() * 9000);
-			var xhr = new XMLHttpRequest(),
+			var xhr = new XMLHttpRequest();
 		    body = JSON.stringify({"content": "Buckzy Portal Login Verification Code: "+firstVerificationCode, "to": [mobileNo]});
 			xhr.open("POST",'https://platform.clickatell.com/messages',true);
 			xhr.setRequestHeader("Content-Type", "application/json");

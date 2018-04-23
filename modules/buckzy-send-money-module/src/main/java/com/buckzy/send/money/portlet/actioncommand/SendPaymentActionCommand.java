@@ -42,8 +42,17 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest)).getSession().getAttribute("token");
-		long receiverPartyId = ParamUtil.getLong(actionRequest, "receiver");
-		Float exchangeRate = ParamUtil.getFloat(actionRequest, "exchangeRate");
+		long receiverPartyId=0;
+		String receiverDetail = ParamUtil.getString(actionRequest, "receiver");
+		if(Validator.isNotNull(receiverDetail) && receiverDetail.indexOf(",")>0){
+			String[] receiverDetailArray = receiverDetail.split(",");
+			receiverPartyId = Long.parseLong(receiverDetailArray[0]);
+		}
+		
+		String exchangeRateStr = ParamUtil.getString(actionRequest, "exchangeRate");
+		float exchangeRate = Float.valueOf(exchangeRateStr);
+		
+		String purTrans = ParamUtil.getString(actionRequest, "purTrans");
 		if(exchangeRate!=0){
 		try {
 			
@@ -68,21 +77,45 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 					
 					JSONObject responseObj = BuckzyCommonLocalServiceUtil.makePayment(token, senderPartyId,
 							senderAccountId, receiverPartyId, receiverAccountId, fromCurCode,
-							toCurCode, exchangeRate, amount, "Test", "Test", 
-							"Test");
+							toCurCode, exchangeRate, amount, purTrans, "TEST", 
+							"TEST");
 					if(Validator.isNotNull(responseObj) && responseObj.get("responseStatus").equals("success")){
 						SessionMessages.add(actionRequest, "payment-succcess");
+						
+						String senderLast4digitAccount = StringPool.BLANK;
+						if(Validator.isNotNull(responseObj.getString("sndracctnr")) && responseObj.getString("sndracctnr").length()>=4){
+							senderLast4digitAccount = responseObj.getString("sndracctnr").substring((responseObj.getString("sndracctnr").length()-4), responseObj.getString("sndracctnr").length());
+						}
+						
+						String receiverLast4digitAccount = StringPool.BLANK;
+						if(Validator.isNotNull(responseObj.getString("rcvracctnr")) && responseObj.getString("rcvracctnr").length()>=4){
+							receiverLast4digitAccount = responseObj.getString("rcvracctnr").substring((responseObj.getString("rcvracctnr").length()-4), responseObj.getString("rcvracctnr").length());
+						}
+						
 						actionResponse.setRenderParameter("mvcRenderCommandName", "/post_payment");
+						
+						actionResponse.setRenderParameter("txnDt", responseObj.getString("rqstexecdt"));
+						actionResponse.setRenderParameter("rcBkId", responseObj.getString("rcvrbankid"));
+						
 						actionResponse.setRenderParameter("paymentId", responseObj.getString("lineitemid"));
-						actionResponse.setRenderParameter("senderName", responseObj.getString("sndrdbtrnm"));
-						actionResponse.setRenderParameter("senderAcnt", responseObj.getString("sndracctnr"));
-						actionResponse.setRenderParameter("senderAmount", responseObj.getString("sndrinstramt") + StringPool.SPACE + responseObj.getString("sndrcurrcd"));
+						actionResponse.setRenderParameter("pID", responseObj.getString("lineitemid"));
+						actionResponse.setRenderParameter("sdNm", responseObj.getString("sndrdbtrnm"));
+						actionResponse.setRenderParameter("sdAc", senderLast4digitAccount);
+						actionResponse.setRenderParameter("sdAm", responseObj.getString("sndrinstramt"));
+						actionResponse.setRenderParameter("sdCr", responseObj.getString("sndrcurrcd"));
+						actionResponse.setRenderParameter("sdCn", responseObj.getString("sndrcntrycd"));
 						
-						actionResponse.setRenderParameter("recevierName", responseObj.getString("rcvrnm"));
-						actionResponse.setRenderParameter("recevierAcnt", responseObj.getString("rcvracctnr"));
-						actionResponse.setRenderParameter("receiverAmount", responseObj.getString("rcvramt") + StringPool.SPACE + responseObj.getString("rcvrcurrcd"));
+						actionResponse.setRenderParameter("rcNm", responseObj.getString("rcvrnm"));
+						actionResponse.setRenderParameter("rcAc", receiverLast4digitAccount);
+						actionResponse.setRenderParameter("rcCr", responseObj.getString("rcvrcurrcd"));
+						actionResponse.setRenderParameter("rcAm", responseObj.getString("rcvramt"));
+						actionResponse.setRenderParameter("rcMl", responseObj.getString("rcvremail"));
+						actionResponse.setRenderParameter("rcPh", responseObj.getString("rcvrmobilenr"));
+						actionResponse.setRenderParameter("rcCn", responseObj.getString("rcvrcntrycd"));
 						
+						actionResponse.setRenderParameter("purpofpymt", responseObj.getString("purpofpymt"));
 						
+						actionResponse.setRenderParameter("exRt", String.valueOf(exchangeRate));
 					}else{
 						SessionErrors.add(actionRequest, "payment-error");
 					}

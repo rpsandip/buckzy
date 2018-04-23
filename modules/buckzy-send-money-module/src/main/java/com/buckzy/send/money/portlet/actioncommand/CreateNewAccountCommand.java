@@ -62,19 +62,39 @@ public class CreateNewAccountCommand extends BaseMVCActionCommand{
 			String mobileNo = ParamUtil.getString(actionRequest, "phoneNumber");
 			String bankName = ParamUtil.getString(actionRequest, "bankName");
 			String accountNo = ParamUtil.getString(actionRequest, "accountNumber");
-			String purposeToTransfer = ParamUtil.getString(actionRequest, "purTrans");
 			String searchBranchType  = ParamUtil.getString(actionRequest, "searchBranchType");
 			String routingNumber = ParamUtil.getString(actionRequest, "unique_branch_code");
 			String branchCode = StringPool.BLANK;
 			String acctInstnNm = StringPool.BLANK;
+			String currencyCode = StringPool.BLANK;
+			
+			if(Validator.isNull(address)){
+				address="Test";
+			}
+			if(Validator.isNull(city)){
+				city="Test";
+			}
+			if(Validator.isNull(state)){
+				state ="Test";
+			}
+			if(Validator.isNull(pincode)){
+				pincode = "12345";
+			}
+			
 			int bankId=0;
 			int branchId=0;
 			
+			if(Validator.isNotNull(mobileNo)){
+				mobileNo= mobileNo.replaceAll("-", "");
+				mobileNo= mobileNo.replaceAll("\\(", "");
+				mobileNo = mobileNo.replaceAll("\\)", "");
+			}
 			
 			String countryCode = StringPool.BLANK;
 			if(Validator.isNotNull(countryDetail)){
 				String[] countryArray = countryDetail.split(StringPool.COMMA);
 				countryCode = countryArray[0];
+				currencyCode = countryArray[3];
 			}
 	
 			if(searchBranchType.equals("known_branch")){
@@ -95,12 +115,15 @@ public class CreateNewAccountCommand extends BaseMVCActionCommand{
 			}
 			
 			
+			if(Validator.isNull(currencyCode)){
+				currencyCode  = BuckzyConstants.SINGAPORE_CURRENCY_CODE;
+			}
 			
 			
 			JSONObject paramsJsonObj = JSONFactoryUtil.createJSONObject();
 			paramsJsonObj.put("acctownrtype", BuckzyConstants.IND_ACCOUNT_TYPE);
 			//TODO: Need to make dynamic
-			paramsJsonObj.put("basecurrcd", BuckzyConstants.SINGAPORE_CURRENCY_CODE);
+			paramsJsonObj.put("basecurrcd", currencyCode.trim());
 	
 			paramsJsonObj.put("sndrflg", 0);
 			// TODO: Need to get proper value of it
@@ -135,15 +158,15 @@ public class CreateNewAccountCommand extends BaseMVCActionCommand{
 			accountObj.put("cntryOnAcct", countryCode);
 			accountObj.put("zipOnAcct", pincode);
 			accountObj.put("prefAcctFlag", "T");
-			accountObj.put("acctType", "SV");
+			accountObj.put("acctType", "CV");
 			accountObj.put("accountCategory", 1);
 			if(searchBranchType.equals("known_branch")){
 				accountObj.put("routngNm", routingNumber);
 	    	}else{
-	    		accountObj.put("routngNm", routingNumber);
+	    		//accountObj.put("routngNm", routingNumber);
 	    		accountObj.put("acctInstnNm", acctInstnNm);
 	    		accountObj.put("bankId", bankId);
-	    		accountObj.put("branchId", branchId);
+	    		accountObj.put("bankBranchId", branchId);
 	    	}
 			
 			paramsJsonObj.put("accnt", accountObj);
