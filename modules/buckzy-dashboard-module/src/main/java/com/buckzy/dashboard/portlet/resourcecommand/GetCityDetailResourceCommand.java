@@ -35,11 +35,13 @@ public class GetCityDetailResourceCommand implements MVCResourceCommand{
 			throws PortletException {
 		
 		String keyword = ParamUtil.getString(resourceRequest, "keyword");
+		String stateCode = ParamUtil.getString(resourceRequest, "stateCode");
+		String countryCode = ParamUtil.getString(resourceRequest, "countryCode");
 		JSONArray cityArray = JSONFactoryUtil.createJSONArray();
 		if(Validator.isNotNull(keyword)){
 			String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(resourceRequest)).getSession().getAttribute("token");
 			// Get City List
-			cityArray = BuckzyCommonLocalServiceUtil.getCityList(token,keyword);
+			cityArray = BuckzyCommonLocalServiceUtil.getCityList(token,keyword, stateCode, countryCode);
 		}
 		
 		try {

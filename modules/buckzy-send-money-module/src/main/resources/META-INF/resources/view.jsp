@@ -11,8 +11,12 @@
 <liferay-ui:error key="sender-account-not-exist" message="sender-account-not-exist"/>
 <liferay-ui:error key="exchange-rate-not-available" message="exchange-rate-not-available"/>
 <liferay-ui:error key="payment-error" message="payment-error"/>
+<liferay-ui:error key="payment-custom-error" message="${customErr }"/>
 <liferay-ui:success key="payment-succcess"message="payment-succcess" />
 <liferay-ui:success key="account-created-success"message="account-created-success" />
+<liferay-ui:error key="account-created-error" message="account-created-error"/>
+<liferay-ui:error key="account-create-custom-err" message="${customErr }"/>
+
 
 <aui:form name="paymentFm" action="${sendPaymentURL}" cssClass="form-horizontal form-label-left" enctype="multipart/form-data">
 <div class="row padding-0 margin-0">
@@ -59,7 +63,7 @@
 					<c:forEach items="${receiverList }" var="receiver">
 						<aui:option value="${receiver.get('prtyid')}, ${receiver.get('basecurrcd')}" 
 						selected="${receiver.get('prtyid') eq paymentBean.rcvrid ? true : false }"
-						>${receiver.get('frstnm') } ${receiver.get('lastnm') }</aui:option>
+						>${receiver.get('frstnm') } ${receiver.get('lastnm') }   ${receiver.get('recAccNr4Digit') }</aui:option>
 					</c:forEach>
 				</aui:select>
 			</div>
@@ -155,13 +159,18 @@
 		</div>
 
 		<div class="col-xs-12">
-			<div class="col-sm-8 submit-payment" style="margin-top: 10px;">
-				<div class="new-transfer">Submit</div>
-			</div>
-
-			<div class="col-sm-4" style="margin-top: 10px;">
-				<div class="new-transfer" style="display: block;">Cancel</div>
-			</div>
+				<c:choose>
+					<c:when test="${isAccountVerfied }">
+						<div class="col-sm-12 submit-payment" style="margin-top: 10px;">
+							<div class="new-transfer">Submit</div>
+						</div>	
+					</c:when>
+					<c:otherwise>
+						<div class="col-sm-12" style="color: #961622; font-size: 14px; font-weight: bold;">
+							You have not added your bank account. Please update your profile <a href="/group/guest/profile">here</a>
+						</div>
+					</c:otherwise>
+				</c:choose>
 		</div>
 	</div>
 
@@ -219,14 +228,16 @@
 AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate', function(A) {
 	
 	var submitPaymentBtn = A.one('.submit-payment');
-	submitPaymentBtn.on('click', function(e) {
-		var formValidator = Liferay.Form.get('<portlet:namespace />paymentFm').formValidator;
-		formValidator.validate();
-		receiverValidator.validate();
-		if(!formValidator.hasErrors() && !receiverValidator.hasErrors()){
-			document.<portlet:namespace />paymentFm.submit();
-		}
-	});
+	if(submitPaymentBtn){
+		submitPaymentBtn.on('click', function(e) {
+			var formValidator = Liferay.Form.get('<portlet:namespace />paymentFm').formValidator;
+			formValidator.validate();
+			receiverValidator.validate();
+			if(!formValidator.hasErrors() && !receiverValidator.hasErrors()){
+				document.<portlet:namespace />paymentFm.submit();
+			}
+		});
+	}
 	
 	var fromCurSelect = A.one("#<portlet:namespace />fromCur");
 	var toCurSelect = A.one("#<portlet:namespace />toCur");

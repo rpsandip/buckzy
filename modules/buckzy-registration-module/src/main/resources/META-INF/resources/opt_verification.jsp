@@ -28,40 +28,38 @@
                <div class="col-sm-12 margin-top-10" style="background-color: #FFFFFF; padding:45px 20px 20px 20px; ">
                    <div class="col-xs-2">
                    	   <aui:input type="text" name="verificationCode1"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
-                   	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
                         <aui:input type="text" name="verificationCode2"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
-                   	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
                         <aui:input type="text" name="verificationCode3"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
-                   	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
                         <aui:input type="text" name="verificationCode4"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
-                   	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
                         <aui:input type="text" name="verificationCode5"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
-                   	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
                    <div class="col-xs-2">
                         <aui:input type="text" name="verificationCode6"  label="" style="border: 0px; border-bottom: 2px solid #C7C7CC; width: 35px;">
-                   	   		<aui:validator name="required" />
 			     			<aui:validator name="maxLength">1</aui:validator>
                    	   </aui:input>
                    </div>
+                   <div style="color: #961622; font-size: 14px; font-weight: bold; padding-top: 10px;" id="otpErrMsg">
+                   		
+                   </div>
+                   
                </div>
                <!-- <div class="col-sm-12 margin-top-15" style="font-size: 12px;">
                    <aui:button type="button" value="Submit Registration" style="width: 700px;" cssClass="submitRegistrationBtn new-transfer btn btn-red"/>
@@ -95,8 +93,31 @@ jQuery.noConflict();
     		var mobileNo= '${mobileNo}';
     		
     		submitRegistrationBtn.on('click', function(e) {
+    		
+				A.one("#otpErrMsg").text('');
     			var formValidator = Liferay.Form.get('<portlet:namespace />otpVerificationFm').formValidator;
     			formValidator.validate();
+    			var validOTP=true;
+    			if(isNaN(parseInt(A.one('#<portlet:namespace/>verificationCode1').val())) || (parseInt(A.one('#<portlet:namespace/>verificationCode1').val())>9 && parseInt(A.one('#<portlet:namespace/>verificationCode1').val()) <0 ) ){
+    				validOTP=false;
+    			}if(isNaN(parseInt(A.one('#<portlet:namespace/>verificationCode2').val())) || (parseInt(A.one('#<portlet:namespace/>verificationCode2').val())>9 && parseInt(A.one('#<portlet:namespace/>verificationCode2').val()) <0 ) ){
+    				validOTP=false;
+    			}if(isNaN(parseInt(A.one('#<portlet:namespace/>verificationCode3').val())) || (parseInt(A.one('#<portlet:namespace/>verificationCode3').val())>9 && parseInt(A.one('#<portlet:namespace/>verificationCode3').val()) <0 ) ){
+    				validOTP=false;
+    			}if(isNaN(parseInt(A.one('#<portlet:namespace/>verificationCode4').val())) || (parseInt(A.one('#<portlet:namespace/>verificationCode4').val())>9 && parseInt(A.one('#<portlet:namespace/>verificationCode4').val()) <0 ) ){
+    				validOTP=false;
+    			}if(isNaN(parseInt(A.one('#<portlet:namespace/>verificationCode5').val())) || (parseInt(A.one('#<portlet:namespace/>verificationCode5').val())>9 && parseInt(A.one('#<portlet:namespace/>verificationCode5').val()) <0 ) ){
+    				validOTP=false;
+    			}if(isNaN(parseInt(A.one('#<portlet:namespace/>verificationCode6').val())) || (parseInt(A.one('#<portlet:namespace/>verificationCode6').val())>9 && parseInt(A.one('#<portlet:namespace/>verificationCode6').val()) <0 ) ){
+    				validOTP=false;
+    			}
+    			
+    			console.log("validOTP ->" + validOTP);
+    			if(!validOTP){
+    				A.one("#otpErrMsg").text('Invalid OTP');
+    				return;
+    			}
+    			
    				if(!formValidator.hasErrors()){
    					document.<portlet:namespace />otpVerificationFm.submit();
    				}
@@ -135,6 +156,27 @@ jQuery.noConflict();
 	    	$('#<portlet:namespace />mobile').bind('keyup paste', function(){
 	    		this.value = this.value.replace(/[^0-9]/g, '');
 	        });
+	    	
+	    	$("#<portlet:namespace/>verificationCode1").on("keyup", function(e){
+	    		$("#<portlet:namespace/>verificationCode2").focus();
+	    	});
+	    	
+	    	$("#<portlet:namespace/>verificationCode2").on("keyup", function(e){
+	    		$("#<portlet:namespace/>verificationCode3").focus();
+	    	});
+	    	
+	    	$("#<portlet:namespace/>verificationCode3").on("keyup", function(e){
+	    		$("#<portlet:namespace/>verificationCode4").focus();
+	    	});
+	    	
+	    	$("#<portlet:namespace/>verificationCode4").on("keyup", function(e){
+	    		$("#<portlet:namespace/>verificationCode5").focus();
+	    	});
+	    	
+	    	$("#<portlet:namespace/>verificationCode5").on("keyup", function(e){
+	    		$("#<portlet:namespace/>verificationCode6").focus();
+	    	});
+	    
 	    	
 	    	if(otp != ''){
 	    		console.log("Sending Mobile Verification Code :" + otp + " To Mobile ->" + mobileNo);

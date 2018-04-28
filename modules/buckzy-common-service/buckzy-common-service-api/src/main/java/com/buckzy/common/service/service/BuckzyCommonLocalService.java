@@ -69,7 +69,8 @@ public interface BuckzyCommonLocalService extends BaseLocalService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONArray getCityList(java.lang.String token,
-		java.lang.String keyWord);
+		java.lang.String keyWord, java.lang.String stateCode,
+		java.lang.String countryCode);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONArray getCountryList(java.lang.String token);
@@ -102,6 +103,10 @@ public interface BuckzyCommonLocalService extends BaseLocalService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getMultiPartResponse(java.lang.String URL, long partyId,
 		java.lang.String token, File file, java.lang.String docTypeCode);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public JSONObject getPartyByEmail(java.lang.String token,
+		java.lang.String emailAddres);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getPaymentDetail(java.lang.String token, long paymentId);
@@ -145,6 +150,8 @@ public interface BuckzyCommonLocalService extends BaseLocalService {
 	public java.lang.String dedcryptPassword(java.lang.String encryptedPass);
 
 	public java.lang.String encryptPassword(java.lang.String password);
+
+	public java.lang.String extractErrMsgFromJson(JSONObject erroObj);
 
 	/**
 	* Returns the OSGi service identifier.

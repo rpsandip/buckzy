@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -53,7 +54,7 @@ public class UpdateProfileActionCommand extends BaseMVCActionCommand{
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		UploadPortletRequest uploadPortletRequest = PortalUtil.getUploadPortletRequest(actionRequest);
 		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest)).getSession().getAttribute("token");
-		
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
 		long userId = themeDisplay.getUserId();
 		
 		String firstName = ParamUtil.getString(actionRequest, "firstName");
@@ -159,7 +160,13 @@ public class UpdateProfileActionCommand extends BaseMVCActionCommand{
 						SessionErrors.add(actionRequest, "profile-update-error");
 					}
 				} catch (PortalException e) {
-					SessionErrors.add(actionRequest, "profile-update-error");
+					if(Validator.isNotNull(e.getMessage())){
+						SessionErrors.add(actionRequest, "profile-custom-update-error");
+						request.getSession().setAttribute("customErr", e.getMessage());
+					}else{
+						SessionErrors.add(actionRequest, "profile-update-error");
+					}
+					SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 					_log.error(e);
 				}
 				

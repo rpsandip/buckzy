@@ -65,8 +65,10 @@ public class BuckzyCommonLocalServiceWrapper implements BuckzyCommonLocalService
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONArray getCityList(
-		java.lang.String token, java.lang.String keyWord) {
-		return _buckzyCommonLocalService.getCityList(token, keyWord);
+		java.lang.String token, java.lang.String keyWord,
+		java.lang.String stateCode, java.lang.String countryCode) {
+		return _buckzyCommonLocalService.getCityList(token, keyWord, stateCode,
+			countryCode);
 	}
 
 	@Override
@@ -126,6 +128,12 @@ public class BuckzyCommonLocalServiceWrapper implements BuckzyCommonLocalService
 		java.io.File file, java.lang.String docTypeCode) {
 		return _buckzyCommonLocalService.getMultiPartResponse(URL, partyId,
 			token, file, docTypeCode);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.json.JSONObject getPartyByEmail(
+		java.lang.String token, java.lang.String emailAddres) {
+		return _buckzyCommonLocalService.getPartyByEmail(token, emailAddres);
 	}
 
 	@Override
@@ -194,6 +202,12 @@ public class BuckzyCommonLocalServiceWrapper implements BuckzyCommonLocalService
 	@Override
 	public java.lang.String encryptPassword(java.lang.String password) {
 		return _buckzyCommonLocalService.encryptPassword(password);
+	}
+
+	@Override
+	public java.lang.String extractErrMsgFromJson(
+		com.liferay.portal.kernel.json.JSONObject erroObj) {
+		return _buckzyCommonLocalService.extractErrMsgFromJson(erroObj);
 	}
 
 	/**

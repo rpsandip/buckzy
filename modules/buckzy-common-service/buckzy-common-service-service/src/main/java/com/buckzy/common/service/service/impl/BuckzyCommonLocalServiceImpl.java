@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -135,7 +136,7 @@ public class BuckzyCommonLocalServiceImpl
 			serviceContext.setCreateDate(new Date());
 			serviceContext.setModifiedDate(new Date());
 			
-			String[] birthDay = validateBirthDay(dob);
+			String[] birthDay = validateBirthDay(dob, responseObj);
 			int month=1;
 			int day=1;
 			int year=1970;
@@ -144,7 +145,7 @@ public class BuckzyCommonLocalServiceImpl
 				month = Integer.parseInt(birthDay[0]);
 				day = Integer.parseInt(birthDay[1]);
 				year =Integer.parseInt(birthDay[2]);
-				month--;
+				//month--;
 			}
 			
 			long defaultSiteId = getDefaultSiteGroupId();
@@ -274,12 +275,13 @@ public class BuckzyCommonLocalServiceImpl
 		return errMsg;
 	}
 	
-	private String[] validateBirthDay(String birthDay){
+	private String[] validateBirthDay(String birthDay,JSONObject responseObj){
 		SimpleDateFormat df = new SimpleDateFormat(BuckzyConstants.DATE_FORMAT);
 		try {
 			df.parse(birthDay);
 			return birthDay.split(StringPool.FORWARD_SLASH);
 		} catch (ParseException e) {
+			responseObj.put("userErrMsg", "Invalid Date Of Birth;");
 			_log.debug("Not valid Birthday in Registration ::" + birthDay);
 		}
 		return new String[]{};
@@ -512,10 +514,20 @@ public class BuckzyCommonLocalServiceImpl
 		return stateArray;
 	}
     
-public JSONArray getCityList(String token, String keyWord){
+public JSONArray getCityList(String token, String keyWord, String stateCode, String countryCode){
 		
 		JSONArray cityArray = JSONFactoryUtil.createJSONArray();
 		String url = BuckzyConstants.GET_CITY_LIST_URL.replace("cityName", keyWord);
+		if(Validator.isNotNull(keyWord) && keyWord.length()>0){
+			url += "cityNm="+keyWord;
+		}
+		if(Validator.isNotNull(stateCode)){
+			url += "&stateCd="+stateCode;
+		}
+		if(Validator.isNotNull(countryCode)){
+			url +="&cntryCd=" + countryCode;
+		}
+		
 		JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(url, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
 		try {
 			if(response.getInt("status")==200){
@@ -652,7 +664,7 @@ public JSONArray getCityList(String token, String keyWord){
 		paymentBean.setRcvracctid(paymentObj.getLong("rcvracctid"));
 		paymentBean.setPurpofpymt(paymentObj.getString("purpofpymt"));
 		paymentBean.setPurpcd(paymentObj.getString("purpcd"));
-		paymentBean.setCreatedDate(new Date(paymentObj.getLong("createdDate")));
+		paymentBean.setCreatedDate(new Date(paymentObj.getLong("createdAt")));
 		return paymentBean;
     }
     
@@ -696,6 +708,20 @@ public JSONArray getCityList(String token, String keyWord){
     	return responseObj;
     }
     
+    public JSONObject getPartyByEmail(String token, String emailAddres){
+    	JSONObject responseObj = JSONFactoryUtil.createJSONObject();
+    	String url = BuckzyConstants.GET_PARTY_BY_EMAIL + emailAddres;
+    	JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(url, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
+		try {
+			if(response.getInt("status")==200){
+				responseObj = JSONFactoryUtil.createJSONObject(response.getString("data"));
+			}
+		} catch (JSONException e) {
+			_log.error(e.getMessage());
+		}
+    	
+    	return responseObj;
+    }
     
     public JSONObject makePayment(String token, long senderPartyId, long senderAcntId, long receiverPartyId,
     		long receiverAcntId, String sendingCurCode, String receivingCurCode, float exchangeRate, double amount,
@@ -719,18 +745,15 @@ public JSONArray getCityList(String token, String keyWord){
     	
     	JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(BuckzyConstants.MAKE_PAYMENT, BuckzyConstants.HTTP_POST, params, token);
     	JSONObject dataObj = JSONFactoryUtil.createJSONObject(response.getString("data"));
-    	
     	int status = response.getInt("status");
-    	
-    	_log.info("payment pamars ->" + paramsJsonObj.toJSONString());
-    	
-    	_log.info("payment response ->" + response.toJSONString());
     	
 	    if(status==200){
 	    	dataObj.put("responseStatus", "success");
 	    	responseObj =  dataObj;
-	    }else{PortalException pe = new PortalException(dataObj.getString("developerMessage"));
-    		throw pe;
+	    }else{
+	    	String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(dataObj.getJSONObject("errors"));
+			PortalException pe = new PortalException(errMsg);
+			throw pe;
 	    }
     	return responseObj;
     }
@@ -903,6 +926,22 @@ public JSONArray getCityList(String token, String keyWord){
 			
 		}
 		return pass;
+	}
+	
+	public String extractErrMsgFromJson(JSONObject erroObj){
+		String userErrMsg = StringPool.BLANK;
+		if(Validator.isNotNull(erroObj)){
+			Iterator<String> keys = erroObj.keys();	
+			while(keys.hasNext()) {
+				String key = (String)keys.next();
+				JSONArray msgArray = erroObj.getJSONArray(key);
+				if(Validator.isNotNull(msgArray) && msgArray.length()>0){
+					userErrMsg = (String)msgArray.getJSONObject(0).get("message");
+					break;
+				}
+			}
+		}
+		return userErrMsg;
 	}
 	
 	private static SecretKeySpec generateMySQLAESKey(final String key, final String encoding) {

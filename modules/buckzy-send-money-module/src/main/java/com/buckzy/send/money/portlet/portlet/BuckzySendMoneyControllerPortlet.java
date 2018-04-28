@@ -8,6 +8,7 @@ import com.buckzy.send.money.portlet.constants.BuckzySendMoneyControllerPortletK
 import com.buckzy.send.money.portlet.util.HelperUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -17,6 +18,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -71,7 +73,15 @@ public class BuckzySendMoneyControllerPortlet extends MVCPortlet {
 				JSONObject loginUserPartyDetail = CustomUserLocalServiceUtil.getPartyDetail(userBean.getCustomUserBean().getPartyId(),token);
 				if(Validator.isNotNull(loginUserPartyDetail)){
 					renderRequest.setAttribute("loginUserCurrencyCd", loginUserPartyDetail.get("basecurrcd"));
+					
+					if(Validator.isNotNull(loginUserPartyDetail.getJSONObject("partyAccount")) &&  loginUserPartyDetail.getJSONObject("partyAccount").getLong("acctId")>0){
+						renderRequest.setAttribute("isAccountVerfied", true);
+					}else{
+						renderRequest.setAttribute("isAccountVerfied", false);
+					}
 				}
+				
+				
 				
 				// Get Currency List
 				JSONArray currencyArray = BuckzyCommonLocalServiceUtil.getCurrencyList(token);
@@ -85,7 +95,17 @@ public class BuckzySendMoneyControllerPortlet extends MVCPortlet {
 				JSONArray receiverArray = BuckzyCommonLocalServiceUtil.getReceiverList(token, userBean.getCustomUserBean().getPartyId());
 				List<JSONObject> receiverJsonList = new ArrayList<JSONObject>();
 				for(int i=0;i<receiverArray.length();i++){
-					receiverJsonList.add(receiverArray.getJSONObject(i));
+					JSONObject receiverObj =  receiverArray.getJSONObject(i);
+					if(Validator.isNotNull(receiverObj.getJSONArray("accounts")) && receiverObj.getJSONArray("accounts").length()>0){
+						String recAccNr = (String)receiverObj.getJSONArray("accounts").getJSONObject(0).get("acctNr");
+						String recAccNr4Digit = StringPool.BLANK;
+						if(Validator.isNotNull(recAccNr) && recAccNr.length()>=4){
+							recAccNr4Digit = recAccNr.substring((recAccNr.length()-4), recAccNr.length());
+							receiverObj.put("recAccNr4Digit", recAccNr4Digit);
+							receiverJsonList.add(receiverArray.getJSONObject(i));
+						}
+					}
+					
 				}
 				renderRequest.setAttribute("receiverList", receiverJsonList);
 				

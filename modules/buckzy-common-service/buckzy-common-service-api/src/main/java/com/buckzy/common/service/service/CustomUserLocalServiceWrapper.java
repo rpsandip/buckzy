@@ -188,11 +188,12 @@ public class CustomUserLocalServiceWrapper implements CustomUserLocalService,
 		java.lang.String password, java.lang.String mobileContryCode,
 		java.lang.String mobileNo, java.lang.String address,
 		java.lang.String city, java.lang.String zipcode,
-		java.lang.String countryCode, java.lang.String currencyCode)
+		java.lang.String stateCode, java.lang.String countryCode,
+		java.lang.String currencyCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _customUserLocalService.createParty(token, userId, fName,
 			lastName, email, password, mobileContryCode, mobileNo, address,
-			city, zipcode, countryCode, currencyCode);
+			city, zipcode, stateCode, countryCode, currencyCode);
 	}
 
 	@Override
@@ -247,7 +248,7 @@ public class CustomUserLocalServiceWrapper implements CustomUserLocalService,
 		java.lang.String email, java.lang.String mobileCountryCode,
 		java.lang.String countryCode, java.lang.String currencyCode,
 		java.lang.String mobileNo, java.lang.String address,
-		java.lang.String city, java.lang.String state,
+		java.lang.String city, java.lang.String stateCode,
 		java.lang.String zipcode, java.lang.String documentType,
 		java.io.File file, java.lang.String verificationDocName,
 		java.lang.String accountType, java.lang.String cardNumber,
@@ -259,7 +260,7 @@ public class CustomUserLocalServiceWrapper implements CustomUserLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _customUserLocalService.updateParty(token, partyId, userId,
 			fName, lastName, email, mobileCountryCode, countryCode,
-			currencyCode, mobileNo, address, city, state, zipcode,
+			currencyCode, mobileNo, address, city, stateCode, zipcode,
 			documentType, file, verificationDocName, accountType, cardNumber,
 			cardFirstName, cardLastName, expireOnMonth, expireOnYear,
 			accountNumber, acctInstnNm, bankId, branchId, routingNumber,

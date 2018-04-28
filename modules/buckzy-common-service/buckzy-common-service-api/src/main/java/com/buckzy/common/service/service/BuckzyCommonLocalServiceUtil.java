@@ -67,8 +67,9 @@ public class BuckzyCommonLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getCityList(
-		java.lang.String token, java.lang.String keyWord) {
-		return getService().getCityList(token, keyWord);
+		java.lang.String token, java.lang.String keyWord,
+		java.lang.String stateCode, java.lang.String countryCode) {
+		return getService().getCityList(token, keyWord, stateCode, countryCode);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getCountryList(
@@ -118,6 +119,11 @@ public class BuckzyCommonLocalServiceUtil {
 		java.io.File file, java.lang.String docTypeCode) {
 		return getService()
 				   .getMultiPartResponse(URL, partyId, token, file, docTypeCode);
+	}
+
+	public static com.liferay.portal.kernel.json.JSONObject getPartyByEmail(
+		java.lang.String token, java.lang.String emailAddres) {
+		return getService().getPartyByEmail(token, emailAddres);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject getPaymentDetail(
@@ -184,6 +190,11 @@ public class BuckzyCommonLocalServiceUtil {
 
 	public static java.lang.String encryptPassword(java.lang.String password) {
 		return getService().encryptPassword(password);
+	}
+
+	public static java.lang.String extractErrMsgFromJson(
+		com.liferay.portal.kernel.json.JSONObject erroObj) {
+		return getService().extractErrMsgFromJson(erroObj);
 	}
 
 	/**

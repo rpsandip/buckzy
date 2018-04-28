@@ -101,7 +101,7 @@ public class BuckzyProfileModulePortlet extends MVCPortlet {
 						if(Validator.isNotNull(partyAddressDetail)){
 							addrressBean.setPostaddr(partyAddressDetail.getString("postaddr"));
 							addrressBean.setTownnm(partyAddressDetail.getString("townnm"));
-							addrressBean.setState(partyAddressDetail.getString("state"));
+							addrressBean.setState(partyAddressDetail.getString("statecd"));
 							addrressBean.setZipcd(partyAddressDetail.getString("zipcd"));
 							addrressBean.setCntrycd(partyAddressDetail.getString("cntrycd"));
 						}

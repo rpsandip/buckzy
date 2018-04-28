@@ -59,7 +59,7 @@
 									<td rowspan="2"><img class="img-responsive"
 										src='<%= themeDisplay.getPathThemeImages() + "/flag/" + paymentBean.getRcvrcntrycd() + ".png" %>'  height="50" width="50"/></td>
 										
-									<th><fmt:formatDate pattern = "mmm-DD-YYYY" value = "${paymentBean.createdDate}" /></th>
+									<th><fmt:formatDate pattern = "MMM-dd-YYYY" value = "${paymentBean.createdDate}" /></th>
 									<th>Tracking #</th>
 									<td>&nbsp;</td>
 								</tr>

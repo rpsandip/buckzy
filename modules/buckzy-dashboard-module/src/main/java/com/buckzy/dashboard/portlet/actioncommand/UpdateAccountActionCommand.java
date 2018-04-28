@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -39,6 +40,7 @@ public class UpdateAccountActionCommand extends BaseMVCActionCommand{
 	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse){
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
 		
 		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest)).getSession().getAttribute("token");
 		String accountType = ParamUtil.getString(actionRequest, "accountType");
@@ -85,7 +87,14 @@ public class UpdateAccountActionCommand extends BaseMVCActionCommand{
 					acctInstnNm, bankId, branchId, routingNo, searchBranchType);
 			SessionMessages.add(actionRequest, "account-success");
 		} catch (PortalException e) {
-			SessionErrors.add(actionRequest, "acccount-err");
+			if(Validator.isNotNull(e.getMessage())){
+				SessionErrors.add(actionRequest, "profile-custom-update-error");
+				request.getSession().setAttribute("customErr", e.getMessage());
+			}else{
+				SessionErrors.add(actionRequest, "acccount-err");
+			}
+			SessionMessages.add(actionRequest,
+					PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 			_log.error(e);
 		} 
 		

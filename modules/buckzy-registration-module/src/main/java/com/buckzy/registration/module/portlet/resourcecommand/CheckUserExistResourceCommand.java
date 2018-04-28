@@ -1,6 +1,7 @@
 package com.buckzy.registration.module.portlet.resourcecommand;
 
 import java.io.IOException;
+import java.lang.management.BufferPoolMXBean;
 
 import javax.portlet.PortletException;
 import javax.portlet.ResourceRequest;
@@ -9,9 +10,10 @@ import javax.portlet.ResourceResponse;
 import org.osgi.service.component.annotations.Component;
 
 import com.buckzy.common.service.service.BuckzyCommonLocalServiceUtil;
+import com.buckzy.common.util.BuckzyConstants;
 import com.buckzy.registration.module.portlet.constants.BuckzyRegistrationModulePortletKeys;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -22,35 +24,33 @@ import com.liferay.portal.kernel.util.Validator;
 @Component(
 	    property = {
 	    	"javax.portlet.name=" + BuckzyRegistrationModulePortletKeys.PORTLET_ID,
-	        "mvc.command.name=/getcity_detail"
+	        "mvc.command.name=/check_user_exist"
 	    },
 	    service = MVCResourceCommand.class
 	)
-public class GetCityDetailResourceCommand implements MVCResourceCommand{
+public class CheckUserExistResourceCommand implements MVCResourceCommand{
 
-	Log _log = LogFactoryUtil.getLog(GetCityDetailResourceCommand.class.getName());
+	Log _log = LogFactoryUtil.getLog(CheckUserExistResourceCommand.class.getName());
 	
 	@Override
 	public boolean serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 			throws PortletException {
-		
-		String keyword = ParamUtil.getString(resourceRequest, "keyword");
-		String stateCode = ParamUtil.getString(resourceRequest, "stateCode");
-		String countryCode = ParamUtil.getString(resourceRequest, "countryCode");
-		JSONArray cityArray = JSONFactoryUtil.createJSONArray();
-		if(Validator.isNotNull(keyword)){
-			String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(resourceRequest)).getSession().getAttribute("token");
-			// Get City List
-			cityArray = BuckzyCommonLocalServiceUtil.getCityList(token,keyword,stateCode,countryCode);
+		boolean isUserExist = false;
+		JSONObject responseObj = JSONFactoryUtil.createJSONObject();
+		String token = BuckzyCommonLocalServiceUtil.getToken(BuckzyConstants.LOGIN_API_USERNAME,BuckzyConstants.LOGIN_API_PASSWORD);
+		String emailAddress = ParamUtil.getString(resourceRequest, "emailAddress");
+		JSONObject partyObj =  BuckzyCommonLocalServiceUtil.getPartyByEmail(token, emailAddress);
+		if(Validator.isNotNull(partyObj) && partyObj.getLong("prtyid")>0){
+			isUserExist = true;
 		}
 		
+		responseObj.put ("isUserExist", isUserExist);
 		try {
-			resourceResponse.getWriter().write(cityArray.toString());
+			resourceResponse.getWriter().write(responseObj.toString());
 		} catch (IOException e) {
 			_log.error(e);
 		}
 		return true;
-		
 	}
 
 }

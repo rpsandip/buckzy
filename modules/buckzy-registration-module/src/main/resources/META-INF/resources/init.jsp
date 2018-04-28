@@ -63,5 +63,11 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
     	.help-block{
     		margin-bottom: 0px !important;
     	}
+    	.alert-success, .alert-danger{
+    		width: 81% !important;
+		    margin-left: 83px !important;
+    	}
+    	
+    	
 	
 </style>

@@ -168,8 +168,9 @@ public interface CustomUserLocalService extends BaseLocalService,
 		java.lang.String email, java.lang.String password,
 		java.lang.String mobileContryCode, java.lang.String mobileNo,
 		java.lang.String address, java.lang.String city,
-		java.lang.String zipcode, java.lang.String countryCode,
-		java.lang.String currencyCode) throws PortalException;
+		java.lang.String zipcode, java.lang.String stateCode,
+		java.lang.String countryCode, java.lang.String currencyCode)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONObject getBranchDetail(int bankId, int branchId,
@@ -201,7 +202,7 @@ public interface CustomUserLocalService extends BaseLocalService,
 		java.lang.String email, java.lang.String mobileCountryCode,
 		java.lang.String countryCode, java.lang.String currencyCode,
 		java.lang.String mobileNo, java.lang.String address,
-		java.lang.String city, java.lang.String state,
+		java.lang.String city, java.lang.String stateCode,
 		java.lang.String zipcode, java.lang.String documentType, File file,
 		java.lang.String verificationDocName, java.lang.String accountType,
 		java.lang.String cardNumber, java.lang.String cardFirstName,

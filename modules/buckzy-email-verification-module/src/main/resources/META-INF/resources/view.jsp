@@ -3,10 +3,19 @@
 <liferay-ui:success key="verified" message="verified"/>
 <liferay-ui:error key="not-verified" message="not-verified"/>
 
-<h3>Email Verification Code</h3>
+<h3>Email Verification</h3>
 <portlet:actionURL var="verificationCodeSubmitURL" name="/submit_verification_code"/>
 
-<aui:form name="registrationFm" action="${verificationCodeSubmitURL}" cssClass="form-horizontal form-label-left">
+<c:choose>
+	<c:when test="${emailVerified }">
+		<h5>Congratulations !! You have verified your Email Address. Please <a href="/web/guest">click here</a> to login</h5>
+	</c:when>
+	<c:otherwise>
+		<h5>Sorry !! Incorrect Email Verification link.</h5>
+	</c:otherwise>
+</c:choose>
+
+<%-- <aui:form name="registrationFm" action="${verificationCodeSubmitURL}" cssClass="form-horizontal form-label-left">
    <div class="col-sm-12 padding-0 profile-detail" style=" color:#9B9A9B;">
    		<div class="col-sm-12">
           <aui:input name="verificationCode" label="Verification Code" placeholder="Verification Code" cssClass="form-control col-md-7 col-xs-6">
@@ -20,9 +29,9 @@
                <div class="new-transfer">Submit</div>
           </div>
    </div>
-</aui:form>
+</aui:form> --%>
 
-<aui:script>
+<!-- <aui:script>
 
 AUI().use('aui-base','aui-form-validator', function(A) {
 	var emailVerificationBtn= A.one(".emailVerificationBtn");
@@ -35,4 +44,4 @@ AUI().use('aui-base','aui-form-validator', function(A) {
 		}
 	});	
 });
-</aui:script>
+</aui:script> -->

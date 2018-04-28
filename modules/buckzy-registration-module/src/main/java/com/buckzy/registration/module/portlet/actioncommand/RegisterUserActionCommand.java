@@ -50,7 +50,6 @@ public class RegisterUserActionCommand extends BaseMVCActionCommand{
 			String emailAddress = ParamUtil.getString(actionRequest, "emailAdddress");
 			String password = ParamUtil.getString(actionRequest, "password");
 			String address = ParamUtil.getString(actionRequest, "address");
-			String dob = ParamUtil.getString(actionRequest, "dob");
 			String zipcode = ParamUtil.getString(actionRequest, "zipcode");
 			String city = ParamUtil.getString(actionRequest, "city");
 			String state = ParamUtil.getString(actionRequest, "state");
@@ -64,6 +63,10 @@ public class RegisterUserActionCommand extends BaseMVCActionCommand{
 			String deviceInfo = ParamUtil.getString(actionRequest, "deviceInfo");
 			String countryCode = StringPool.BLANK;
 			String currencyCode = StringPool.BLANK;
+			String  dobDay = ParamUtil.getString(actionRequest, "dobDay");
+			String  dobMonth = ParamUtil.getString(actionRequest, "dobMonth");
+			String  dobYear = ParamUtil.getString(actionRequest, "dobYear");
+			String dob = getDob(dobDay, dobMonth, dobYear);
 			
 			String[]countryarray = countryDetail.split(StringPool.COMMA);
 			
@@ -102,11 +105,21 @@ public class RegisterUserActionCommand extends BaseMVCActionCommand{
 						
 						SessionMessages.add(actionRequest, "registration-success");
 					}else{
-						SessionErrors.add(actionRequest, "registration-error");
+						String customErrMsg = responseObject.getString("userErrMsg");
+						if(Validator.isNotNull(customErrMsg)){
+							request.getSession().setAttribute("customErr", customErrMsg);
+							SessionErrors.add(actionRequest, "registration-custom-err");
+						}else{
+							SessionErrors.add(actionRequest, "registration-error");
+						}
 						SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 					}
 				} catch (PortalException e) {
-					SessionErrors.add(actionRequest, "registration-error");
+					request.getSession().setAttribute("customErr", e.getMessage());
+					SessionErrors.add(actionRequest, "registration-custom-err");
+					if(Validator.isNull(e.getMessage())){
+						SessionErrors.add(actionRequest, "registration-error");
+					}
 					SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 					_log.error(e);
 				}
@@ -132,5 +145,9 @@ public class RegisterUserActionCommand extends BaseMVCActionCommand{
 			_log.error(e.getMessage());
 		}
 		return isUserExist;
+	}
+	
+	private String getDob(String day, String month, String year){
+		return month+"/"+day+"/"+year;
 	}
 }

@@ -2,10 +2,12 @@
 <%@page import="com.liferay.portal.kernel.json.JSONObject" %>
 
 <liferay-ui:error key="registration-error" message="registration-error"/>
+<liferay-ui:error key="registration-custom-err" message="${customErr }"/>
 <liferay-ui:error key="user-exist" message="user-exist"/>
 <portlet:resourceURL id="/getStateByCountryCode" var="getStateDetailURL"></portlet:resourceURL>
 <portlet:actionURL var="registrationURL" name="/register_user"/>
 <portlet:resourceURL id="/getcity_detail" var="getCityDetailURL"></portlet:resourceURL>
+<portlet:resourceURL id="/check_user_exist" var="checkUserExistURL"></portlet:resourceURL>
 
    <aui:form name="registrationFm" action="${registrationURL}" cssClass="form-horizontal form-label-left">
        <div style="display: table; width: 100%;">
@@ -45,6 +47,11 @@
 												   </aui:input>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6 pad-0">
+                                            <div class="input-group">
+                                            	<span id="userExistErrMsg" style="color: red;"></span>
+                                            </div>
+                                        </div>    
                                     </div>
                                     <div class="col-sm-12 padding-0 icon-input">
                                         <div class="col-sm-6 pad-0">
@@ -79,9 +86,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12" style="padding-left: 0px;">
-                                       <b style="font-size:18px;"> We'll ask you this question if you ever need to reset your password  </b>
-                                    </div>
+                                    <div class="col-sm-12" style="margin-bottom: 15px; display: block; font-size:18px; padding-left: 0px;">
+                                    	We'll ask you this question if you ever need to reset your password
+                                	</div>
                                     <div class="col-sm-12 pad-0">
                                         <aui:select name="reminderQuestion1" label="Security Question 1"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; ">
 										    <aui:option value="">Select Security Question</aui:option>
@@ -141,7 +148,7 @@
 			                                    <div class="col-sm-4 form-group" style=" margin-left: 6px;">
 			                                        <aui:select name="state" label="State" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; "></aui:select>
 	                                    		</div>
-	                                    		<div class="col-sm-4 form-group" style="margin-left: 20px">
+	                                    		<div class="col-sm-4 city-auto form-group" style="margin-left: 20px">
 	                                    			<aui:input name="city" label="City" placeholder="City" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; ">
 												     	<aui:validator name="maxLength">50</aui:validator>
 												   </aui:input>
@@ -166,19 +173,49 @@
 			   						</div>
 			   						<div class="col-xs-12 padding-0 border-1" style="padding: 20px;  font-size: 12px; margin-top: 10px;">
                                 		<div class="col-sm-12" style="margin-bottom: 10px; font-size:18px; padding-left: 0px;">Additional information</div>
-			                                <div class="col-sm-6 form-group has-feedback" style="padding: 0;">
-			                                    <aui:input name="dob" label="Date Of Birth" placeholder="Date Of Birth MM/DD/YYYY" cssClass="form-control col-md-7 col-xs-6 myDatepicker" style="font-size: 12px;  width: 100%; border:1px solid #D3D3D3; border-radius: 1px;">
+			                                <div class="col-sm-12 form-group has-feedback" style="padding: 0;">
+			                                    <!-- <aui:input name="dob" label="Date Of Birth" placeholder="Date Of Birth MM/DD/YYYY" cssClass="form-control col-md-7 col-xs-6 myDatepicker" style="font-size: 12px;  width: 100%; border:1px solid #D3D3D3; border-radius: 1px;">
 												     <aui:validator name="maxLength">15</aui:validator>
-												   </aui:input>
+												</aui:input> -->
+												<div class="col-sm-2 form-group has-feedback" style="padding: 0;">
+													<aui:select name="dobMonth" label="Month" cssClass="form-control col-md-7 col-xs-6"  style="font-size: 12px; ">
+														<aui:option value="00">January</aui:option>
+														<aui:option value="01">February</aui:option>
+														<aui:option value="02">March</aui:option>
+														<aui:option value="03">April</aui:option>
+														<aui:option value="04">May</aui:option>
+														<aui:option value="05">June</aui:option>
+														<aui:option value="06">July</aui:option>
+														<aui:option value="07">August</aui:option>
+														<aui:option value="08">September</aui:option>
+														<aui:option value="09">October</aui:option>
+														<aui:option value="10">Novemnber</aui:option>
+														<aui:option value="11">December</aui:option>
+													</aui:select>
+												</div>
+												<div class="col-sm-2 form-group has-feedback" style="padding: 0; padding-left: 10px;">
+													<aui:input name="dobDay" label="Day" placeholder="Day" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; ">
+			     										<aui:validator name="maxLength">2</aui:validator>
+			   										</aui:input>
+												</div>
+												<div class="col-sm-2 form-group has-feedback" style="padding: 0; padding-left: 10px;">
+													<aui:input name="dobYear" label="Year"  placeholder="Year" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; ">
+			     										<aui:validator name="maxLength">4</aui:validator>
+			   										</aui:input>
+												</div>
 			                                </div>
+			                                 <div class="col-sm-12 form-group has-feedback">
+			                                 	<div id="dobErrMsg" style="color: #961622; font-size: 14px; font-weight: bold;"></div>
+			                                 </div>
+			                                 
 			                        </div>
 			                        <div class="col-sm-12">
                                 		<div class="checkbox">
-                                			<aui:input type="checkbox" name="cond1" value="" label="<a>By registering I have read and agree to the terms and conditions of Buckzy payments Inc. including online privecy statement.</a>">
+                                			<aui:input type="checkbox" name="cond1" value="" label="By registering I have read and agree to the <a><b>Terms and Conditions</b></a> of Buckzy payments Inc. including online <a><b>Privecy Statement</b></a>.</a>">
                                 			</aui:input>
                                 		</div>
                                 		<div class="checkbox">
-                                    		<aui:input type="checkbox" name="cond2" value="" label="<a>I understand and consent to receiving electronic information and communications, including email, phone and SMS about Buckzy Products and Services. I understand agree to the terms and conditions, Online Privacy Statement.</a>">
+                                    		<aui:input type="checkbox" name="cond2" value="" label="I understand and consent to receiving electronic information and communications, including email, phone and SMS about Buckzy Products and Services. I understand agree to the <a><b>Terms and Conditions</b></a>, Online <a><b>Privacy Statement</b></a>">
                                 			</aui:input>
                                 		</div>
                                 		
@@ -192,7 +229,7 @@
 			   			</div>
            			</div>
            		</div>
-           </div>
+           </div>  
         <aui:input type="hidden" name="deviceInfo" />
 		
 		<div class="pin-detail" style="border: 1px solid #DB2222; outline: #E8E8E8 solid 3px; padding: 75px 35px 55px 35px;">
@@ -256,7 +293,10 @@ jQuery.noConflict();
     		var reminderQuestion1 = A.one("#<portlet:namespace />reminderQuestion1");
     		var nextPageBtn = A.one(".next-page");
     		var prevPageBtn = A.one(".prev-page");
-    		
+    		var dobDaySelect = A.one("#<portlet:namespace/>dobDay");
+    		var dobYearSelect = A.one("#<portlet:namespace/>dobYear");
+    		var dobMonthSelect = A.one("#<portlet:namespace/>dobMonth");
+    		var validDob = false;
     		A.one(".pin-detail").hide();
     		
     		registerBtn.on('click', function(e) {
@@ -264,6 +304,10 @@ jQuery.noConflict();
     			formValidator.validate();
     			registration1.validate();
     			registration2.validate();
+    			if(!validDob){
+    				A.one("#dobErrMsg").text("Please enter valid date");
+    				return;
+    			}
    				if(!registration2.hasErrors() && !registration1.hasErrors()){
    					document.<portlet:namespace />registrationFm.submit();
    				}
@@ -274,11 +318,34 @@ jQuery.noConflict();
     		});
     		
     		nextPageBtn.on('click', function(e) {
+    			A.one("#userExistErrMsg").text('');
     			registration1.validate();
-				if(!registration1.hasErrors()){
-					$(".registration1").hide();
-       				$(".registration2").show();		
-				}
+    			
+    			var  checkUserExistURL = '${checkUserExistURL}';
+    			A.io.request(checkUserExistURL.toString(),{
+    				dataType: 'json',
+    				method: 'GET',
+    				data :{
+    					'<portlet:namespace/>emailAddress' : A.one("#<portlet:namespace/>emailAdddress").val()
+    				},
+    				on: {
+    				success: function() {
+    					var resp=this.get('responseData');
+    					
+    					console.log('isUserExist->' + resp.isUserExist);
+    					
+    					if(resp.isUserExist){
+    	    				A.one("#userExistErrMsg").text('Email Address already exist.');
+    	    				return;
+    	    			}
+    	    			
+    					if(!registration1.hasErrors()){
+    						$(".registration1").hide();
+    	       				$(".registration2").show();		
+    					}
+    					}
+    			 	 }
+    			});
     		});
     		
     		prevPageBtn.on('click', function(e) {
@@ -301,6 +368,8 @@ jQuery.noConflict();
     				on: {
     				success: function() {
     					A.one('#<portlet:namespace/>state').all('option').remove();
+    					A.one('#<portlet:namespace/>city').text('');
+
     					var stateList=this.get('responseData');
     					A.one('#<portlet:namespace/>state').append("<option  value='' >Select State</option>");
     					var selectedState='';
@@ -337,11 +406,18 @@ jQuery.noConflict();
     				if(inputValue.length>=3){
     					var getCityDetailURL = '${getCityDetailURL}';
     					var finalData;
+    					var country = A.one("#<portlet:namespace/>country").get('value');
+    					var countryCode ='';
+    					if(country && country.length>0){
+    						countryCode = country.split(",")[0];
+    					}
     					var cityAutoCompelteRequest=A.io.request(getCityDetailURL.toString(),{
     												dataType: 'json',
     												method:'POST',
     												data:{
     													<portlet:namespace />keyword:inputValue,
+    													<portlet:namespace />stateCode: A.one("#<portlet:namespace/>state").val(),
+    													<portlet:namespace />countryCode: countryCode
     												},
     												autoLoad:false,
     												sync:false,
@@ -377,6 +453,62 @@ jQuery.noConflict();
     			}
 
     		});
+    		
+    		dobDaySelect.on('change', function(e) {
+    			A.one("#dobErrMsg").text("");
+    			if(dobYearSelect.val() && !isValidDOB()){
+    				A.one("#dobErrMsg").text("Please enter valid date");
+    			}
+    		});
+    		
+    		dobYearSelect.on('change', function(e) {
+    			A.one("#dobErrMsg").text("");
+    			if(dobDaySelect.val() && !isValidDOB()){
+    				validDob = false;
+    				A.one("#dobErrMsg").text("Please enter valid date");
+    			}
+    		});
+    		
+    		dobMonthSelect.on('change', function(e) {
+    			A.one("#dobErrMsg").text("");
+    			if(dobDaySelect.val() &&  dobYearSelect.val() && !isValidDOB()){
+    				validDob = false;
+    				A.one("#dobErrMsg").text("Please enter valid date");
+    			}
+    		});
+    		
+    		$('#<portlet:namespace/>dobDay').bind('keyup paste', function(){
+    			this.value = this.value.replace(/[^0-9]/g, '');
+    			if(this.value && this.value.length>2){
+    				this.value = this.value.substring(0,2);
+    			}
+    			if(this.value && parseInt(this.value)>31){
+    				this.value = '';
+    			}
+    	    });
+    		
+    		$('#<portlet:namespace/>dobYear').bind('keyup paste', function(){
+    			this.value = this.value.replace(/[^0-9]/g, '');
+    			if(this.value && this.value.length>4){
+    				this.value = this.value.substring(0,4);
+    			}
+    	    });
+    		
+    		function isValidDOB(){
+    			var month = A.one("#<portlet:namespace />dobMonth").val();
+    			var year = A.one("#<portlet:namespace />dobYear").val();
+    			var day = A.one("#<portlet:namespace />dobDay").val();
+    		    console.log("dob ->" +year + " " + month + " " + day);
+    			var isValidDob =   new Date(parseInt(year), parseInt(month), parseInt(day)) < new Date();
+    			console.log("isValidDob ->" + isValidDob);
+    			if(isValidDob){
+    				validDob = true;
+    			}else{
+    				validDob = false;
+    			}
+    			return isValidDob;
+    		}
+    		
     		
     		new Formatter(document.getElementById('<portlet:namespace/>'+'mobile'), {
     			'pattern': '({{999}})-{{999}}-{{9999}}',
@@ -540,6 +672,7 @@ jQuery.noConflict();
     			this.value = '';
     		}
         });
+    	
     	
 /*     	$('#<portlet:namespace />mobile').bind('keyup paste', function(){
     		this.value = this.value.replace(/[^0-9]/g, '');

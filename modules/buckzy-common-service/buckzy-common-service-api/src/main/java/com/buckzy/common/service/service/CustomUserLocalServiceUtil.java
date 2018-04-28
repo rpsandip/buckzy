@@ -179,12 +179,13 @@ public class CustomUserLocalServiceUtil {
 		java.lang.String password, java.lang.String mobileContryCode,
 		java.lang.String mobileNo, java.lang.String address,
 		java.lang.String city, java.lang.String zipcode,
-		java.lang.String countryCode, java.lang.String currencyCode)
+		java.lang.String stateCode, java.lang.String countryCode,
+		java.lang.String currencyCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .createParty(token, userId, fName, lastName, email,
 			password, mobileContryCode, mobileNo, address, city, zipcode,
-			countryCode, currencyCode);
+			stateCode, countryCode, currencyCode);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject getBranchDetail(
@@ -235,7 +236,7 @@ public class CustomUserLocalServiceUtil {
 		java.lang.String email, java.lang.String mobileCountryCode,
 		java.lang.String countryCode, java.lang.String currencyCode,
 		java.lang.String mobileNo, java.lang.String address,
-		java.lang.String city, java.lang.String state,
+		java.lang.String city, java.lang.String stateCode,
 		java.lang.String zipcode, java.lang.String documentType,
 		java.io.File file, java.lang.String verificationDocName,
 		java.lang.String accountType, java.lang.String cardNumber,
@@ -248,7 +249,7 @@ public class CustomUserLocalServiceUtil {
 		return getService()
 				   .updateParty(token, partyId, userId, fName, lastName, email,
 			mobileCountryCode, countryCode, currencyCode, mobileNo, address,
-			city, state, zipcode, documentType, file, verificationDocName,
+			city, stateCode, zipcode, documentType, file, verificationDocName,
 			accountType, cardNumber, cardFirstName, cardLastName,
 			expireOnMonth, expireOnYear, accountNumber, acctInstnNm, bankId,
 			branchId, routingNumber, searchBranchType);

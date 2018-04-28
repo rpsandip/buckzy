@@ -92,13 +92,13 @@
                 <table style="width: 100%">
                     <tr>
                         <td>Exchange Rate</td>
-                        <td> Transfer amount</td>
-                        <td>${paymentBean.sndrinstramt } ${paymentBean.sndrcurrcd }</td>
+                        <td style="color: #11AB3E;"> Transfer amount</td>
+                        <td style="color: #11AB3E;">${paymentBean.sndrinstramt } ${paymentBean.sndrcurrcd }</td>
                     </tr>
                     <tr>
                         <td>1 ${paymentBean.sndrcurrcd } = ${paymentBean.amtfxrate} ${paymentBean.rcvrcurrcd }</td>
                         <td>Transfer fee</td>
-                        <td>0.00 USD</td>
+                        <td>-0.00 ${paymentBean.sndrcurrcd }</td>
                     </tr>
                     <tr>
                         <td></td>
@@ -108,7 +108,7 @@
                     <tr>
                         <td></td>
                         <td>Total to receiver</td>
-                        <td>${paymentBean.rcvramt } ${paymentBean.rcvrcurrcd }</td>
+                        <td><b>${paymentBean.rcvramt } ${paymentBean.rcvrcurrcd }</b></td>
                     </tr>
                 </table>
             </div>

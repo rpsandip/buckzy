@@ -78,6 +78,9 @@ public class UploadDocumentActionCommand extends BaseMVCActionCommand{
 				customUser.setDocumentVerified(true);
 				CustomUserLocalServiceUtil.updateCustomUser(customUser);
 				SessionMessages.add(actionRequest, "document-upload-success");
+				if(customUser.getAccountCompleted()){
+					SessionMessages.add(actionRequest, "account-success");
+				}
 			}
 		}else{
 			SessionErrors.add(actionRequest, "document-upload-err");

@@ -16,6 +16,7 @@ package com.buckzy.common.service.service.impl;
 
 import java.io.File;
 import java.util.Date;
+import java.util.Iterator;
 
 import com.buckzy.common.beans.AccountBean;
 import com.buckzy.common.beans.BranchBean;
@@ -94,7 +95,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 		JSONObject partyDetailObj = JSONFactoryUtil.createJSONObject();
 		if (Validator.isNotNull(mobileNo)) {
 			partyDetailObj = createParty(token, user.getUserId(), user.getFirstName(), user.getLastName(),
-					user.getEmailAddress(), password, mobileCountryCode, mobileNo, address, city, zipcode, countryCode, currencyCode);
+					user.getEmailAddress(), password, mobileCountryCode, mobileNo, address, city, zipcode, state,countryCode, currencyCode);
 
 			if (partyDetailObj.getLong("prtyid") > 0) {
 				customUser.setPartyId(partyDetailObj.getLong("prtyid"));
@@ -117,7 +118,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 
 	public JSONObject createParty(String token, long userId, String fName, String lastName, String email,
 			String password, String mobileContryCode, String mobileNo, String address, String city, String zipcode,
-			String countryCode, String currencyCode) throws PortalException {
+			String stateCode, String countryCode, String currencyCode) throws PortalException {
 
 		long partyId = 0;
 		if(Validator.isNull(currencyCode)){
@@ -141,7 +142,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 		JSONObject addressObj = JSONFactoryUtil.createJSONObject();
 		addressObj.put("postaddr", address);
 		addressObj.put("townnm", city);
-		// TODO : Need to make dynamic
+		addressObj.put("statecd", stateCode);
 		addressObj.put("cntrycd", countryCode);
 		addressObj.put("zipcd", zipcode);
 
@@ -153,14 +154,11 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				BuckzyConstants.HTTP_POST, params, token);
 
 		int status = responseObj.getInt("status");
-
-		JSONObject dataObj = JSONFactoryUtil.createJSONObject();
-
-		if (status == 200) {
-			dataObj = JSONFactoryUtil.createJSONObject(responseObj.getString("data"));
-			// partyId = dataObj.getLong("prtyid");
-		} else {
-			PortalException pe = new PortalException(responseObj.getString("developerMessage"));
+		JSONObject dataObj = JSONFactoryUtil.createJSONObject(responseObj.getString("data"));
+		
+		if (status != 200) {
+			String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(dataObj.getJSONObject("errors"));
+			PortalException pe = new PortalException(errMsg);
 			throw pe;
 		}
 
@@ -168,7 +166,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 	}
 
 	public JSONObject updateParty(String token, long partyId, long userId, String fName, String lastName, String email,
-			String mobileCountryCode, String countryCode, String currencyCode,String mobileNo, String address, String city, String state,
+			String mobileCountryCode, String countryCode, String currencyCode,String mobileNo, String address, String city, String stateCode,
 			String zipcode, String documentType, File file, String verificationDocName, String accountType,
 			String cardNumber, String cardFirstName, String cardLastName, String expireOnMonth, String expireOnYear,
 			String accountNumber, String acctInstnNm, int bankId, int branchId, String routingNumber,
@@ -197,6 +195,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 		JSONObject addressObj = JSONFactoryUtil.createJSONObject();
 		addressObj.put("postaddr", address);
 		addressObj.put("townnm", city);
+		addressObj.put("statecd", stateCode);
 		addressObj.put("cntrycd", countryCode);
 		addressObj.put("zipcd", zipcode);
 
@@ -258,7 +257,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				accountJsonObj.put("addr1OnAcct", address);
 				accountJsonObj.put("addr2OnAcct", address);
 				accountJsonObj.put("cityOnAcct", city);
-				accountJsonObj.put("stateOnAcct", state);
+				accountJsonObj.put("stateOnAcct", stateCode);
 				accountJsonObj.put("cntryOnAcct", countryCode);
 				accountJsonObj.put("zipOnAcct", zipcode);
 				accountJsonObj.put("expryMnth", expireOnMonth);
@@ -276,7 +275,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				accountJsonObj.put("addr1OnAcct", address);
 				accountJsonObj.put("addr2OnAcct", address);
 				accountJsonObj.put("cityOnAcct", city);
-				accountJsonObj.put("stateOnAcct", state);
+				accountJsonObj.put("stateOnAcct", stateCode);
 				accountJsonObj.put("cntryOnAcct", countryCode);
 				accountJsonObj.put("zipOnAcct", zipcode);
 				accountJsonObj.put("prefAcctFlag", "T");
@@ -298,7 +297,6 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 					"/partyaccount/V1/parties/" + partyId + "/accounts", BuckzyConstants.HTTP_POST, accountsParams,
 					token);
 			JSONObject accountDataObject = JSONFactoryUtil.createJSONObject(accountResponse.getString("data"));
-
 			int accountResStatus = accountResponse.getInt("status");
 
 			if (accountResStatus == 200) {
@@ -308,12 +306,15 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				CustomUserLocalServiceUtil.updateCustomUser(customUser);
 
 				obj.put("status", "success");
+				
 			} else {
-				PortalException pe = new PortalException(accountDataObject.getString("developerMessage"));
+				String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(accountDataObject.getJSONObject("errors"));
+				PortalException pe = new PortalException(errMsg);
 				throw pe;
 			}
 		} else {
-			PortalException pe = new PortalException(dataObj.getString("developerMessage"));
+			String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(dataObj.getJSONObject("errors"));
+			PortalException pe = new PortalException(errMsg);
 			throw pe;
 		}
 
@@ -332,7 +333,8 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 			partyDataObj.put("partyAccount", accountOnj);
 			return partyDataObj;
 		} else {
-			PortalException pe = new PortalException(partyDataObj.getString("developerMessage"));
+			String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(partyDataObj.getJSONObject("errors"));
+			PortalException pe = new PortalException(errMsg);
 			throw pe;
 		}
 	}
@@ -376,7 +378,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				if (Validator.isNotNull(partyAddressDetail)) {
 					addrressBean.setPostaddr(partyAddressDetail.getString("postaddr"));
 					addrressBean.setTownnm(partyAddressDetail.getString("townnm"));
-					addrressBean.setState(partyAddressDetail.getString("state"));
+					addrressBean.setState(partyAddressDetail.getString("statecd"));
 					addrressBean.setZipcd(partyAddressDetail.getString("zipcd"));
 					addrressBean.setCntrycd(partyAddressDetail.getString("cntrycd"));
 				}
@@ -449,7 +451,8 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				receiverAccountObj = receiverAccountsArray.getJSONObject(0);
 			}
 		} else {
-			PortalException pe = new PortalException(response.getString("developerMessage"));
+			String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(response.getJSONObject("errors"));
+			PortalException pe = new PortalException(errMsg);
 			throw pe;
 		}
 		return receiverAccountObj;
@@ -493,8 +496,8 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 
 			return responseObj;
 		} else {
-			PortalException pe = new PortalException(
-					JSONFactoryUtil.createJSONObject(response.getString("data")).getString("developerMessage"));
+			String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(JSONFactoryUtil.createJSONObject(response.getString("data")).getJSONObject("errors"));
+			PortalException pe = new PortalException(errMsg);
 			throw pe;
 		}
 	}
@@ -510,11 +513,10 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 		int status = response.getInt("status");
 
 		if (status == 200) {
-
 			return JSONFactoryUtil.createJSONObject(response.getString("data"));
 		} else {
-			PortalException pe = new PortalException(
-					JSONFactoryUtil.createJSONObject(response.getString("data")).getString("developerMessage"));
+			String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(JSONFactoryUtil.createJSONObject(response.getString("data")).getJSONObject("errors"));
+			PortalException pe = new PortalException(errMsg);
 			throw pe;
 		}
 	}
@@ -538,15 +540,15 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				
 			JSONObject accountJsonObj = JSONFactoryUtil.createJSONObject();
 			
-			if(Validator.isNull(cardFirstName)){
+			if(Validator.isNotNull(cardFirstName)){
 				cardFirstName = partyDetail.getString("frstnm");
 				cardLastName = partyDetail.getString("lastnm");
-				state = partyAddressDetail.getString("state");
+				state = partyAddressDetail.getString("statecd");
 			}
 			if(Validator.isNull(cardLastName)){
 				cardLastName = partyDetail.getString("lastnm");
 			}
-			if(Validator.isNull(partyAddressDetail.getString("state"))){
+			if(Validator.isNull(partyAddressDetail.getString("statecd"))){
 				state = "Test";
 			}
 
@@ -613,7 +615,8 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				CustomUserLocalServiceUtil.updateCustomUser(customUser);
 
 			} else {
-				PortalException pe = new PortalException(accountResponse.getString("developerMessage"));
+				String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(responseObj.getJSONObject("errors"));
+				PortalException pe = new PortalException(errMsg);
 				throw pe;
 			}
 			
@@ -656,6 +659,8 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 
 		return updatedDeviceInfo;
 	}
+	
+	
 	
 	private String getAccountInstNumber(String token, int bankId){
     	String accountInstNm = StringPool.BLANK;

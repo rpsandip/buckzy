@@ -4,6 +4,7 @@ import java.util.Random;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -44,7 +45,7 @@ public class CreateNewAccountCommand extends BaseMVCActionCommand{
 	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
 		User user;
 		try {
 				user = UserLocalServiceUtil.getUser(themeDisplay.getUserId());
@@ -182,18 +183,31 @@ public class CreateNewAccountCommand extends BaseMVCActionCommand{
 			JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(url, BuckzyConstants.HTTP_POST, params, token);
 		
 		    int status =  response.getInt("status");
+		    JSONObject dataObj = JSONFactoryUtil.createJSONObject(response.getString("data"));
 		    
 		    if(status==200){
 		    	SessionMessages.add(actionRequest, "account-created-success");
 		    }else{
-		    	SessionErrors.add(actionRequest, "account-created-error");
+		    	String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(dataObj.getJSONObject("errors"));
+		    	if(Validator.isNotNull(errMsg)){
+		    		request.getSession().setAttribute("customErr", errMsg);
+		    		SessionErrors.add(actionRequest, "account-create-custom-err");
+		    	}else{
+		    		SessionErrors.add(actionRequest, "account-created-error");
+		    	}
+		    	SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 		    	actionResponse.setRenderParameter("mvcRenderCommandName", "/create_account");
 		    }
 		    
 		} catch (PortalException e) {
-			_log.error(e);
-			SessionErrors.add(actionRequest, "account-created-error");
+			request.getSession().setAttribute("customErr", e.getMessage());
+			SessionErrors.add(actionRequest, "account-create-custom-err");
+			if(Validator.isNull(e.getMessage())){
+				SessionErrors.add(actionRequest, "account-created-error");
+			}
+			SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 	    	actionResponse.setRenderParameter("mvcRenderCommandName", "/create_account");
+	    	_log.error(e);
 		}
 		
 	}

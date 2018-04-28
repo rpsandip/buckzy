@@ -2,6 +2,7 @@ package com.buckzy.send.money.portlet.actioncommand;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -41,6 +42,7 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse){
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
 		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest)).getSession().getAttribute("token");
 		long receiverPartyId=0;
 		String receiverDetail = ParamUtil.getString(actionRequest, "receiver");
@@ -129,7 +131,12 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 			
 		
 		} catch (PortalException e) {
-			SessionErrors.add(actionRequest, "payment-error");
+			request.getSession().setAttribute("customErr", e.getMessage());
+			if(Validator.isNotNull(e.getMessage())){
+				SessionErrors.add(actionRequest, "payment-custom-error");
+    		}else{
+    			SessionErrors.add(actionRequest, "payment-error");
+    		}
 			_log.error(e);
 		}
 		
