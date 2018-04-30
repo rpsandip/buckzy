@@ -71,4 +71,17 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
     		width: 81% !important;
 		    margin-left: 83px !important;
     	}
+    	
+    	span.num{
+    		    background: #888;
+			    display: block;
+			    text-align: center;
+			    vertical-align: middle;
+			    line-height: 40px;
+			    border-radius: 50%;
+			    color: #fff;
+			    font-size: 18px;
+			    font-weight: 600;
+    	}
+    	
 </style>

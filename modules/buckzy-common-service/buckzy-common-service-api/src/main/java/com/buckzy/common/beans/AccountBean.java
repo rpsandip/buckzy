@@ -1,11 +1,15 @@
 package com.buckzy.common.beans;
 
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
+
 public class AccountBean {
 	private int accountCategory;
 	private long acctid;
 	private String acctnr;
 	private String acctusgcd;
 	private String acctinstnnm;
+	private String acctnr4dgt;
 	public int getBankId() {
 		return bankId;
 	}
@@ -192,4 +196,18 @@ public class AccountBean {
 		this.lName = lName;
 	}
 
+	public String getAcctnr4dgt() {
+		return acctnr4dgt;
+	}
+
+	public void setAcctnr4dgt(String acctnr) {
+		String acctNr4digit = StringPool.BLANK;
+		if(Validator.isNotNull(acctnr) && acctnr.length()>=4){
+			acctNr4digit = acctnr.substring((acctnr.length()-4), acctnr.length());
+		}
+		this.acctnr4dgt = acctNr4digit;
+	}
+
+	
+	
 }

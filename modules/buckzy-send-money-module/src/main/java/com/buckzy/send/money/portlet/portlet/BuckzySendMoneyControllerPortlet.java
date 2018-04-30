@@ -67,12 +67,14 @@ public class BuckzySendMoneyControllerPortlet extends MVCPortlet {
 		if(Validator.isNull(httpServletRequest.getParameter("viewdetail"))){
 			try {
 				User user = UserLocalServiceUtil.getUser(themeDisplay.getUserId());
-				UserBean userBean = new UserBean(user);
+				UserBean userBean = CustomUserLocalServiceUtil.getPartyUserBean(token, user.getUserId());
+				renderRequest.setAttribute("userBean", userBean);
 				
 				// Login user detail
 				JSONObject loginUserPartyDetail = CustomUserLocalServiceUtil.getPartyDetail(userBean.getCustomUserBean().getPartyId(),token);
 				if(Validator.isNotNull(loginUserPartyDetail)){
 					renderRequest.setAttribute("loginUserCurrencyCd", loginUserPartyDetail.get("basecurrcd"));
+					renderRequest.setAttribute("loginUserCountryCode", userBean.getPartyBean().getPartyAddressBean().getCntrycd().toLowerCase());
 					
 					if(Validator.isNotNull(loginUserPartyDetail.getJSONObject("partyAccount")) &&  loginUserPartyDetail.getJSONObject("partyAccount").getLong("acctId")>0){
 						renderRequest.setAttribute("isAccountVerfied", true);
@@ -88,7 +90,7 @@ public class BuckzySendMoneyControllerPortlet extends MVCPortlet {
 				List<JSONObject> currenyJSONList = new ArrayList<JSONObject>();
 				for(int i=0;i<currencyArray.length();i++){
 					currenyJSONList.add(currencyArray.getJSONObject(i));
-				}
+				} 
 				renderRequest.setAttribute("currenyJSONList", currenyJSONList);
 				
 				// Get Currency List
@@ -100,8 +102,16 @@ public class BuckzySendMoneyControllerPortlet extends MVCPortlet {
 						String recAccNr = (String)receiverObj.getJSONArray("accounts").getJSONObject(0).get("acctNr");
 						String recAccNr4Digit = StringPool.BLANK;
 						if(Validator.isNotNull(recAccNr) && recAccNr.length()>=4){
+							int accountType = (int)receiverObj.getJSONArray("accounts").getJSONObject(0).get("accountCategory");
 							recAccNr4Digit = recAccNr.substring((recAccNr.length()-4), recAccNr.length());
-							receiverObj.put("recAccNr4Digit", recAccNr4Digit);
+							if(accountType==1){
+								receiverObj.put("recAccNr4Digit", "  A/C - " + recAccNr4Digit);
+							}else{
+								receiverObj.put("recAccNr4Digit", " Debit - " + recAccNr4Digit);
+							}
+							
+							JSONObject receiverAddresObj = receiverObj.getJSONObject("partyAddressResponse");
+							receiverObj.put("countryCode", receiverAddresObj.get("cntrycd"));
 							receiverJsonList.add(receiverArray.getJSONObject(i));
 						}
 					}

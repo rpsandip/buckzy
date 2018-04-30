@@ -390,6 +390,7 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 				if (Validator.isNotNull(partyAccountDetail)) {
 					partyAccountBean.setAccountCategory(partyAccountDetail.getInt("accountCategory"));
 					partyAccountBean.setAcctnr(partyAccountDetail.getString("acctNr"));
+					partyAccountBean.setAcctnr4dgt(partyAccountDetail.getString("acctNr"));
 					partyAccountBean.setExprymnth(partyAccountDetail.getString("expryMnth"));
 					partyAccountBean.setExpryyear(partyAccountDetail.getString("expryYear"));
 					partyAccountBean.setRoutngnm(partyAccountDetail.getString("routngNm"));

@@ -49,7 +49,7 @@
 	<c:when test="${ totalTransactions gt 0 }">
 		<c:forEach items="${paymentBeanList }" var="paymentBean">
 				<div class="row padding-0 margin-0">
-					<div class="col-xs-7 border-right-2">
+					<div class="col-xs-8 border-right-2">
 						<table class="table table-main">
 							<tbody>
 								<tr>
@@ -72,7 +72,7 @@
 						</table>
 					</div>
 				
-					<div class="col-xs-5">
+					<div class="col-xs-4">
 						<table class="table-icons">
 							<tbody>
 								<tr>

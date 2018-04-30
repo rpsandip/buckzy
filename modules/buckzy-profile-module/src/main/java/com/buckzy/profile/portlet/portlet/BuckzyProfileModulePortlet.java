@@ -19,8 +19,6 @@ import com.buckzy.common.beans.UserBean;
 import com.buckzy.common.service.service.BuckzyCommonLocalServiceUtil;
 import com.buckzy.common.service.service.CustomUserLocalServiceUtil;
 import com.buckzy.common.util.BuckzyConstants;
-import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
-import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
