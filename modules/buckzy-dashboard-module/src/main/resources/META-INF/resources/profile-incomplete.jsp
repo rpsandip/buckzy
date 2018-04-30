@@ -2,6 +2,14 @@
 
 <portlet:actionURL var="uploadDocumentURL" name="/upload_Document" />
 <portlet:actionURL var="updateAccountURL" name="/update_Account" />
+<portlet:actionURL var="remindMeLaterDocumentURL" name="/remindLater">
+	<portlet:param name="customUserId" value="${userBean.customUserBean.customUserId}" />
+	<portlet:param name="remindType" value="Document"/>
+</portlet:actionURL>
+<portlet:actionURL var="remindMeLaterAccountURL" name="/remindLater">
+    <portlet:param name="customUserId" value="${userBean.customUserBean.customUserId}" />
+	<portlet:param name="remindType" value="Account"/>
+</portlet:actionURL>
 <liferay-ui:success key="document-upload-success" message="document-upload-success" />
 <liferay-ui:error key="profile-custom-update-error" message="${customErr }"/>
 <liferay-ui:error key="acccount-err" message="acccount-err"/>
@@ -12,7 +20,7 @@
 <portlet:resourceURL id="/getbank_detail" var="getBankDetailURL"></portlet:resourceURL>
 <portlet:resourceURL id="/getbranch_detail" var="getBranchDetailURL"></portlet:resourceURL>
 
-
+<% int index=1; %>
 <div style="display: table-cell; padding-bottom: 50px;">
 	<div class="main-container">
 		<div class="col-sm-12"
@@ -39,7 +47,7 @@
 				<tr>
 					<td style="width: 25px;">
 						<div
-							style="width: 20px; height: 20px; border-radius: 50%; background-color: #394353; color: #FFFFFF; padding-left: 6px;">1</div>
+							style="width: 20px; height: 20px; border-radius: 50%; background-color: #394353; color: #FFFFFF; padding-left: 6px;"><%=index %></div>
 					</td>
 					<td style="padding-left: 10px; font-weight: bold;">Contact
 						information</td>
@@ -59,6 +67,8 @@
 
 		</div>
 
+		<c:if test="${!documentVerified && !documentRemindLater}">
+		
 		<c:choose>
 			<c:when test="${userBean.customUserBean.documentVerified }">
 				<div class="col-sm-12"
@@ -76,19 +86,34 @@
 			<table style="width: 100%; cursor: pointer;" id="upload1">
 				<tr>
 					<td style="width: 25px;">
+						<%index++; %>
 						<div
-							style="width: 20px; height: 20px; border-radius: 50%; background-color: #394353; color: #FFFFFF; padding-left: 6px;">2</div>
+							style="width: 20px; height: 20px; border-radius: 50%; background-color: #394353; color: #FFFFFF; padding-left: 6px;"><%=index %></div>
 					</td>
-					<td style="padding-left: 10px;"><span
-						style="font-size: 14px; font-weight: bold;">Upload a
-							government issued photo ID (Drivers licence or passport prefered)</span><br />
+					<td style="padding-left: 10px;">
+					  <c:choose>
+					  	<c:when test="${userBean.partyBean.partyAddressBean.cntrycd eq 'CA'}">
+						  	<span style="font-size: 14px; font-weight: bold;">Upload a government issued Bill (Utility Bill)</span><br/>
+							<aui:input id="utility_bill" type="radio"
+								name="documentVerificationType" value="utilityBill" label="" />
+							<label for="<portlet:namespace/>utility_bill"
+							style="color: black;">Utility Bill</label> 
+					  	</c:when>
+					  	<c:otherwise>
+					  		<span style="font-size: 14px; font-weight: bold;">Upload a government issued photo ID (Drivers licence or passport prefered)</span><br/>
 						<aui:input id="drive_license" type="radio"
 							name="documentVerificationType" value="drive_license" label="" />
 						<label for="<portlet:namespace/>drive_license"
-						style="color: black;">Drivers License</label> <aui:input
+						style="color: black;">Drivers License</label> 
+					    
+					    <aui:input
 							id="password" type="radio" name="documentVerificationType"
-							value="passport" label="" /> <label for="<portlet:namespace/>no"
-						style="color: black;">Passport</label></td>
+							value="passport" label="" /> 
+							<label for="<portlet:namespace/>no"
+						style="color: black;">Passport</label>
+					  	</c:otherwise>
+					  </c:choose>
+					</td>
 					<td style="width: 50px; color: #308151; text-align: center;">
 						<c:choose>
 							<c:when test="${userBean.customUserBean.documentVerified }">
@@ -114,13 +139,16 @@
 							class="border-1 padding-5"></td>
 						<td class="padding-left-10">
 							<button class="submit uploadDoc">Upload</button>
+							<button class="submit remindMeLater" style="margin-left: 20px;"><a style="color: #fff;" href="${remindMeLaterDocumentURL }">Remind Me Later</a></button>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</aui:form>
 	</div>
+	</c:if>
 
+  <c:if test="${!accountVerified && !accountRemindLater}">
 	<c:choose>
 		<c:when test="${userBean.customUserBean.accountCompleted }">
 			<div class="col-sm-12"
@@ -136,8 +164,9 @@
 			<table style="width: 100%;">
 				<tr>
 					<td style="width: 25px;">
+						<%index++; %>
 						<div
-							style="width: 20px; height: 20px; border-radius: 50%; background-color: #394353; color: #FFFFFF; padding-left: 6px;">3</div>
+							style="width: 20px; height: 20px; border-radius: 50%; background-color: #394353; color: #FFFFFF; padding-left: 6px;"><%=index %></div>
 					</td>
 					<td style="padding-left: 10px;"><span
 						style="font-size: 14px; font-weight: bold;">Set up a
@@ -292,6 +321,7 @@
 						<td style="text-align: left; padding-top: 20px;" colspan="3">
 							<button class="submit updateAccountCardBtn"
 								style="margin-left: 0px;">Submit</button>
+							<button class="submit remindMeLater" style="margin-left: 20px;"><a style="color: #fff;" href="${remindMeLaterAccountURL }">Remind Me LaterM</a></button>
 						</td>
 					</tr>
 				</table>
@@ -350,19 +380,21 @@
 										style="font-size: 12px;">
 									</aui:select>
 								</div>
-							</div>
+							</div> 
 						</td>
 					</tr>
 					<tr>
 						<td style="text-align: left; padding-top: 20px;" colspan="3">
 							<button class="submit updateAccountBankBtn"
 								style="margin-left: 0px;">Submit</button>
+							<button class="submit remindMeLater" style="margin-left: 20px;"><a style="color: #fff;" href="${remindMeLaterAccountURL }">Remind Me Later</a></button>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</aui:form>
 	</div>
+	</c:if>
 </div>
 </div>
 <div style="display: table-cell;"></div>
@@ -399,12 +431,23 @@
 						var selectedBankId = '${userBean.partyBean.accountBean.branchBean.bankId}';
 						var accountType = '${ userBean.partyBean.accountBean.accountCategory}';
 						var accountNumber = '${userBean.partyBean.accountBean.acctnr}';
-						A.one("#<portlet:namespace />search")._node.checked = true;
-						A.one("#known_branch_detail").hide();
-						A.one("#search_branch_detail").show();
+						if(A.one('.updateAccountCardBtn')){
+							var updateAccountCardBtn = A.one('.updateAccountCardBtn');
+							var updateAccountBankBtn = A.one('.updateAccountBankBtn');
+						}
+						
+						if(A.one("#<portlet:namespace />search")){
+							A.one("#<portlet:namespace />search")._node.checked = true;
+						}
+						
+						if(A.one("#known_branch_detail")){
+							A.one("#known_branch_detail").hide();
+							A.one("#search_branch_detail").show();
+						}
 
 						console.log("accountType->" + accountType);
 
+						if(submitDocButton){
 						submitDocButton
 								.on(
 										'click',
@@ -417,12 +460,12 @@
 														.submit();
 											}
 										});
+					  }
 
-						var updateAccountCardBtn = A
-								.one('.updateAccountCardBtn');
-						var updateAccountBankBtn = A
-								.one('.updateAccountBankBtn');
+						
 
+						if(updateAccountCardBtn){
+							
 						updateAccountCardBtn
 								.on(
 										'click',
@@ -446,6 +489,7 @@
 											}
 										});
 
+						if(updateAccountBankBtn){
 						updateAccountBankBtn
 								.on(
 										'click',
@@ -484,6 +528,7 @@
 												}
 											}
 										});
+						}
 
 						if (accountType == 1 || accountType == "1") {
 							A.one("#<portlet:namespace />bank_account")._node.checked = true;
@@ -496,33 +541,38 @@
 							A.one("#debit_card_detail").show();
 						}
 
-						for (var i = 0; i < accountTypeBtns._nodes.length; i++) {
-							accountTypeBtns._nodes[i].onclick = function() {
-								if (this.getAttribute('id').indexOf(
-										'bank_account') >= 0) {
-									A.one("#bank_detail").show();
-									A.one("#debit_card_detail").hide();
-								} else {
-									A.one("#bank_detail").hide();
-									A.one("#debit_card_detail").show();
-								}
-							};
+						if(accountTypeBtns){
+							for (var i = 0; i < accountTypeBtns._nodes.length; i++) {
+								accountTypeBtns._nodes[i].onclick = function() {
+									if (this.getAttribute('id').indexOf(
+											'bank_account') >= 0) {
+										A.one("#bank_detail").show();
+										A.one("#debit_card_detail").hide();
+									} else {
+										A.one("#bank_detail").hide();
+										A.one("#debit_card_detail").show();
+									}
+								};
+							}
 						}
 
-						for (var i = 0; i < searchBranchTypeBtns._nodes.length; i++) {
-							searchBranchTypeBtns._nodes[i].onclick = function() {
-								if (this.checked
-										&& this.getAttribute('id').indexOf(
-												'known_branch') >= 0) {
-									A.one("#known_branch_detail").show();
-									A.one("#search_branch_detail").hide();
-								} else {
-									A.one("#known_branch_detail").hide();
-									A.one("#search_branch_detail").show();
-								}
-							};
+						if(searchBranchTypeBtns){
+							for (var i = 0; i < searchBranchTypeBtns._nodes.length; i++) {
+								searchBranchTypeBtns._nodes[i].onclick = function() {
+									if (this.checked
+											&& this.getAttribute('id').indexOf(
+													'known_branch') >= 0) {
+										A.one("#known_branch_detail").show();
+										A.one("#search_branch_detail").hide();
+									} else {
+										A.one("#known_branch_detail").hide();
+										A.one("#search_branch_detail").show();
+									}
+								};
+							}
 						}
 
+						if(cardNumber){
 						cardNumber
 								.on(
 										'keyup',
@@ -593,7 +643,9 @@
 												$("#visa").hide();
 											}
 										});
+					     }
 
+						if(A.one("#<portlet:namespace />countryCity"){
 						var cityData;
 						var cityAutoComplete = new A.AutoCompleteList(
 								{
@@ -651,6 +703,8 @@
 						});
 
 						cityAutoComplete.render();
+						
+						}
 
 						function simulateBanksOnCityChange(cityId, countryCode) {
 
@@ -736,7 +790,9 @@
 											});
 						}
 
-						bankSelect
+						if(bankSelect){
+						
+							bankSelect
 								.on(
 										'change',
 										function(e) {
@@ -799,6 +855,7 @@
 															});
 										});
 
+					    }
 						var knownBranhcValidator = new A.FormValidator(
 								{
 									boundingBox : document.<portlet:namespace/>accountFm,

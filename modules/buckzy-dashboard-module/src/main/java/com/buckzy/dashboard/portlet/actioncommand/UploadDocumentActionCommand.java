@@ -61,8 +61,10 @@ public class UploadDocumentActionCommand extends BaseMVCActionCommand{
 		if(Validator.isNotNull(documentVerificationType)){
 			if(documentVerificationType.equals("drive_license")){
 				documentVerificationType = "KYCD";
-			}else{
+			}else if(documentVerificationType.equals("passport")){
 				documentVerificationType = "KYCP";
+			}else{
+				documentVerificationType = "KYCU";
 			}
 		}
 

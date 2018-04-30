@@ -46,6 +46,8 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(actionRequest)).getSession().getAttribute("token");
 		long receiverPartyId=0;
 		String receiverDetail = ParamUtil.getString(actionRequest, "receiver");
+		Double amount = ParamUtil.getDouble(actionRequest, "amount");
+		
 		if(Validator.isNotNull(receiverDetail) && receiverDetail.indexOf(",")>0){
 			String[] receiverDetailArray = receiverDetail.split(",");
 			receiverPartyId = Long.parseLong(receiverDetailArray[0]);
@@ -53,7 +55,6 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 		
 		String exchangeRateStr = ParamUtil.getString(actionRequest, "exchangeRate");
 		float exchangeRate = Float.valueOf(exchangeRateStr);
-		
 		String purTrans = ParamUtil.getString(actionRequest, "purTrans");
 		if(exchangeRate!=0){
 		try {
@@ -63,7 +64,8 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 			
 			JSONObject senderPartyDetail = CustomUserLocalServiceUtil.getPartyDetail(userBean.getCustomUserBean().getPartyId(),token);
 			JSONObject receiverAccountDetail = CustomUserLocalServiceUtil.getReceiverAccountDetail(token, userBean.getCustomUserBean().getPartyId(), receiverPartyId);
-			if(Validator.isNotNull(senderPartyDetail) && Validator.isNotNull(receiverAccountDetail)){
+			String verificationErrMsg = isValidAccountAndDocumentVerification(userBean, senderPartyDetail, amount);
+			if(Validator.isNull(verificationErrMsg) && Validator.isNotNull(senderPartyDetail) && Validator.isNotNull(receiverAccountDetail)){
 				
 				long senderAccountId = 0;
 				long receiverAccountId = 0;
@@ -75,7 +77,7 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 					long senderPartyId = userBean.getCustomUserBean().getPartyId();	
 					String fromCurCode = ParamUtil.getString(actionRequest, "fromCur");
 					String toCurCode = ParamUtil.getString(actionRequest, "toCur");
-					Double amount = ParamUtil.getDouble(actionRequest, "amount");
+					
 					
 					JSONObject responseObj = BuckzyCommonLocalServiceUtil.makePayment(token, senderPartyId,
 							senderAccountId, receiverPartyId, receiverAccountId, fromCurCode,
@@ -120,15 +122,21 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 						actionResponse.setRenderParameter("exRt", String.valueOf(exchangeRate));
 					}else{
 						SessionErrors.add(actionRequest, "payment-error");
+						SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 					}
 				}else{
 					SessionErrors.add(actionRequest, "sender-account-not-exist");
+					SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 				}
 			}else{
-				SessionErrors.add(actionRequest, "sender-account-not-exist");
+				if(Validator.isNotNull(verificationErrMsg)){
+					SessionErrors.add(actionRequest, "payment-custom-error");
+					request.getSession().setAttribute("customErr", verificationErrMsg);
+				}else{
+					SessionErrors.add(actionRequest, "sender-account-not-exist");
+				}
+				SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 			}
-			
-			
 		
 		} catch (PortalException e) {
 			request.getSession().setAttribute("customErr", e.getMessage());
@@ -137,12 +145,38 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
     		}else{
     			SessionErrors.add(actionRequest, "payment-error");
     		}
+			SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 			_log.error(e);
 		}
 		
 		}else{
 			SessionErrors.add(actionRequest, "exchange-rate-not-available");
+			SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 		}
+	}
+
+	private String isValidAccountAndDocumentVerification(UserBean userBean, JSONObject senderPartyDetail, Double amount){
+		String errMsg= StringPool.BLANK;
+		if(userBean.getCustomUserBean().isAccountCompleted()){
+			if(userBean.getCustomUserBean().isDocumentVerified()){
+				return errMsg;
+			}else if(userBean.getCustomUserBean().isDocumentRemindLater()){
+				JSONObject partyAddressbean = senderPartyDetail.getJSONObject("partyaddress");
+				if(Validator.isNotNull(partyAddressbean)){
+					String countryCode = partyAddressbean.getString("cntrycd");
+					if(countryCode.equals("CA") && amount>1000){
+						return "Transfer amount more than 1000 will require document verification.";
+					}else{
+						
+					}
+				}else{
+					return "Account is not updated";
+				}
+			}
+		}else{
+			return "Account is not updated";
+		}
+		return errMsg;
 	}
 
 }

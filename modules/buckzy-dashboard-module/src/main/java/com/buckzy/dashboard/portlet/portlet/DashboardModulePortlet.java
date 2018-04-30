@@ -57,18 +57,20 @@ public class DashboardModulePortlet extends MVCPortlet {
 				String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(renderRequest)).getSession().getAttribute("token");
 				
 				UserBean userBean = CustomUserLocalServiceUtil.getPartyUserBean(token, themeDisplay.getUserId());
-				
-				boolean isProfileCompleted = userBean.getCustomUserBean().isAccountCompleted() && userBean.getCustomUserBean().isDocumentVerified();
-				
+				boolean isProfileCompleted = false;
 				if(Validator.isNotNull(userBean)){
-					renderRequest.setAttribute("isProfileCompleted", isProfileCompleted);
+					
 					renderRequest.setAttribute("userBean", userBean);
 
 					if(Validator.isNotNull(userBean.getPartyBean()) && Validator.isNotNull(userBean.getPartyBean().getPartyAddressBean())){
 						renderRequest.setAttribute("userCountry", userBean.getPartyBean().getPartyAddressBean().getCntrycd().toLowerCase());
-					}else{
-						renderRequest.setAttribute("isProfileCompleted", false);
 					}
+					isProfileCompleted = (userBean.getCustomUserBean().isAccountCompleted() || userBean.getCustomUserBean().isAccountRemindLater()) && (userBean.getCustomUserBean().isDocumentVerified() || userBean.getCustomUserBean().isDocumentRemindLater());
+					renderRequest.setAttribute("documentRemindLater", userBean.getCustomUserBean().isDocumentRemindLater());
+					renderRequest.setAttribute("accountRemindLater", userBean.getCustomUserBean().isAccountRemindLater());
+					renderRequest.setAttribute("documentVerified", userBean.getCustomUserBean().isDocumentVerified());
+					renderRequest.setAttribute("accountVerified", userBean.getCustomUserBean().isAccountCompleted());
+					renderRequest.setAttribute("isProfileCompleted", isProfileCompleted);
 				}
 				
 				if(isProfileCompleted){

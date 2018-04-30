@@ -4,6 +4,8 @@
 <liferay-ui:success key="document-upload-success" message="document-upload-success"/>
 <liferay-ui:error key="acccount-err" message="acccount-err"/>
 <liferay-ui:success key="account-success" message="account-success"/>
+<liferay-ui:success key="remind-success" message="remind-success"/>
+<liferay-ui:error key="remind-err" message="remind-err"/>
 
 <c:choose>
 	<c:when test="${!isProfileCompleted}">

@@ -248,6 +248,48 @@ public interface CustomUserModel extends BaseModel<CustomUser> {
 	public void setAccountCompleted(boolean accountCompleted);
 
 	/**
+	 * Returns the document remind later of this custom user.
+	 *
+	 * @return the document remind later of this custom user
+	 */
+	public boolean getDocumentRemindLater();
+
+	/**
+	 * Returns <code>true</code> if this custom user is document remind later.
+	 *
+	 * @return <code>true</code> if this custom user is document remind later; <code>false</code> otherwise
+	 */
+	public boolean isDocumentRemindLater();
+
+	/**
+	 * Sets whether this custom user is document remind later.
+	 *
+	 * @param documentRemindLater the document remind later of this custom user
+	 */
+	public void setDocumentRemindLater(boolean documentRemindLater);
+
+	/**
+	 * Returns the account remind later of this custom user.
+	 *
+	 * @return the account remind later of this custom user
+	 */
+	public boolean getAccountRemindLater();
+
+	/**
+	 * Returns <code>true</code> if this custom user is account remind later.
+	 *
+	 * @return <code>true</code> if this custom user is account remind later; <code>false</code> otherwise
+	 */
+	public boolean isAccountRemindLater();
+
+	/**
+	 * Sets whether this custom user is account remind later.
+	 *
+	 * @param accountRemindLater the account remind later of this custom user
+	 */
+	public void setAccountRemindLater(boolean accountRemindLater);
+
+	/**
 	 * Returns the profile complete of this custom user.
 	 *
 	 * @return the profile complete of this custom user

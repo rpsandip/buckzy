@@ -943,6 +943,8 @@ public class CustomUserPersistenceImpl extends BasePersistenceImpl<CustomUser>
 		customUserImpl.setDeviceInfo(customUser.getDeviceInfo());
 		customUserImpl.setDocumentVerified(customUser.isDocumentVerified());
 		customUserImpl.setAccountCompleted(customUser.isAccountCompleted());
+		customUserImpl.setDocumentRemindLater(customUser.isDocumentRemindLater());
+		customUserImpl.setAccountRemindLater(customUser.isAccountRemindLater());
 		customUserImpl.setProfileComplete(customUser.isProfileComplete());
 		customUserImpl.setSocialLogin(customUser.isSocialLogin());
 		customUserImpl.setRestPass(customUser.getRestPass());

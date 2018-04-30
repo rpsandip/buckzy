@@ -21,6 +21,8 @@ public class CustomUserBean {
 	private boolean accountCompleted;
 	private boolean isProfileComplete;
 	private boolean documentVerified;
+	private boolean documentRemindLater;
+	private boolean accountRemindLater;
 	
 	public CustomUserBean(CustomUser customUser){
 		if(Validator.isNotNull(customUser)){
@@ -33,6 +35,8 @@ public class CustomUserBean {
 			this.isProfileComplete = customUser.isProfileComplete();
 			this.accountCompleted = customUser.getAccountCompleted();
 			this.documentVerified  = customUser.getDocumentVerified();
+			this.documentRemindLater = customUser.getDocumentRemindLater();
+			this.accountRemindLater = customUser.getAccountRemindLater();
 		}
 	}
 
@@ -107,6 +111,22 @@ public class CustomUserBean {
 
 	public void setAccountCompleted(boolean accountCompleted) {
 		this.accountCompleted = accountCompleted;
+	}
+
+	public boolean isDocumentRemindLater() {
+		return documentRemindLater;
+	}
+
+	public void setDocumentRemindLater(boolean documentRemindLater) {
+		this.documentRemindLater = documentRemindLater;
+	}
+
+	public boolean isAccountRemindLater() {
+		return accountRemindLater;
+	}
+
+	public void setAccountRemindLater(boolean accountRemindLater) {
+		this.accountRemindLater = accountRemindLater;
 	}
 	
 	

@@ -66,6 +66,8 @@ public class CustomUserWrapper implements CustomUser, ModelWrapper<CustomUser> {
 		attributes.put("deviceInfo", getDeviceInfo());
 		attributes.put("documentVerified", getDocumentVerified());
 		attributes.put("accountCompleted", getAccountCompleted());
+		attributes.put("documentRemindLater", getDocumentRemindLater());
+		attributes.put("accountRemindLater", getAccountRemindLater());
 		attributes.put("profileComplete", getProfileComplete());
 		attributes.put("socialLogin", getSocialLogin());
 		attributes.put("restPass", getRestPass());
@@ -133,6 +135,20 @@ public class CustomUserWrapper implements CustomUser, ModelWrapper<CustomUser> {
 			setAccountCompleted(accountCompleted);
 		}
 
+		Boolean documentRemindLater = (Boolean)attributes.get(
+				"documentRemindLater");
+
+		if (documentRemindLater != null) {
+			setDocumentRemindLater(documentRemindLater);
+		}
+
+		Boolean accountRemindLater = (Boolean)attributes.get(
+				"accountRemindLater");
+
+		if (accountRemindLater != null) {
+			setAccountRemindLater(accountRemindLater);
+		}
+
 		Boolean profileComplete = (Boolean)attributes.get("profileComplete");
 
 		if (profileComplete != null) {
@@ -197,6 +213,26 @@ public class CustomUserWrapper implements CustomUser, ModelWrapper<CustomUser> {
 	}
 
 	/**
+	* Returns the account remind later of this custom user.
+	*
+	* @return the account remind later of this custom user
+	*/
+	@Override
+	public boolean getAccountRemindLater() {
+		return _customUser.getAccountRemindLater();
+	}
+
+	/**
+	* Returns the document remind later of this custom user.
+	*
+	* @return the document remind later of this custom user
+	*/
+	@Override
+	public boolean getDocumentRemindLater() {
+		return _customUser.getDocumentRemindLater();
+	}
+
+	/**
 	* Returns the document verified of this custom user.
 	*
 	* @return the document verified of this custom user
@@ -236,9 +272,29 @@ public class CustomUserWrapper implements CustomUser, ModelWrapper<CustomUser> {
 		return _customUser.isAccountCompleted();
 	}
 
+	/**
+	* Returns <code>true</code> if this custom user is account remind later.
+	*
+	* @return <code>true</code> if this custom user is account remind later; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isAccountRemindLater() {
+		return _customUser.isAccountRemindLater();
+	}
+
 	@Override
 	public boolean isCachedModel() {
 		return _customUser.isCachedModel();
+	}
+
+	/**
+	* Returns <code>true</code> if this custom user is document remind later.
+	*
+	* @return <code>true</code> if this custom user is document remind later; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isDocumentRemindLater() {
+		return _customUser.isDocumentRemindLater();
 	}
 
 	/**
@@ -496,6 +552,16 @@ public class CustomUserWrapper implements CustomUser, ModelWrapper<CustomUser> {
 		_customUser.setAccountCompleted(accountCompleted);
 	}
 
+	/**
+	* Sets whether this custom user is account remind later.
+	*
+	* @param accountRemindLater the account remind later of this custom user
+	*/
+	@Override
+	public void setAccountRemindLater(boolean accountRemindLater) {
+		_customUser.setAccountRemindLater(accountRemindLater);
+	}
+
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_customUser.setCachedModel(cachedModel);
@@ -549,6 +615,16 @@ public class CustomUserWrapper implements CustomUser, ModelWrapper<CustomUser> {
 	@Override
 	public void setDeviceInfo(java.lang.String deviceInfo) {
 		_customUser.setDeviceInfo(deviceInfo);
+	}
+
+	/**
+	* Sets whether this custom user is document remind later.
+	*
+	* @param documentRemindLater the document remind later of this custom user
+	*/
+	@Override
+	public void setDocumentRemindLater(boolean documentRemindLater) {
+		_customUser.setDocumentRemindLater(documentRemindLater);
 	}
 
 	/**

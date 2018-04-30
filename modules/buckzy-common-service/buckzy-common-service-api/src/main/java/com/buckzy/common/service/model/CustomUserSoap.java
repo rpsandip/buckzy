@@ -42,6 +42,8 @@ public class CustomUserSoap implements Serializable {
 		soapModel.setDeviceInfo(model.getDeviceInfo());
 		soapModel.setDocumentVerified(model.getDocumentVerified());
 		soapModel.setAccountCompleted(model.getAccountCompleted());
+		soapModel.setDocumentRemindLater(model.getDocumentRemindLater());
+		soapModel.setAccountRemindLater(model.getAccountRemindLater());
 		soapModel.setProfileComplete(model.getProfileComplete());
 		soapModel.setSocialLogin(model.getSocialLogin());
 		soapModel.setRestPass(model.getRestPass());
@@ -181,6 +183,30 @@ public class CustomUserSoap implements Serializable {
 		_accountCompleted = accountCompleted;
 	}
 
+	public boolean getDocumentRemindLater() {
+		return _documentRemindLater;
+	}
+
+	public boolean isDocumentRemindLater() {
+		return _documentRemindLater;
+	}
+
+	public void setDocumentRemindLater(boolean documentRemindLater) {
+		_documentRemindLater = documentRemindLater;
+	}
+
+	public boolean getAccountRemindLater() {
+		return _accountRemindLater;
+	}
+
+	public boolean isAccountRemindLater() {
+		return _accountRemindLater;
+	}
+
+	public void setAccountRemindLater(boolean accountRemindLater) {
+		_accountRemindLater = accountRemindLater;
+	}
+
 	public boolean getProfileComplete() {
 		return _profileComplete;
 	}
@@ -254,6 +280,8 @@ public class CustomUserSoap implements Serializable {
 	private String _deviceInfo;
 	private boolean _documentVerified;
 	private boolean _accountCompleted;
+	private boolean _documentRemindLater;
+	private boolean _accountRemindLater;
 	private boolean _profileComplete;
 	private boolean _socialLogin;
 	private String _restPass;

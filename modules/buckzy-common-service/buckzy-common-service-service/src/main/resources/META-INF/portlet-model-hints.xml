@@ -13,6 +13,8 @@
 		</field>
 		<field name="documentVerified" type="boolean" />
 		<field name="accountCompleted" type="boolean" />
+		<field name="documentRemindLater" type="boolean" />
+		<field name="accountRemindLater" type="boolean" />
 		<field name="profileComplete" type="boolean" />
 		<field name="socialLogin" type="boolean" />
 		<field name="restPass" type="String">

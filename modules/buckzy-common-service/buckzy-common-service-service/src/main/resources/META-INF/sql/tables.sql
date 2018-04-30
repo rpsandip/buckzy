@@ -8,6 +8,8 @@ create table BUCKZY_CustomUser (
 	deviceInfo VARCHAR(500) null,
 	documentVerified BOOLEAN,
 	accountCompleted BOOLEAN,
+	documentRemindLater BOOLEAN,
+	accountRemindLater BOOLEAN,
 	profileComplete BOOLEAN,
 	socialLogin BOOLEAN,
 	restPass VARCHAR(100) null,

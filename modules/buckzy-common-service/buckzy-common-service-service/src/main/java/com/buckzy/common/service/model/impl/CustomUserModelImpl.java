@@ -74,6 +74,8 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 			{ "deviceInfo", Types.VARCHAR },
 			{ "documentVerified", Types.BOOLEAN },
 			{ "accountCompleted", Types.BOOLEAN },
+			{ "documentRemindLater", Types.BOOLEAN },
+			{ "accountRemindLater", Types.BOOLEAN },
 			{ "profileComplete", Types.BOOLEAN },
 			{ "socialLogin", Types.BOOLEAN },
 			{ "restPass", Types.VARCHAR },
@@ -94,6 +96,8 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 		TABLE_COLUMNS_MAP.put("deviceInfo", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("documentVerified", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("accountCompleted", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("documentRemindLater", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("accountRemindLater", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("profileComplete", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("socialLogin", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("restPass", Types.VARCHAR);
@@ -103,7 +107,7 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 		TABLE_COLUMNS_MAP.put("modifiedBy", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table BUCKZY_CustomUser (customUserId LONG not null primary key,userId LONG,partyId LONG,partyUserId LONG,mobileNo VARCHAR(75) null,mobCountryCode VARCHAR(75) null,deviceInfo VARCHAR(500) null,documentVerified BOOLEAN,accountCompleted BOOLEAN,profileComplete BOOLEAN,socialLogin BOOLEAN,restPass VARCHAR(100) null,createDate DATE null,createdBy LONG,modifiedDate DATE null,modifiedBy LONG)";
+	public static final String TABLE_SQL_CREATE = "create table BUCKZY_CustomUser (customUserId LONG not null primary key,userId LONG,partyId LONG,partyUserId LONG,mobileNo VARCHAR(75) null,mobCountryCode VARCHAR(75) null,deviceInfo VARCHAR(500) null,documentVerified BOOLEAN,accountCompleted BOOLEAN,documentRemindLater BOOLEAN,accountRemindLater BOOLEAN,profileComplete BOOLEAN,socialLogin BOOLEAN,restPass VARCHAR(100) null,createDate DATE null,createdBy LONG,modifiedDate DATE null,modifiedBy LONG)";
 	public static final String TABLE_SQL_DROP = "drop table BUCKZY_CustomUser";
 	public static final String ORDER_BY_JPQL = " ORDER BY customUser.customUserId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY BUCKZY_CustomUser.customUserId ASC";
@@ -172,6 +176,8 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 		attributes.put("deviceInfo", getDeviceInfo());
 		attributes.put("documentVerified", getDocumentVerified());
 		attributes.put("accountCompleted", getAccountCompleted());
+		attributes.put("documentRemindLater", getDocumentRemindLater());
+		attributes.put("accountRemindLater", getAccountRemindLater());
 		attributes.put("profileComplete", getProfileComplete());
 		attributes.put("socialLogin", getSocialLogin());
 		attributes.put("restPass", getRestPass());
@@ -240,6 +246,20 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 
 		if (accountCompleted != null) {
 			setAccountCompleted(accountCompleted);
+		}
+
+		Boolean documentRemindLater = (Boolean)attributes.get(
+				"documentRemindLater");
+
+		if (documentRemindLater != null) {
+			setDocumentRemindLater(documentRemindLater);
+		}
+
+		Boolean accountRemindLater = (Boolean)attributes.get(
+				"accountRemindLater");
+
+		if (accountRemindLater != null) {
+			setAccountRemindLater(accountRemindLater);
 		}
 
 		Boolean profileComplete = (Boolean)attributes.get("profileComplete");
@@ -481,6 +501,36 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 	}
 
 	@Override
+	public boolean getDocumentRemindLater() {
+		return _documentRemindLater;
+	}
+
+	@Override
+	public boolean isDocumentRemindLater() {
+		return _documentRemindLater;
+	}
+
+	@Override
+	public void setDocumentRemindLater(boolean documentRemindLater) {
+		_documentRemindLater = documentRemindLater;
+	}
+
+	@Override
+	public boolean getAccountRemindLater() {
+		return _accountRemindLater;
+	}
+
+	@Override
+	public boolean isAccountRemindLater() {
+		return _accountRemindLater;
+	}
+
+	@Override
+	public void setAccountRemindLater(boolean accountRemindLater) {
+		_accountRemindLater = accountRemindLater;
+	}
+
+	@Override
 	public boolean getProfileComplete() {
 		return _profileComplete;
 	}
@@ -611,6 +661,8 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 		customUserImpl.setDeviceInfo(getDeviceInfo());
 		customUserImpl.setDocumentVerified(getDocumentVerified());
 		customUserImpl.setAccountCompleted(getAccountCompleted());
+		customUserImpl.setDocumentRemindLater(getDocumentRemindLater());
+		customUserImpl.setAccountRemindLater(getAccountRemindLater());
 		customUserImpl.setProfileComplete(getProfileComplete());
 		customUserImpl.setSocialLogin(getSocialLogin());
 		customUserImpl.setRestPass(getRestPass());
@@ -733,6 +785,10 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 
 		customUserCacheModel.accountCompleted = getAccountCompleted();
 
+		customUserCacheModel.documentRemindLater = getDocumentRemindLater();
+
+		customUserCacheModel.accountRemindLater = getAccountRemindLater();
+
 		customUserCacheModel.profileComplete = getProfileComplete();
 
 		customUserCacheModel.socialLogin = getSocialLogin();
@@ -772,7 +828,7 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{customUserId=");
 		sb.append(getCustomUserId());
@@ -792,6 +848,10 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 		sb.append(getDocumentVerified());
 		sb.append(", accountCompleted=");
 		sb.append(getAccountCompleted());
+		sb.append(", documentRemindLater=");
+		sb.append(getDocumentRemindLater());
+		sb.append(", accountRemindLater=");
+		sb.append(getAccountRemindLater());
 		sb.append(", profileComplete=");
 		sb.append(getProfileComplete());
 		sb.append(", socialLogin=");
@@ -813,7 +873,7 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(58);
 
 		sb.append("<model><model-name>");
 		sb.append("com.buckzy.common.service.model.CustomUser");
@@ -854,6 +914,14 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 		sb.append(
 			"<column><column-name>accountCompleted</column-name><column-value><![CDATA[");
 		sb.append(getAccountCompleted());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>documentRemindLater</column-name><column-value><![CDATA[");
+		sb.append(getDocumentRemindLater());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>accountRemindLater</column-name><column-value><![CDATA[");
+		sb.append(getAccountRemindLater());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>profileComplete</column-name><column-value><![CDATA[");
@@ -906,6 +974,8 @@ public class CustomUserModelImpl extends BaseModelImpl<CustomUser>
 	private String _deviceInfo;
 	private boolean _documentVerified;
 	private boolean _accountCompleted;
+	private boolean _documentRemindLater;
+	private boolean _accountRemindLater;
 	private boolean _profileComplete;
 	private boolean _socialLogin;
 	private String _restPass;

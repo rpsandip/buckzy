@@ -66,7 +66,7 @@ public class CustomUserCacheModel implements CacheModel<CustomUser>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{customUserId=");
 		sb.append(customUserId);
@@ -86,6 +86,10 @@ public class CustomUserCacheModel implements CacheModel<CustomUser>,
 		sb.append(documentVerified);
 		sb.append(", accountCompleted=");
 		sb.append(accountCompleted);
+		sb.append(", documentRemindLater=");
+		sb.append(documentRemindLater);
+		sb.append(", accountRemindLater=");
+		sb.append(accountRemindLater);
 		sb.append(", profileComplete=");
 		sb.append(profileComplete);
 		sb.append(", socialLogin=");
@@ -137,6 +141,8 @@ public class CustomUserCacheModel implements CacheModel<CustomUser>,
 
 		customUserImpl.setDocumentVerified(documentVerified);
 		customUserImpl.setAccountCompleted(accountCompleted);
+		customUserImpl.setDocumentRemindLater(documentRemindLater);
+		customUserImpl.setAccountRemindLater(accountRemindLater);
 		customUserImpl.setProfileComplete(profileComplete);
 		customUserImpl.setSocialLogin(socialLogin);
 
@@ -187,6 +193,10 @@ public class CustomUserCacheModel implements CacheModel<CustomUser>,
 
 		accountCompleted = objectInput.readBoolean();
 
+		documentRemindLater = objectInput.readBoolean();
+
+		accountRemindLater = objectInput.readBoolean();
+
 		profileComplete = objectInput.readBoolean();
 
 		socialLogin = objectInput.readBoolean();
@@ -235,6 +245,10 @@ public class CustomUserCacheModel implements CacheModel<CustomUser>,
 
 		objectOutput.writeBoolean(accountCompleted);
 
+		objectOutput.writeBoolean(documentRemindLater);
+
+		objectOutput.writeBoolean(accountRemindLater);
+
 		objectOutput.writeBoolean(profileComplete);
 
 		objectOutput.writeBoolean(socialLogin);
@@ -263,6 +277,8 @@ public class CustomUserCacheModel implements CacheModel<CustomUser>,
 	public String deviceInfo;
 	public boolean documentVerified;
 	public boolean accountCompleted;
+	public boolean documentRemindLater;
+	public boolean accountRemindLater;
 	public boolean profileComplete;
 	public boolean socialLogin;
 	public String restPass;

@@ -96,12 +96,24 @@
       						</div>
       						<div class="col-xs-12 padding-0 border-1" style="padding: 20px;  font-size: 12px; background-color: #FFFFFF; margin-top: 20px;">
       							<div class="col-sm-12 padding-0 profile-detail" style="      margin-top: 15px;">
-									<span style="font-size: 14px; font-weight: bold;     color: black;" >Upload a government issued photo ID (Drivers licence or passport prefered)</span><br/><br/>
-							           	   <aui:input id="drive_license"  type="radio" name="documentVerificationType" value="drive_license" label=""/>
-						                    <label for="<portlet:namespace/>drive_license" style="    color: black;">Drivers License</label>
+									       <c:choose>
+									       	<c:when test="${userBean.partyBean.partyAddressBean.cntrycd eq 'CA'}">
+									       		<span style="font-size: 14px; font-weight: bold;">Upload a government issued Bill (Utility Bill)</span><br/>
+													<aui:input id="utility_bill" type="radio"
+														name="documentVerificationType" value="utilityBill" label="" />
+													<label for="<portlet:namespace/>utility_bill"
+													style="color: black;     margin-top: 15px;">Utility Bill</label> 
+									       	</c:when>
+									       	<c:otherwise>
+									       		<span style="font-size: 14px; font-weight: bold;     color: black;" >Upload a government issued photo ID (Drivers licence or passport prefered)</span><br/><br/>
+							           	   		<aui:input id="drive_license"  type="radio" name="documentVerificationType" value="drive_license" label=""/>
+						                   			 <label for="<portlet:namespace/>drive_license" style="    color: black;     margin-top: 15px;">Drivers License</label>
 						                     		
-						                   <aui:input id="password"  type="radio" name="documentVerificationType" value="passport" label="" />
-						                   <label for="<portlet:namespace/>no" style="    color: black;">Passport</label>
+						                   		<aui:input id="password"  type="radio" name="documentVerificationType" value="passport" label="" />
+						                   		<label for="<portlet:namespace/>no" style="    color: black;     margin-top: 15px;">Passport</label>
+									       	</c:otherwise>
+									       </c:choose>
+									       
 						           		<div class="col-md-12 col-sm-6 col-xs-12">
 							                  <input type="file" id="verificationDoc" name="verificationDoc" required="required" class="form-control col-md-7 col-xs-12 border-1 padding-5">
 							            </div>
@@ -190,12 +202,10 @@
 						                 <div class="col-sm-12 pad-0">
 							                 <div class="col-sm-6 pad-0">
 							                 	<aui:input name="accountNumber" label="Account Number" placeholder="Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px;  width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 0px;" >
-										     		<aui:validator name="required" />
 										   		</aui:input>
 							                 </div> 
 							                 <div class="col-sm-6 pad-0 re-accnt">
 							                 	<aui:input name="accountNumber2" label="Re-enter Account Number" placeholder="Re-enter Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px;  width: 100%; border:1px solid #D3D3D3; border-radius: 1px;     margin-left: 7px;" >
-										     		<aui:validator name="required" />
 										     		<aui:validator name="equalTo">'#<portlet:namespace />accountNumber'</aui:validator>
 										   		</aui:input>
 							                 </div>
@@ -270,7 +280,6 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 					document.<portlet:namespace />profileFm.submit();		
 				}
 			}else{
-				
 				if(A.one("#<portlet:namespace />search")._node.checked){
 					bankValidator.validate();
 					if(!bankValidator.hasErrors()){
@@ -626,8 +635,8 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	}
 
 	if(accountType==2){
-		cardNumber.simulate('keyup');
 		A.one("#<portlet:namespace/>cardNumber").val(accountNumber);
+		cardNumber.simulate('keyup');
 	}
 	
 	countrySelect.simulate('change');

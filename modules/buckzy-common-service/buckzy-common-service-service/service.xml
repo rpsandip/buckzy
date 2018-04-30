@@ -16,6 +16,8 @@
 		<column name="deviceInfo" type="String"></column>
 		<column name="documentVerified" type="boolean"></column>
 		<column name="accountCompleted" type="boolean"></column>
+		<column name="documentRemindLater" type="boolean"></column>
+		<column name="accountRemindLater" type="boolean"></column>
 		<column name="profileComplete" type="boolean"></column>
 		<column name="socialLogin" type="boolean"></column>
 		<column name="restPass" type="String"></column>
