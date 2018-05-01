@@ -61,11 +61,11 @@ public interface BuckzyCommonLocalService extends BaseLocalService {
 	public PaymentBean converPaymentObjectToBean(JSONObject paymentObj);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONArray getBankList(java.lang.String token,
-		java.lang.String countryCode);
+	public JSONArray getBankList(java.lang.String token, java.lang.String cityId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONArray getBranches(java.lang.String token, java.lang.String bankId);
+	public JSONArray getBranches(java.lang.String token,
+		java.lang.String bankId, java.lang.String cityId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public JSONArray getCityList(java.lang.String token,

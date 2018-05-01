@@ -170,16 +170,6 @@ public class BuckzyProfileModulePortlet extends MVCPortlet {
 			}
 			renderRequest.setAttribute("countryJsonList", countryJsonList);
 			
-			// Get Bank List
-			// TODO : Need to remove after binlist integration
-			JSONArray bankArray = BuckzyCommonLocalServiceUtil.getBankList(token, BuckzyConstants.SINGAPORE_COUNTRY_CODE);
-			List<JSONObject> bankJsonList = new ArrayList<JSONObject>();
-			for(int i=0;i<bankArray.length();i++){
-				bankJsonList.add(bankArray.getJSONObject(i));
-			}
-			renderRequest.setAttribute("bankJsonList", bankJsonList);
-		
-			
 		} catch (PortalException e) {
 			_log.error(e);
 		}

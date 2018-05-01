@@ -127,7 +127,6 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 
 		JSONObject paramsJsonObj = JSONFactoryUtil.createJSONObject();
 		paramsJsonObj.put("acctownrtype", BuckzyConstants.IND_ACCOUNT_TYPE);
-		// TODO: Need to make dynamic
 		paramsJsonObj.put("basecurrcd", currencyCode);
 		paramsJsonObj.put("sndrflg", "T");
 		// TODO: Need to get proper value of it
@@ -450,6 +449,14 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 			JSONArray receiverAccountsArray = JSONFactoryUtil.createJSONArray(response.getString("data"));
 			if (receiverAccountsArray.length() > 0) {
 				receiverAccountObj = receiverAccountsArray.getJSONObject(0);
+				
+				if (Validator.isNotNull(receiverAccountObj) && receiverAccountObj.getInt("bankId") != 0
+						&& receiverAccountObj.getInt("bankBranchId") != 0) {
+					JSONObject accountBranchDetail = getBranchDetail(receiverAccountObj.getInt("bankId"),
+							receiverAccountObj.getInt("bankBranchId"), token);
+					receiverAccountObj.put("accountBranchDetail", accountBranchDetail);
+				}
+				
 			}
 		} else {
 			String errMsg = BuckzyCommonLocalServiceUtil.extractErrMsgFromJson(response.getJSONObject("errors"));

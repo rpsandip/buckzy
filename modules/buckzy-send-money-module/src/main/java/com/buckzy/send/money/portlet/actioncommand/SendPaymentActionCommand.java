@@ -102,24 +102,7 @@ public class SendPaymentActionCommand extends BaseMVCActionCommand{
 						actionResponse.setRenderParameter("rcBkId", responseObj.getString("rcvrbankid"));
 						
 						actionResponse.setRenderParameter("paymentId", responseObj.getString("lineitemid"));
-						actionResponse.setRenderParameter("pID", responseObj.getString("lineitemid"));
-						actionResponse.setRenderParameter("sdNm", responseObj.getString("sndrdbtrnm"));
-						actionResponse.setRenderParameter("sdAc", senderLast4digitAccount);
-						actionResponse.setRenderParameter("sdAm", responseObj.getString("sndrinstramt"));
-						actionResponse.setRenderParameter("sdCr", responseObj.getString("sndrcurrcd"));
-						actionResponse.setRenderParameter("sdCn", responseObj.getString("sndrcntrycd"));
 						
-						actionResponse.setRenderParameter("rcNm", responseObj.getString("rcvrnm"));
-						actionResponse.setRenderParameter("rcAc", receiverLast4digitAccount);
-						actionResponse.setRenderParameter("rcCr", responseObj.getString("rcvrcurrcd"));
-						actionResponse.setRenderParameter("rcAm", responseObj.getString("rcvramt"));
-						actionResponse.setRenderParameter("rcMl", responseObj.getString("rcvremail"));
-						actionResponse.setRenderParameter("rcPh", responseObj.getString("rcvrmobilenr"));
-						actionResponse.setRenderParameter("rcCn", responseObj.getString("rcvrcntrycd"));
-						
-						actionResponse.setRenderParameter("purpofpymt", responseObj.getString("purpofpymt"));
-						
-						actionResponse.setRenderParameter("exRt", String.valueOf(exchangeRate));
 					}else{
 						SessionErrors.add(actionRequest, "payment-error");
 						SessionMessages.add(actionRequest, PortalUtil.getPortletId(actionRequest) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);

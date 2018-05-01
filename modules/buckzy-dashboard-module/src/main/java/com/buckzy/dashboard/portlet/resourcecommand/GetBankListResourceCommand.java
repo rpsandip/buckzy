@@ -32,14 +32,10 @@ public class GetBankListResourceCommand implements MVCResourceCommand{
 	public boolean serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 			throws PortletException {
 
-		String cityCode = ParamUtil.getString(resourceRequest, "cityCode");
-		String countryCode = ParamUtil.getString(resourceRequest, "cntryCode");
+		String cityId = ParamUtil.getString(resourceRequest, "cityCode");
 		JSONArray bankArray = JSONFactoryUtil.createJSONArray();
-		//if(Validator.isNotNull(cityCode)){
-			String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(resourceRequest)).getSession().getAttribute("token");
-			// TODO : Need to make this as city wise
-			bankArray = BuckzyCommonLocalServiceUtil.getBankList(token, countryCode);
-		//}
+		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(resourceRequest)).getSession().getAttribute("token");
+		bankArray = BuckzyCommonLocalServiceUtil.getBankList(token, cityId);
 		
 		try {
 			resourceResponse.getWriter().write(bankArray.toString());

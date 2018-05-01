@@ -34,16 +34,25 @@
 				<div class="col-sm-12 pad-0" style="padding-left: 15px;">
 					<div class="col-sm-7 pad-0">
 						<c:choose>
-							<c:when test="${userBean.partyBean.accountBean.accountCategory==1 }">
-								Bank Account : Last 4 - ${userBean.partyBean.accountBean.acctnr4dgt }
-							</c:when>
+							<c:when test="${isAccountVerfied }">
+								<c:choose>
+									<c:when test="${userBean.partyBean.accountBean.accountCategory==1 }">
+										Bank Account : Last 4 - ${userBean.partyBean.accountBean.acctnr4dgt }
+									</c:when>
+									<c:otherwise>
+										 Debit Card : Last 4 - ${userBean.partyBean.accountBean.acctnr4dgt }
+									</c:otherwise>
+								</c:choose>
+						    </c:when>
 							<c:otherwise>
-								 Debit Card : Last 4 - ${userBean.partyBean.accountBean.acctnr4dgt }
+								<div class="col-sm-12" style="color: #961622; font-size: 14px; font-weight: bold;">
+									Please add update your account.
+								</div>
 							</c:otherwise>
-						</c:choose>
+						</c:choose>	
 					</div>
 					<div class="col-sm-5 pad-0">
-						<a href="" style="font-size: 12px;">Add / Modify Payment Type</a>
+						<a href="/group/guest/profile" style="font-size: 12px;">Add / Modify Payment Type</a>
 					</div>
 				</div>
 			</div>
@@ -147,12 +156,7 @@
 							<div class="new-transfer">Submit</div>
 						</div>	
 					</c:when>
-					<c:otherwise>
-						<div class="col-sm-12" style="color: #961622; font-size: 14px; font-weight: bold;">
-							You have not added your bank account. Please update your profile <a href="/group/guest/profile">here</a>
-						</div>
-					</c:otherwise>
-				</c:choose>
+			   </c:choose>
 		</div>
 	</div>
 
@@ -227,6 +231,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	var receivingAmountSelect = A.one("#<portlet:namespace />receivingAmount");
 	var receiverSelect = A.one("#<portlet:namespace />receiver");
 	var senderCurCode = '${loginUserCurrencyCd}';
+	var loginUserPartyId = '${loginUserPartyId}';
 	var receiverCurCode;
 	
 	receiverSelect.on('change', function(e) {
@@ -253,7 +258,8 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			dataType: 'json',
 			method: 'GET',
 			data :{
-				'<portlet:namespace/>receiverPartyId' : receiverDetail.split(",")[0]
+				'<portlet:namespace/>receiverPartyId' : receiverDetail.split(",")[0],
+				'<portlet:namespace/>senderPartyId' : loginUserPartyId
 			},
 			on: {
 			success: function() {

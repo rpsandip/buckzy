@@ -32,6 +32,7 @@ public class PaymentBean {
 	private String purpofpymt;
 	private String purpcd;
 	private Date  createdDate;
+	private int rcvrbankbranchid;
 	
 	public long getLineitemid() {
 		return lineitemid;
@@ -200,6 +201,12 @@ public class PaymentBean {
 	}
 	public void setSndrcurrcd(String sndrcurrcd) {
 		this.sndrcurrcd = sndrcurrcd;
+	}
+	public int getRcvrbankbranchid() {
+		return rcvrbankbranchid;
+	}
+	public void setRcvrbankbranchid(int rcvrbankbranchid) {
+		this.rcvrbankbranchid = rcvrbankbranchid;
 	}
 	
 	

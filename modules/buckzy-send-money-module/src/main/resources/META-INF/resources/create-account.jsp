@@ -101,11 +101,13 @@
 								                 <div class="col-sm-6 pad-0">
 								                 	<aui:input name="accountNumber" label="Account Number" placeholder="Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; ; ">
 											     		<aui:validator name="required" />
+											     		<aui:validator name="maxLength">20</aui:validator>
 											   		</aui:input>
 								                 </div> 
 								                 <div class="col-sm-6 pad-side-10">
 								                 	<aui:input name="accountNumber2" label="Re Enter Account Number" placeholder="Re-enter Account Number"  cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px;">
 											     		<aui:validator name="required" />
+											     		<aui:validator name="maxLength">20</aui:validator>
 											     		<aui:validator name="equalTo">'#<portlet:namespace />accountNumber'</aui:validator>
 											   		</aui:input>
 								                 </div>
@@ -185,6 +187,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request' ,'node-event-simulat
 	var searchBranchTypeBtns = A.all("input[name=<portlet:namespace />searchBranchType]");
 	var knownBranchBtn = A.one("#<portlet:namespace />known_branch");
 	var searchBtn = A.one("#<portlet:namespace />search");
+	var selectedCityId;
 	A.one("#<portlet:namespace />known_branch")._node.checked=true;
 	countrySelect.simulate('change');
 	
@@ -277,6 +280,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request' ,'node-event-simulat
 	
 	cityAutoComplete.on('select', function(e) {
 		console.log("11 ->" + e.result.raw.cityId);
+		selectedCityId = e.result.raw.cityId;
 		simulateBanksOnCityChange(e.result.raw.cityId,e.result.raw.cntryCd);
 	});
 	
@@ -322,7 +326,8 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request' ,'node-event-simulat
 			dataType: 'json',
 			method: 'GET',
 			data :{
-				'<portlet:namespace/>bankCode' : this.get('value')
+				'<portlet:namespace/>bankCode' : this.get('value'),
+				'<portlet:namespace/>cityId': selectedCityId
 			},
 			on: {
 			success: function() {

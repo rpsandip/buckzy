@@ -26,10 +26,10 @@ public class BuckzyConstants {
 	
 	public static final String PARTY_UPDATE_PUT_URL="/partyaccount/V1/party/";
 	public static final String GET_COUNTRY_LIST_URL ="/partyaccount/V1/countries";
-	public static final String GET_BANK__LIST_URL ="/partyaccount/V1/banks?cntryCd=";
+	public static final String GET_BANK__LIST_URL ="/partyaccount/V1/banksInCity?cityId=";
 	public static final String GET_STATE_LIST_URL = "/partyaccount/V1/countries/countryCode/states";
 	public static final String GET_CITY_LIST_URL = "/partyaccount/V1/cities?";
-	public static final String GET_BRANCH__LIST_URL ="/partyaccount/V1/banks/bankId/branches/all";
+	public static final String GET_BRANCH__LIST_URL ="/partyaccount/V1/banks/bankId/branches?cityId=";
 	public static final String GET_PARTY_URL ="/partyaccount/V1/party/";
 	public static final String KYC_DOC_URL ="/partyaccount/V1/documents?documentTypeCode=PARTY";
 	public static final String GET_PARTY_ACCOUNTS="/partyaccount/V1/parties/partyId/accounts";

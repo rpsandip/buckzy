@@ -75,7 +75,7 @@ public class BuckzySendMoneyControllerPortlet extends MVCPortlet {
 				if(Validator.isNotNull(loginUserPartyDetail)){
 					renderRequest.setAttribute("loginUserCurrencyCd", loginUserPartyDetail.get("basecurrcd"));
 					renderRequest.setAttribute("loginUserCountryCode", userBean.getPartyBean().getPartyAddressBean().getCntrycd().toLowerCase());
-					
+					renderRequest.setAttribute("loginUserPartyId", userBean.getPartyBean().getPrtyid());
 					if(Validator.isNotNull(loginUserPartyDetail.getJSONObject("partyAccount")) &&  loginUserPartyDetail.getJSONObject("partyAccount").getLong("acctId")>0){
 						renderRequest.setAttribute("isAccountVerfied", true);
 					}else{

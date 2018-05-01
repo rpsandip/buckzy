@@ -431,6 +431,7 @@
 						var selectedBankId = '${userBean.partyBean.accountBean.branchBean.bankId}';
 						var accountType = '${ userBean.partyBean.accountBean.accountCategory}';
 						var accountNumber = '${userBean.partyBean.accountBean.acctnr}';
+						var selectedCity;
 						if(A.one('.updateAccountCardBtn')){
 							var updateAccountCardBtn = A.one('.updateAccountCardBtn');
 							var updateAccountBankBtn = A.one('.updateAccountBankBtn');
@@ -488,6 +489,7 @@
 												}
 											}
 										});
+						}
 
 						if(updateAccountBankBtn){
 						updateAccountBankBtn
@@ -543,7 +545,9 @@
 
 						if(accountTypeBtns){
 							for (var i = 0; i < accountTypeBtns._nodes.length; i++) {
+								console.log('accountTypeBtns._nodes[i]');
 								accountTypeBtns._nodes[i].onclick = function() {
+									console.log('clicked');
 									if (this.getAttribute('id').indexOf(
 											'bank_account') >= 0) {
 										A.one("#bank_detail").show();
@@ -645,7 +649,7 @@
 										});
 					     }
 
-						if(A.one("#<portlet:namespace />countryCity"){
+						if(A.one("#<portlet:namespace />countryCity")){
 						var cityData;
 						var cityAutoComplete = new A.AutoCompleteList(
 								{
@@ -698,6 +702,7 @@
 
 						cityAutoComplete.on('select', function(e) {
 							console.log("11 ->" + e.result.raw.cityId);
+							selectedCity = e.result.raw.cityId;
 							simulateBanksOnCityChange(e.result.raw.cityId,
 									e.result.raw.cntryCd);
 						});
@@ -806,7 +811,8 @@
 																method : 'GET',
 																data : {
 																	'<portlet:namespace/>bankCode' : this
-																			.get('value')
+																			.get('value'),
+																	'<portlet:namespace/>cityId' : selectedCity		
 																},
 																on : {
 																	success : function() {

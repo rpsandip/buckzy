@@ -36,12 +36,13 @@ public class GetBranchDetailResourceCommand implements MVCResourceCommand{
 			throws PortletException {
 
 		String bankDetail = ParamUtil.getString(resourceRequest, "bankCode");
+		String cityId = ParamUtil.getString(resourceRequest, "cityId");
 		JSONArray branchArray = JSONFactoryUtil.createJSONArray();
 		if(Validator.isNotNull(bankDetail)){
 			String bankId = bankDetail.split(StringPool.COMMA)[0];
 			String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(resourceRequest)).getSession().getAttribute("token");
 			// Get Branch List
-			branchArray = BuckzyCommonLocalServiceUtil.getBranches(token, bankId);
+			branchArray = BuckzyCommonLocalServiceUtil.getBranches(token, bankId, cityId);
 		}
 		
 		try {

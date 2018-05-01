@@ -35,10 +35,11 @@ public class GetReceiverAccountResourceCommand implements MVCResourceCommand{
 	public boolean serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 			throws PortletException {
 		long receiverPartyId = ParamUtil.getLong(resourceRequest, "receiverPartyId");
+		long senderPartyId = ParamUtil.getLong(resourceRequest, "senderPartyId");
 		JSONObject responseObj = JSONFactoryUtil.createJSONObject();
 		String token = (String)PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(resourceRequest)).getSession().getAttribute("token");
 		try {
-			responseObj = CustomUserLocalServiceUtil.getPartyPreferAccount(receiverPartyId, token);
+			responseObj = CustomUserLocalServiceUtil.getReceiverAccountDetail(token, senderPartyId, receiverPartyId);
 		} catch (PortalException e1) {
 			_log.error(e1);
 		}

@@ -53,14 +53,14 @@ public class BuckzyCommonLocalServiceWrapper implements BuckzyCommonLocalService
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONArray getBankList(
-		java.lang.String token, java.lang.String countryCode) {
-		return _buckzyCommonLocalService.getBankList(token, countryCode);
+		java.lang.String token, java.lang.String cityId) {
+		return _buckzyCommonLocalService.getBankList(token, cityId);
 	}
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONArray getBranches(
-		java.lang.String token, java.lang.String bankId) {
-		return _buckzyCommonLocalService.getBranches(token, bankId);
+		java.lang.String token, java.lang.String bankId, java.lang.String cityId) {
+		return _buckzyCommonLocalService.getBranches(token, bankId, cityId);
 	}
 
 	@Override

@@ -57,13 +57,13 @@ public class BuckzyCommonLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getBankList(
-		java.lang.String token, java.lang.String countryCode) {
-		return getService().getBankList(token, countryCode);
+		java.lang.String token, java.lang.String cityId) {
+		return getService().getBankList(token, cityId);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getBranches(
-		java.lang.String token, java.lang.String bankId) {
-		return getService().getBranches(token, bankId);
+		java.lang.String token, java.lang.String bankId, java.lang.String cityId) {
+		return getService().getBranches(token, bankId, cityId);
 	}
 
 	public static com.liferay.portal.kernel.json.JSONArray getCityList(

@@ -144,7 +144,7 @@
 	                                <img src="${images_folder}/icon3.png" />
 	                                Support
 	                            </div>
-	                            <div class="support-message">1</div>
+	                            <!--<div class="support-message">1</div>  -->
 	                        </div>
 	                        <div class="col-xs-3 padding-top-20">
 	                            <div id="profile" class="pointer" >

@@ -482,11 +482,11 @@ public class BuckzyCommonLocalServiceImpl
 		return countryArray;
 	}
 	
-    public JSONArray getBankList(String token, String countryCode){
+    public JSONArray getBankList(String token, String cityId){
 		
 		JSONArray bankArray = JSONFactoryUtil.createJSONArray();
 		
-		JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(BuckzyConstants.GET_BANK__LIST_URL+countryCode, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
+		JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(BuckzyConstants.GET_BANK__LIST_URL+cityId, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
 		try {
 			if(response.getInt("status")==200){
 				bankArray = JSONFactoryUtil.createJSONArray(response.getString("data"));
@@ -540,10 +540,11 @@ public JSONArray getCityList(String token, String keyWord, String stateCode, Str
 		return cityArray;
 	}
     
-    public JSONArray getBranches(String token, String  bankId){
+    public JSONArray getBranches(String token, String  bankId, String cityId){
 		
 		JSONArray branchArray = JSONFactoryUtil.createJSONArray();
 		String url = BuckzyConstants.GET_BRANCH__LIST_URL.replace("bankId", bankId);
+		url = url + cityId;
 		JSONObject response = BuckzyCommonLocalServiceUtil.getAPIResponse(url, BuckzyConstants.HTTP_GET, StringPool.BLANK, token);
 		try {
 			if(response.getInt("status")==200){
@@ -664,6 +665,7 @@ public JSONArray getCityList(String token, String keyWord, String stateCode, Str
 		paymentBean.setRcvracctid(paymentObj.getLong("rcvracctid"));
 		paymentBean.setPurpofpymt(paymentObj.getString("purpofpymt"));
 		paymentBean.setPurpcd(paymentObj.getString("purpcd"));
+		paymentBean.set
 		paymentBean.setCreatedDate(new Date(paymentObj.getLong("createdAt")));
 		return paymentBean;
     }

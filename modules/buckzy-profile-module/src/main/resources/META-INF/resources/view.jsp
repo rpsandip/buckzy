@@ -306,6 +306,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	var knownBranchBtn = A.one("#<portlet:namespace />known_branch");
 	var searchBtn = A.one("#<portlet:namespace />search");
 	var isValidCard = false;
+	var selectedCity;
 	var accountNumber = '${ userBean.partyBean.accountBean.acctnr}';
 	A.one("#<portlet:namespace />known_branch")._node.checked=true;
 	A.one("#<portlet:namespace />search")._node.checked=true;
@@ -450,6 +451,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	
 	cityAutoComplete.on('select', function(e) {
 		console.log("11 ->" + e.result.raw.cityId);
+		selectedCity= e.result.raw.cityId
 		simulateBanksOnCityChange(e.result.raw.cityId,e.result.raw.cntryCd);
 	});
 	
@@ -508,7 +510,8 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			dataType: 'json',
 			method: 'GET',
 			data :{
-				'<portlet:namespace/>bankCode' : this.get('value')
+				'<portlet:namespace/>bankCode' : this.get('value'),
+				'<portlet:namespace/>cityId' : selectedCity
 			},
 			on: {
 			success: function() {
