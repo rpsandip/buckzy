@@ -2,7 +2,7 @@
 <liferay-ui:success key="payment-succcess"message="payment-succcess" />
 
 <div style="margin: 0 auto;">
-	<div class="pin-detail" style="border: 1px solid #DB2222; outline: #E8E8E8 solid 3px; padding: 75px 35px 55px 35px;">
+	<div class="pin-detail" style="padding: 75px 35px 55px 35px;">
 			
 			<div class="col-sm-12 title padding-0 margin-0 text-center payment-transaction-details">Payment Transaction Details</div>
         <div class="col-xs-12 border-1 padding-10">
@@ -52,21 +52,20 @@
                     </tr>
                     <tr>
                         <td>
-                            <img src="<%= themeDisplay.getPathThemeImages() + "/bank-icon.png"%>" />
+                            <%-- <img src="<%= themeDisplay.getPathThemeImages() + "/bank-icon.png"%>" /> --%>
                         </td>
                         <td>Account # ending ${paymentBean.rcvracctnr}</td>
                     </tr>
-                    <!-- <tr>
-                        <td>
-                            <img src="images/bank-icon.png" />
+                     <tr>
+                        <td style="vertical-align: top;">
+                            <img src="<%= themeDisplay.getPathThemeImages() + "/bank-icon.png"%>" />
                         </td>
                         <td>
-                            <span style="display: block;">ICICI Bank</span>
-                            <span style="display: block;">Kaloor Branch</span>
-                            <span style="display: block;">Kochi, Kerala</span>
-                            <span style="display: block;">India</span>
+                            <span style="display: block;">${recBankName }</span>
+                            <span style="display: block;">${recBranchName } Branch</span>
+                            <span style="display: block;">${recBranchAdd }</span>
                         </td>
-                    </tr> -->
+                    </tr>
                     <tr>
                         <td>
                             <img src="<%= themeDisplay.getPathThemeImages() + "/phone-icon.png"%>" />

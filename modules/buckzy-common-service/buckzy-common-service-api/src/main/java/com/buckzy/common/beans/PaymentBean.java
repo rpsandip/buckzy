@@ -33,6 +33,7 @@ public class PaymentBean {
 	private String purpcd;
 	private Date  createdDate;
 	private int rcvrbankbranchid;
+	private BranchBean branchBean;
 	
 	public long getLineitemid() {
 		return lineitemid;
@@ -207,6 +208,12 @@ public class PaymentBean {
 	}
 	public void setRcvrbankbranchid(int rcvrbankbranchid) {
 		this.rcvrbankbranchid = rcvrbankbranchid;
+	}
+	public BranchBean getBranchBean() {
+		return branchBean;
+	}
+	public void setBranchBean(BranchBean branchBean) {
+		this.branchBean = branchBean;
 	}
 	
 	

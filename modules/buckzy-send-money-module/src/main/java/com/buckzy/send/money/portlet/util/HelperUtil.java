@@ -6,13 +6,20 @@ import java.util.Date;
 
 import javax.portlet.RenderRequest;
 
+import com.buckzy.common.beans.BranchBean;
 import com.buckzy.common.beans.PaymentBean;
 import com.buckzy.common.service.service.BuckzyCommonLocalServiceUtil;
+import com.buckzy.common.service.service.CustomUserLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 public class HelperUtil {
+	
+	private static Log _log = LogFactoryUtil.getLog(HelperUtil.class.getName());
 	
 	public static void setPaymentDetail(String token, long paymentId, RenderRequest renderRequest){
 		SimpleDateFormat sd = new SimpleDateFormat("MMM-dd-YYYY hh:mm a");
@@ -43,8 +50,20 @@ public class HelperUtil {
 				paymentBean.setRcvracctnr(receiverLast4digitAccount);
 			}
 			
+			// Get branchDetail
+			try {
+				JSONObject branchDetail =  CustomUserLocalServiceUtil.getBranchDetail(paymentBean.getRcvrbankid(), paymentBean.getRcvrbankbranchid(), token);
+				JSONObject bankDetail = BuckzyCommonLocalServiceUtil.getBankDetail(token, paymentBean.getRcvrbankid());
+				renderRequest.setAttribute("recBankName",bankDetail.get("bankNm"));
+				renderRequest.setAttribute("recBranchName", branchDetail.get("branchDes"));
+				renderRequest.setAttribute("recBranchAdd", branchDetail.get("branchAddrline"));
+			} catch (PortalException e) {
+				_log.error(e);
+			}
+			
 			renderRequest.setAttribute("senderCountry", paymentBean.getSndrcntrycd());
 			renderRequest.setAttribute("receiverCountry", paymentBean.getRcvrcntrycd());
 		}
 	}
+	
 }

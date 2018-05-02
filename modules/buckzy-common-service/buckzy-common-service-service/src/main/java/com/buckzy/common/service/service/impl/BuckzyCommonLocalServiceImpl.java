@@ -665,7 +665,7 @@ public JSONArray getCityList(String token, String keyWord, String stateCode, Str
 		paymentBean.setRcvracctid(paymentObj.getLong("rcvracctid"));
 		paymentBean.setPurpofpymt(paymentObj.getString("purpofpymt"));
 		paymentBean.setPurpcd(paymentObj.getString("purpcd"));
-		paymentBean.set
+		paymentBean.setRcvrbankbranchid(paymentObj.getInt("rcvrbankbranchid"));
 		paymentBean.setCreatedDate(new Date(paymentObj.getLong("createdAt")));
 		return paymentBean;
     }

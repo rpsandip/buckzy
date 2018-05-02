@@ -529,6 +529,8 @@ public class CustomUserLocalServiceImpl extends CustomUserLocalServiceBaseImpl {
 		}
 	}
 	
+	
+	
 	public JSONObject updateAccountDetail(String token, long userId, String accountType,String cardNumber, String cardFirstName, String cardLastName, String expireOnMonth, String expireOnYear,
 			String accountNumber, String acctInstnNm, int bankId, int branchId, String routingNumber,
 			String searchBranchType) throws JSONException, PortalException{
