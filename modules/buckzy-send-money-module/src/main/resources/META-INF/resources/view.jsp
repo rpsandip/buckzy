@@ -206,27 +206,60 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+  <div class="modal fade" id="paymentConfirmation" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Payment Confirmatin</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to initiate Payment ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success submitPaymentPopUp">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
 <aui:input type="hidden" name="exchangeRate"/>
 <aui:input type="hidden" name="fromCur" value="${loginUserCurrencyCd }"/>
 <aui:input type="hidden" name="toCur"/>
 </aui:form>
 
-<aui:script>
-
-AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate', function(A) {
+<script>
+ jQuery.noConflict();
+    (function($) {
+      $(function() {
+		  
+   AUI().use('aui-io-request', 'aui-autocomplete','liferay-portlet-url' ,'aui-base','aui-form-validator','autocomplete-list','autocomplete-filters','autocomplete-highlighters','node-event-simulate', function(A) {
 	
 	var submitPaymentBtn = A.one('.submit-payment');
+	var submitPaymentPopUpBtn = A.one(".submitPaymentPopUp");
 	if(submitPaymentBtn){
 		submitPaymentBtn.on('click', function(e) {
 			var formValidator = Liferay.Form.get('<portlet:namespace />paymentFm').formValidator;
 			formValidator.validate();
 			receiverValidator.validate();
 			if(!formValidator.hasErrors() && !receiverValidator.hasErrors()){
-				document.<portlet:namespace />paymentFm.submit();
+				$("#paymentConfirmation").modal('show');
 			}
 		});
 	}
 	
+	if(submitPaymentPopUpBtn){
+		submitPaymentPopUpBtn.on('click', function(e) {
+			document.<portlet:namespace />paymentFm.submit();
+		});
+	}
 	var amountSelect = A.one("#<portlet:namespace />amount");
 	var receivingAmountSelect = A.one("#<portlet:namespace />receivingAmount");
 	var receiverSelect = A.one("#<portlet:namespace />receiver");
@@ -285,11 +318,11 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 		getExchangeRate(fromCurSelect.val(),toCurSelect.val());
 	});*/
 	
-	amountSelect.on('change', function(e) {
+	amountSelect.on('keyup', function(e) {
 		getTranferedAmount(true);
 	});
 	
-	receivingAmountSelect.on('change', function(e) {
+	receivingAmountSelect.on('keyup', function(e) {
 		getTranferedAmount(false);
 	});
 	
@@ -301,7 +334,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			var exchangeRate = A.one("#<portlet:namespace/>exchangeRate").val();
 			console.log("exchangeRate->"  + exchangeRate);
 			if(amount!="" && typeof amount != 'undefined' && !isNaN(amount) && exchangeRate != 0 && typeof exchangeRate != 'undefined' && !isNaN(exchangeRate)){
-				var transferedAmount = amount/exchangeRate;
+				var transferedAmount = parseFloat(amount/exchangeRate).toFixed(2);
 				console.log("transferedAmount->" + transferedAmount);
 				A.one("#transferFromAmt").text(amount  + " " + senderCurCode);
 				A.one("#transferFromFee").text( "0.00"+ " " + senderCurCode);
@@ -321,7 +354,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 			var exchangeRate = A.one("#<portlet:namespace/>exchangeRate").val();
 			console.log("exchangeRate->"  + exchangeRate);
 			if(amount!="" && typeof amount != 'undefined' && !isNaN(amount) && exchangeRate != 0 && typeof exchangeRate != 'undefined' && !isNaN(exchangeRate)){
-				var transferedAmount = amount * exchangeRate;
+				var transferedAmount = parseFloat(amount * exchangeRate).toFixed(2);
 				console.log("transferedAmount->" + transferedAmount);
 				A.one("#transferFromAmt").text(amount  + " " + senderCurCode);
 				A.one("#transferFromFee").text( "0.00"+ " " + senderCurCode);
@@ -394,5 +427,7 @@ AUI().use('aui-base','aui-form-validator', 'aui-io-request','node-event-simulate
 	//fromCurSelect.simulate('change');
 	receiverSelect.simulate('change');
 			
-});
-</aui:script>
+	  });
+    });
+   })(jQuery);
+</script>

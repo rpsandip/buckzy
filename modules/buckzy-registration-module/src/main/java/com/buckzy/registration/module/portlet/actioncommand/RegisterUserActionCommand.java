@@ -91,7 +91,7 @@ public class RegisterUserActionCommand extends BaseMVCActionCommand{
 				try {
 					JSONObject responseObject = BuckzyCommonLocalServiceUtil.registerUser(token, firstName, middleName, lastName, emailAddress,
 							password, address, city, zipcode, state, countryCode, currencyCode,dob, mobile, mobileCountryCode,reminderQuestion1, reminderAns1,
-							deviceInfo, false,themeDisplay.getUserId(), themeDisplay.getScopeGroupId(), ServiceContextFactory.getInstance(actionRequest));
+							reminderQuestion2,reminderAns2, deviceInfo, false,themeDisplay.getUserId(), themeDisplay.getScopeGroupId(), ServiceContextFactory.getInstance(actionRequest));
 					
 					User user = (User)responseObject.get("user");
 					

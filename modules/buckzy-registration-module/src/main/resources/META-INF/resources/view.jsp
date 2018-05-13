@@ -49,7 +49,7 @@
                                         </div>
                                         <div class="col-sm-6 pad-0">
                                             <div class="input-group">
-                                            	<span id="userExistErrMsg" style="color: red;"></span>
+                                            	<span id="userExistErrMsg" style="color: #a94442;"></span>
                                             </div>
                                         </div>    
                                     </div>
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="col-sm-12 pad-0">
                                     	<aui:input name="reminderAns1" placeholder="Answer" label="Answer" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#000000;" >
-									     <aui:validator name="maxLength">50</aui:validator>
+									     <aui:validator name="maxLength">35</aui:validator>
 									   </aui:input>
                                     </div>
 						            <div class="col-sm-12 pad-0">
@@ -116,7 +116,7 @@
 						           </div>
 						            <div class="col-sm-12 pad-0">
 						              <aui:input name="reminderAns2"  placeholder="Answer" label="Answer" cssClass="form-control col-md-7 col-xs-6" style="font-size: 12px; color:#000000;">
-									     <aui:validator name="maxLength">50</aui:validator>
+									     <aui:validator name="maxLength">35</aui:validator>
 									   </aui:input>
 									</div>
 									<div class="col-sm-12 margin-top-30 next-page">
@@ -296,6 +296,7 @@ jQuery.noConflict();
     		var dobDaySelect = A.one("#<portlet:namespace/>dobDay");
     		var dobYearSelect = A.one("#<portlet:namespace/>dobYear");
     		var dobMonthSelect = A.one("#<portlet:namespace/>dobMonth");
+    		var emailSelect = A.one("#<portlet:namespace/>emailAdddress");
     		var validDob = false;
     		A.one(".pin-detail").hide();
     		
@@ -352,6 +353,30 @@ jQuery.noConflict();
     				$(".registration1").show();
        				$(".registration2").hide();	
 			});
+    		
+    		
+    		emailSelect.on('change', function(e) {
+    			A.one("#userExistErrMsg").text('');
+    			if(this.get('value') && this.get('value').indexOf(".")>0){
+	    			var  checkUserExistURL = '${checkUserExistURL}';
+	    			A.io.request(checkUserExistURL.toString(),{
+	    				dataType: 'json',
+	    				method: 'GET',
+	    				data :{
+	    					'<portlet:namespace/>emailAddress' : A.one("#<portlet:namespace/>emailAdddress").val()
+	    				},
+	    				on: {
+	    				success: function() {
+	    					var resp=this.get('responseData');
+		    					if(resp.isUserExist){
+		    	    				A.one("#userExistErrMsg").text('Email Address already exist.');
+		    	    				return;
+		    	    			}
+	    					}
+	    			 	 }
+	    			});
+    			}
+    		});
     		
     		country.on('change', function(e) {
     			console.log(this.get('value'));

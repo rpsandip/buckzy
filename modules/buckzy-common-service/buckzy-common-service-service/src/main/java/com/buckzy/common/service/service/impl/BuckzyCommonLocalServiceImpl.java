@@ -121,7 +121,7 @@ public class BuckzyCommonLocalServiceImpl
 	 */
 	public JSONObject registerUser(String token,String firstName, String middleName, String lastName, String emailAddress, String password1,
 			String address, String city, String zipcode, String state, String countryCode, String currencyCode,String dob, String mobileNum, String mobileCountryCode,
-			String reminderQuestion, String reminderAnswer, String deviceInfo, boolean isSocialLogin ,long creatorUserId, long groupId, ServiceContext serviceContext) throws PortalException{
+			String reminderQuestion, String reminderAnswer, String reminderQuestion2, String reminderAnswer2, String deviceInfo, boolean isSocialLogin ,long creatorUserId, long groupId, ServiceContext serviceContext) throws PortalException{
 		
 		User user = null;
 		JSONObject responseObj = JSONFactoryUtil.createJSONObject();
@@ -161,8 +161,8 @@ public class BuckzyCommonLocalServiceImpl
 				
 				if(Validator.isNotNull(user)){
 	
-					user.setReminderQueryQuestion(reminderQuestion);
-					user.setReminderQueryAnswer(reminderAnswer);
+					user.setReminderQueryQuestion(reminderQuestion.concat(StringPool.COMMA).concat(reminderQuestion2));
+					user.setReminderQueryAnswer(reminderAnswer.concat(StringPool.COMMA).concat(reminderAnswer2));
 					user.setEmailAddressVerified(false);
 					
 					UserLocalServiceUtil.updateUser(user);
@@ -738,7 +738,7 @@ public JSONArray getCityList(String token, String keyWord, String stateCode, Str
     	paramsJsonObj.put("rcvrAccntId", receiverAcntId);
     	paramsJsonObj.put("sendingCurrCd", sendingCurCode);
     	paramsJsonObj.put("recevingCurrCd", receivingCurCode);
-    	paramsJsonObj.put("exchangeRate", exchangeRate);
+    	paramsJsonObj.put("exchangeRate", String.valueOf(exchangeRate));
     	paramsJsonObj.put("sendingAmount", amount);
     	paramsJsonObj.put("purposeOfTransfer", purposeOfTransfer);
     	paramsJsonObj.put("purposeCode", purposeCode);

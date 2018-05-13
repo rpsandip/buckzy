@@ -27,6 +27,7 @@
 	</script>
 	
 	<script src="${javascript_folder}/jquery.min.js"></script>
+	<script src="${javascript_folder}/bootstrap.min.js"></script>
 	<script src="${javascript_folder}/jquery-ui.js"></script>
 	<script src="${javascript_folder}/jquery.dd.min.js"></script>
 	<script src="${javascript_folder}/jquery.ddslick.min.js"></script>

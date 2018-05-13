@@ -144,6 +144,7 @@ public interface BuckzyCommonLocalService extends BaseLocalService {
 		java.lang.String currencyCode, java.lang.String dob,
 		java.lang.String mobileNum, java.lang.String mobileCountryCode,
 		java.lang.String reminderQuestion, java.lang.String reminderAnswer,
+		java.lang.String reminderQuestion2, java.lang.String reminderAnswer2,
 		java.lang.String deviceInfo, boolean isSocialLogin, long creatorUserId,
 		long groupId, ServiceContext serviceContext) throws PortalException;
 

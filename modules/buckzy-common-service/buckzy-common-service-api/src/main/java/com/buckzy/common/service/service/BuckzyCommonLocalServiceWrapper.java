@@ -183,15 +183,17 @@ public class BuckzyCommonLocalServiceWrapper implements BuckzyCommonLocalService
 		java.lang.String countryCode, java.lang.String currencyCode,
 		java.lang.String dob, java.lang.String mobileNum,
 		java.lang.String mobileCountryCode, java.lang.String reminderQuestion,
-		java.lang.String reminderAnswer, java.lang.String deviceInfo,
+		java.lang.String reminderAnswer, java.lang.String reminderQuestion2,
+		java.lang.String reminderAnswer2, java.lang.String deviceInfo,
 		boolean isSocialLogin, long creatorUserId, long groupId,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _buckzyCommonLocalService.registerUser(token, firstName,
 			middleName, lastName, emailAddress, password1, address, city,
 			zipcode, state, countryCode, currencyCode, dob, mobileNum,
-			mobileCountryCode, reminderQuestion, reminderAnswer, deviceInfo,
-			isSocialLogin, creatorUserId, groupId, serviceContext);
+			mobileCountryCode, reminderQuestion, reminderAnswer,
+			reminderQuestion2, reminderAnswer2, deviceInfo, isSocialLogin,
+			creatorUserId, groupId, serviceContext);
 	}
 
 	@Override

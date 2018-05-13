@@ -23,7 +23,7 @@
                    A pin number has been sent to you on your mobile number <span id="mobile-num"></span>. Once you have verified, your digital profile will be activated.
                </div>
                <div class="col-sm-12 padding-0 margin-0 margin-top-10" style="font-size: 12px;">
-                   Enter the 6-digit code from the Mobile:
+                   Enter the <span style="color: #a94442; font-size: 14;">6-digit</span> code from the Mobile:
                </div>
                <div class="col-sm-12 margin-top-10" style="background-color: #FFFFFF; padding:45px 20px 20px 20px; ">
                    <div class="col-xs-2">
